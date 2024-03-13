@@ -13,9 +13,9 @@ const helpers = {
 
     pool = new Pool({
       ...clientOpts,
-      user: 'user',
-      password: 'password',
-      database: 'posts',
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
       max: 5,
     });
   },
