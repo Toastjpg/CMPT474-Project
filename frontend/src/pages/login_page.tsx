@@ -2,14 +2,23 @@ import { Title, TextInput, Button, Center, Box, Flex } from "@mantine/core"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { serverController } from "../controllers/server_controller";
+
 export function LoginPage() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
     let navigate = useNavigate();
 
-    function handleSignIn() {
-        console.log(`Signing in with username: ${username} and password: ${password}`);
-        navigate("/homepage");
+    async function handleSignIn() {
+        console.log(`Signing in with username: ${email}`);
+
+        let responseCode: number;
+        await serverController.registerAuthRequest(email)
+            .then((status: any) => {
+                console.log("Request status: ", status);
+                responseCode = status;
+            });
+        
+        navigate("/authpage", { state: { data: email } });
     }
 
     function handleRegister() {
@@ -26,21 +35,13 @@ export function LoginPage() {
                     </Center>
                     
                     <TextInput 
-                        label="Email Address"
-                        placeholder="example@email.ca" 
-                        value={username}
-                        onChange={(event) => setUsername(event.currentTarget.value)}
-                    />
-
-                    <TextInput 
-                        label="Password"
-                        placeholder="eXaMpLePaSsWoRd123!" 
-                        value={password}
-                        onChange={(event) => setPassword(event.currentTarget.value)}
+                        label="SFU Email"
+                        value={email}
+                        onChange={(event) => setEmail(event.currentTarget.value)}
                     />
 
                     <Button color="gray" onClick={handleSignIn}>
-                        Sign In
+                        Request sign in code
                     </Button>
 
                     <hr />

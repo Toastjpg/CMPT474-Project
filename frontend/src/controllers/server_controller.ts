@@ -1,8 +1,9 @@
 const portNumber: number = 3000;
-const serverUrl: string = `http://localhost:${portNumber}/recipes/`;
+const serverUrl: string = `http://localhost:${portNumber}`;
 
 export const serverController: any = {
-    getRecipes: async function() {
+    
+    /* getRecipes: async function() {
         return fetch(serverUrl)
                 .then(response => response.json())
                 .then(data => {
@@ -47,6 +48,32 @@ export const serverController: any = {
         })
         .then(response => response.json())
         .then(data => data)
+        .catch(error => console.log(error));
+    } */
+
+    registerAuthRequest: async function(email: string) {
+        return fetch(`${serverUrl}/auth_request/`, {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ 
+                email: email 
+            })
+        })
+        .then(response => response.status)
+        .catch(error => console.log(error));
+    },
+
+    authRequest: async function(email: string, code: string) {
+        return fetch(`${serverUrl}/auth_request/`, {
+            method: "GET",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email: email, code: code })
+        })
+        .then(response => response.status)
         .catch(error => console.log(error));
     }
 }
