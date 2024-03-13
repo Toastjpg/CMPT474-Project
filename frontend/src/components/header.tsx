@@ -1,4 +1,4 @@
-import { Center, Title, Flex, Avatar, Group, rem } from '@mantine/core';
+import { Title, Avatar, Group } from '@mantine/core';
 
 import { AddPostButton } from './add_post_button';
 
