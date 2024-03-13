@@ -3,24 +3,22 @@ import { Box, TextInput, Textarea, Button, Space, Flex } from "@mantine/core";
 
 import { serverClient } from "../controllers/server_client";
 
-export function EditRecipeForm(props: any) {
-    const recipeForm = useForm({
+export function EditPostForm(props: any) {
+    const postForm = useForm({
         initialValues: {
-            name: props.recipe.getTitle(),
-            ingredients: props.recipe.getIngredients(),
-            instructions: props.recipe.getInstructions(),
+            title: props.recipe.getTitle(),
+            content: props.recipe.getcontent(),
         },
     });
 
     async function handleSubmitEdit(){
-        if (recipeForm.values.name && recipeForm.values.ingredients && recipeForm.values.instructions) {
+        if (postForm.values.title && postForm.values.content) {
             props.onClose();
 
             let recipe = {
                 id: props.recipe.id,
-                title: recipeForm.values.name.toLowerCase(),
-                ingredients: (recipeForm.values.ingredients.toLowerCase().split(",")),
-                instructions: recipeForm.values.instructions.toLowerCase(),
+                title: postForm.values.title.toLowerCase(),
+                content: postForm.values.content.toLowerCase(),
                 lastTimeModified: new Date()
             }
 
@@ -36,30 +34,21 @@ export function EditRecipeForm(props: any) {
     return (
         <>
             <Box maw={600} mx={"auto"}>
-                <form onSubmit={recipeForm.onSubmit((values) => console.log(values))}>
+                <form onSubmit={postForm.onSubmit((values) => console.log(values))}>
                     <TextInput 
                         required
-                        label="Name"
-                        value={recipeForm.values.name}
-                        onChange={(event) => recipeForm.setFieldValue("name", event.currentTarget.value)}
+                        label="title"
+                        value={postForm.values.title}
+                        onChange={(event) => postForm.setFieldValue("title", event.currentTarget.value)}
                     />
 
                     <Textarea 
                         autosize
                         minRows={5}
                         required
-                        label="Ingredients"
-                        value={recipeForm.values.ingredients}
-                        onChange={(event) => recipeForm.setFieldValue("ingredients", event.currentTarget.value)}
-                    />
-
-                    <Textarea 
-                        autosize
-                        minRows={5}
-                        required
-                        label="Instructions"
-                        value={recipeForm.values.instructions}
-                        onChange={(event) => recipeForm.setFieldValue("instructions", event.currentTarget.value)}
+                        label="content"
+                        value={postForm.values.content}
+                        onChange={(event) => postForm.setFieldValue("content", event.currentTarget.value)}
                     />
 
                     <Space h={"md"} />
@@ -67,7 +56,7 @@ export function EditRecipeForm(props: any) {
                     <Flex justify={"end"}>
                         <Button 
                             type="button"
-                            onClick={recipeForm.reset}
+                            onClick={postForm.reset}
                             bg={"red"}
                         >
                             Reset

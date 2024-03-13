@@ -1,4 +1,4 @@
-import { Title, Avatar, Group } from '@mantine/core';
+import { Title, Group } from '@mantine/core';
 
 import { AddPostButton } from './add_post_button';
 import { AccountMenu } from './account_menu';

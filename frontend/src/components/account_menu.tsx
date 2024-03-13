@@ -1,4 +1,4 @@
-import { Title, Avatar, Group, Menu } from '@mantine/core';
+import { Avatar, Menu } from '@mantine/core';
 
 export function AccountMenu() {
     return (

@@ -1,25 +1,19 @@
 import { useDisclosure } from "@mantine/hooks";
-import { Accordion, Text, Title, Space, Button, Group, Modal, Card, Grid, rem } from "@mantine/core"
+import { Text, Title, Space, Group, Modal, Card, Grid, rem } from "@mantine/core"
 import { useState, useEffect } from "react";
 
-import { Recipe } from "../models/recipe";
 import { serverClient } from "../controllers/server_client"
+import { EditPostForm } from "./edit_post_form";
+
 import "../styles/recipe_list.css";
-import "./edit_recipe_form";
-import { EditRecipeForm } from "./edit_recipe_form";
+import "./edit_post_form";
+
+import { Post } from "../models/post";
+import { temp_posts } from "../models/temp_posts";
 
 export function PostList() {
     const [opened, {open, close}] = useDisclosure();
-    const [recipeToEdit, setRecipeToEdit] = useState<Recipe | null>(null);
-
-    const [recipes, setRecipes] = useState<Recipe[]>([]);
-    useEffect(() => {
-        serverClient.getRecipes()
-            .then((data: any) => {
-                setRecipes(data.map((recipe: any) => Recipe.fromJSON(recipe)));
-            })
-            .catch((error: any) => console.log(error));
-    }, [])
+/*     const [recipeToEdit, setRecipeToEdit] = useState<Recipe | null>(null);
 
     async function handleDelete(id: string){
         if (confirm("Are you sure you want to delete this recipe?")){
@@ -74,13 +68,23 @@ export function PostList() {
                 </Accordion.Panel>
             </Accordion.Item>
         );
+    }); */
+
+    const [posts, setPosts] = useState<Post[]>([]);
+    useEffect(() => {
+        // serverClient.getPosts()
+        //     .then((data: any) => {
+        //         setPosts(data.map((post: any) => Post.fromJSON(post)));
+        //     })
+        //     .catch((error: any) => console.log(error));
+        setPosts(temp_posts.map((post) => Post.fromJSON(post)));
     });
 
-    const postList = recipes.map((recipe) => {
+    const postList = posts.map((post) => {
         return (
-            <Grid.Col key={recipe.getId()} span={3}>
+            <Grid.Col key={post.getId()} span={3}>
                 <Card 
-                    key={recipe.id} 
+                    key={post.getId()} 
                     shadow="sm" 
                     padding="lg" 
                     radius="md" 
@@ -90,12 +94,12 @@ export function PostList() {
                 >
 
                     <Title order={3} lineClamp={1}>
-                        {recipe.getTitle()}
+                        {post.getTitle()}
                     </Title>
 
                     <Group justify="space-between" mt={"md"} mb={"xs"}>
                         <Text className="textbox" lineClamp={4}>
-                            {recipe.getInstructions()}
+                            {post.getContent()}
                         </Text>
                     </Group>
 
@@ -110,10 +114,9 @@ export function PostList() {
                 Recent Posts
             </Title>
 
-            <Modal opened={opened} onClose={close} title="Edit Recipe">
-                <EditRecipeForm 
+            <Modal opened={opened} onClose={close} title="Edit Post">
+                <EditPostForm 
                     onClose={close}
-                    recipe={recipeToEdit}
                 />
             </Modal>
 
