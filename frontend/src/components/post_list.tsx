@@ -1,5 +1,5 @@
 import { useDisclosure } from "@mantine/hooks";
-import { Accordion, Text, Title, Space, Button, Group, Modal } from "@mantine/core"
+import { Accordion, Text, Title, Space, Button, Group, Modal, Card, Grid } from "@mantine/core"
 import { useState, useEffect } from "react";
 
 import { Recipe } from "../models/recipe";
@@ -8,7 +8,7 @@ import "../styles/recipe_list.css";
 import "./edit_recipe_form";
 import { EditRecipeForm } from "./edit_recipe_form";
 
-export function RecipeList() {
+export function PostList() {
     const [opened, {open, close}] = useDisclosure();
     const [recipeToEdit, setRecipeToEdit] = useState<Recipe | null>(null);
 
@@ -76,10 +76,34 @@ export function RecipeList() {
         );
     });
 
+    const postList = recipes.map((recipe) => {
+        return (
+            <Grid.Col span={3}>
+                <Card key={recipe.id} shadow="sm" padding="md" radius="md" className="recipe-card">
+                    <h3>{recipe.getTitle()}</h3>
+                    <p>{recipe.getInstructions()}</p>
+                    <Button onClick={() => handleDelete(recipe.id ?? "")}>
+                        Delete
+                    </Button>
+                    <Button onClick={() => {
+                        open();
+                        console.log("Editing recipeID: ", recipe.id ?? "");
+                        setRecipeToEdit(recipe);
+                    }}>
+                        Edit
+                    </Button>
+                    <Text>
+                        Last Modified: {recipe.getLastTimeModified()}
+                    </Text>
+                </Card>
+            </Grid.Col>
+        );
+    });
+
     return (
         <>
             <Title order={3} td={"underline"}>
-                Saved Recipes
+                Recent Posts
             </Title>
 
             <Modal opened={opened} onClose={close} title="Edit Recipe">
@@ -91,9 +115,13 @@ export function RecipeList() {
 
             <Space h="md" />
 
-            <Accordion variant="separated" radius={"md"}>
+            {/* <Accordion variant="separated" radius={"md"}>
                 {recipeList}
-            </Accordion>
+            </Accordion> */}
+
+            <Grid>
+                {postList}
+            </Grid>
         </>
     );
 }

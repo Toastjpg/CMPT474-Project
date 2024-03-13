@@ -1,21 +1,21 @@
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, Button } from "@mantine/core";
 
-import { AddRecipeForm } from "./add_recipe_form";
+import { AddPostForm } from "./add_post_form";
 
-export function AddRecipeButton() {
+export function AddPostButton() {
     const [opened, {open, close}] = useDisclosure();
 
     return (
         <>
-            <Modal opened={opened} onClose={close} title="Add Recipe">
-                <AddRecipeForm 
+            <Modal opened={opened} onClose={close} title="Create Forum Post">
+                <AddPostForm 
                     onClose={close}
                 />
             </Modal>
 
             <Button onClick={open}>
-                Add Recipe
+                Add Forum Post
             </Button>
         </>
     );

@@ -3,7 +3,7 @@ import { AppShell } from "@mantine/core";
 // import { useState, useEffect } from "react";
 
 import { Header } from "../components/header";
-import { RecipeList } from "../components/recipe_list";
+import { PostList } from "../components/post_list";
 
 export function HomePage() {
     return (
@@ -14,7 +14,7 @@ export function HomePage() {
                 </AppShell.Header>
 
                 <AppShell.Main>
-                    <RecipeList />
+                    <PostList />
                 </AppShell.Main>
             </AppShell>
         </>

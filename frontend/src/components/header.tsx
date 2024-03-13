@@ -1,6 +1,6 @@
 import { Center, Title, Flex } from '@mantine/core';
 
-import { AddRecipeButton } from './add_recipe_button';
+import { AddPostButton } from './add_post_button';
 
 export function Header() {
     return (
@@ -8,10 +8,10 @@ export function Header() {
             <Center inline maw={600} h={60}>
                 <Flex pl={15} gap={"lg"}>
                     <Title>
-                        Recipe Tracker
+                        SFU Connect
                     </Title>
 
-                    <AddRecipeButton />
+                    <AddPostButton />
                 </Flex>
             </Center>
         </>
