@@ -78,7 +78,7 @@ export function PostList() {
 
     const postList = recipes.map((recipe) => {
         return (
-            <Grid.Col span={3}>
+            <Grid.Col key={recipe.getId()} span={3}>
                 <Card 
                     key={recipe.id} 
                     shadow="sm" 

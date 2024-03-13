@@ -1,6 +1,7 @@
 import { Title, Avatar, Group } from '@mantine/core';
 
 import { AddPostButton } from './add_post_button';
+import { AccountMenu } from './account_menu';
 
 export function Header() {
     return (
@@ -15,7 +16,7 @@ export function Header() {
                 </Group>
                     
                 <Group justify='flex-end'>
-                    <Avatar size={40} radius="xl" />
+                    <AccountMenu />
                 </Group>
             </Group>
         </>
