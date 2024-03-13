@@ -1,25 +1,25 @@
 const { Pool } = require("pg");
-const dotenv = require("dotenv");
-dotenv.config();
+const { Connector } = require("@google-cloud/cloud-sql-connector");
 
-// const pool = new Pool({
-//   host: process.env.DB_HOST,
-//   user: process.env.DB_USER,
-//   password: process.env.DB_PASSWORD,
-//   // database: process.env.DB_NAME,
-//   port: process.env.DB_PORT
-// })
-
-// TODO: Figure out proper connection when connecting to Cloud SQL
-const pool = new Pool({
-  host: "db",
-  user: "postgres",
-  password: "root",
-  // database: process.env.DB_NAME,
-  // port: process.env.DB_PORT
-});
+const connector = new Connector();
+let pool;
 
 const helpers = {
+  init: async () => {
+    const clientOpts = await connector.getOptions({
+      instanceConnectionName: process.env.DB_CONN_NAME,
+      ipType: 'PUBLIC',
+    });
+
+    pool = new Pool({
+      ...clientOpts,
+      user: 'user',
+      password: 'password',
+      database: 'posts',
+      max: 5,
+    });
+  },
+
   setup_tables: async () => {
     const q = `
       CREATE TABLE if NOT EXISTS posts (

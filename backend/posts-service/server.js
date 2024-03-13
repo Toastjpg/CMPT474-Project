@@ -1,17 +1,15 @@
-const express = require('express');
-const db = require("./models/db")
-const dotenv = require('dotenv');
-dotenv.config();
-const PORT = process.env.PORT || 3000;
+const express = require("express");
+const db = require("./models/db");
+const PORT = process.env.PORT || 8080;
 
-let cors = require("cors")
+let cors = require("cors");
 const corsOps = {
   origin: "*",
   optionSuccessStatus: 200,
   credentials: true,
-}
+};
 
-let postsController = require('./routes/posts.controller');
+let postsController = require("./routes/posts.controller");
 
 const app = express();
 
@@ -19,13 +17,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOps));
 
-app.use('/api', postsController);
+app.use("/api", postsController);
 
-// start up the server to listen for requests
-db.helpers.setup_tables()
+// Inits cloud sql connection then starts server
+// Throws an error for some reason?? but end points seem to work??
+db.helpers
+  .init()
+  .then(() => {
+    db.helpers.setup_tables()
+  })
   .then(
-    app.listen(PORT, '0.0.0.0', () => {
+    app.listen(PORT, "0.0.0.0", () => {
       console.log(`Server is running on port ${PORT}`);
+      console.log(process.env.DB_CONN_NAME);
     })
-  )
-
+  );
