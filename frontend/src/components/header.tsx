@@ -1,19 +1,23 @@
-import { Center, Title, Flex } from '@mantine/core';
+import { Center, Title, Flex, Avatar, Group, rem } from '@mantine/core';
 
 import { AddPostButton } from './add_post_button';
 
 export function Header() {
     return (
         <>
-            <Center inline maw={600} h={60}>
-                <Flex pl={15} gap={"lg"}>
+            <Group h={60} pr={15} grow>
+                <Group pl={15}>
                     <Title>
                         SFU Connect
                     </Title>
 
                     <AddPostButton />
-                </Flex>
-            </Center>
+                </Group>
+                    
+                <Group justify='flex-end'>
+                    <Avatar size={40} radius="xl" />
+                </Group>
+            </Group>
         </>
     );
 }

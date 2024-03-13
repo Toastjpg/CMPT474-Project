@@ -119,10 +119,6 @@ export function PostList() {
 
             <Space h="md" />
 
-            {/* <Accordion variant="separated" radius={"md"}>
-                {recipeList}
-            </Accordion> */}
-
             <Grid justify="center" align="stretch">
                 {postList}
             </Grid>
