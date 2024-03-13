@@ -1,12 +1,13 @@
-const express = require('express')
+import express from 'express'
+import cors from 'cors'
+import bodyParser from 'body-parser'
+import dotenv from 'dotenv'
+
 const app = express();
-const cors = require('cors')
-const bodyParser = require('body-parser')
-const dotenv = require('dotenv');
 dotenv.config()
 
 
-const { createAccount, verifyUniqueUsername } = require('./controller/user-account.controller')
+import { createAccount, verifyUniqueUsername } from './controller/user-account.controller.js'
 
 
 app.use(bodyParser.json())

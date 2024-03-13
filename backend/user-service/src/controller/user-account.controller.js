@@ -1,6 +1,6 @@
-const db = require('../db-connection').pool
+import { pool as db } from '../db-connection.js'
 
-const createAccount = async (req, res) => {
+export const createAccount = async (req, res) => {
     const insertQuery = "INSERT INTO Accounts (username, email, password) VALUE (?,?,?)";
     const values = [
         req.body.username,
@@ -15,7 +15,7 @@ const createAccount = async (req, res) => {
         }
     })
 }
-const verifyUniqueUsername = async (req, res) => {
+export const verifyUniqueUsername = async (req, res) => {
     const selectQuery = "SELECT COUNT(*) AS count FROM Accounts WHERE username=?";
     const values = [
         req.body.username
@@ -28,5 +28,3 @@ const verifyUniqueUsername = async (req, res) => {
         }
     })
 }
-
-module.exports = { createAccount, verifyUniqueUsername }
