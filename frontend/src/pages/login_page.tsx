@@ -26,15 +26,13 @@ export function LoginPage() {
                     </Center>
                     
                     <TextInput 
-                        label="Email Address"
-                        placeholder="example@email.ca" 
+                        label="Username"
                         value={username}
                         onChange={(event) => setUsername(event.currentTarget.value)}
                     />
 
                     <TextInput 
                         label="Password"
-                        placeholder="eXaMpLePaSsWoRd123!" 
                         value={password}
                         onChange={(event) => setPassword(event.currentTarget.value)}
                     />
