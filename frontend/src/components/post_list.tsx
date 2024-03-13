@@ -2,7 +2,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { Text, Title, Space, Group, Modal, Card, Grid, rem } from "@mantine/core"
 import { useState, useEffect } from "react";
 
-import { serverClient } from "../controllers/server_client"
+import { serverController } from "../controllers/server_controller"
 import { EditPostForm } from "./edit_post_form";
 
 import "../styles/recipe_list.css";

@@ -1,7 +1,7 @@
 const portNumber: number = 3000;
 const serverUrl: string = `http://localhost:${portNumber}/recipes/`;
 
-export const serverClient: any = {
+export const serverController: any = {
     getRecipes: async function() {
         return fetch(serverUrl)
                 .then(response => response.json())

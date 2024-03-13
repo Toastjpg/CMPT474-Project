@@ -1,7 +1,7 @@
 import { useForm } from "@mantine/form";
 import { Box, TextInput, Textarea, Button, Space, Flex } from "@mantine/core";
 
-import { serverClient } from "../controllers/server_client";
+import { serverController } from "../controllers/server_controller";
 
 export function EditPostForm(props: any) {
     const postForm = useForm({
@@ -22,7 +22,7 @@ export function EditPostForm(props: any) {
                 lastTimeModified: new Date()
             }
 
-            await serverClient.updateRecipe(recipe)
+            await serverController.updateRecipe(recipe)
                 .then((data: any) => console.log(data))
                 .catch((error: any) => console.log(error));
 

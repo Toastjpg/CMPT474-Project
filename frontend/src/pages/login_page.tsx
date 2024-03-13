@@ -1,4 +1,4 @@
-import { Center, Box, Flex } from "@mantine/core"
+import { Title, TextInput, Button, Center, Box, Flex } from "@mantine/core"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -20,25 +20,34 @@ export function LoginPage() {
         <Center style={{ height: '100vh' }}>
             <Box style={{ width: 400 }}>
                 <Flex direction="column" gap="md">
-                    <h1 style={{ textAlign: 'center' }}>Login</h1>
-                    <input type="text" placeholder="Username" />
-                    <input type="password" placeholder="Password" />
 
-                    <button 
-                        style={{ cursor: 'pointer' }}
-                        onClick={handleSignIn}
-                    >
+                    <Center>
+                        <Title order={1} >Sign In</Title>
+                    </Center>
+                    
+                    <TextInput 
+                        label="Email Address"
+                        placeholder="example@email.ca" 
+                        value={username}
+                        onChange={(event) => setUsername(event.currentTarget.value)}
+                    />
+
+                    <TextInput 
+                        label="Password"
+                        placeholder="eXaMpLePaSsWoRd123!" 
+                        value={password}
+                        onChange={(event) => setPassword(event.currentTarget.value)}
+                    />
+
+                    <Button color="gray" onClick={handleSignIn}>
                         Sign In
-                    </button>
+                    </Button>
 
                     <hr />
 
-                    <button 
-                        style={{ cursor: 'pointer' }}
-                        onClick={handleRegister}
-                    >
-                        Don't have an account? Sign Up
-                    </button>
+                    <Button color="gray" onClick={handleRegister}>
+                        Don't have an account? Sign up
+                    </Button>
                 </Flex>
             </Box>
         </Center>
