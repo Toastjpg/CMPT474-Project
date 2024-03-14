@@ -41,7 +41,7 @@ const helpers = {
     },
 
     create_account: async (values) => {
-        const insertQuery = "INSERT INTO Accounts (username, email, password) VALUES ($1,$2,$3) RETURNING *";
+        const insertQuery = "INSERT INTO Accounts (username, email, password) VALUES ($1, $2, $3) RETURNING *";
         const res = await pool.query(insertQuery, values)
         return res.rows[0]
     },
