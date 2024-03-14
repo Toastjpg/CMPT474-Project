@@ -1,0 +1,35 @@
+version: '3.9'
+services:
+  mysqldb:
+    container_name: mysqldb
+    build: ./db
+    image: mysqldb:1.0.0
+    ports:
+      - '3306:3306'
+    expose:
+      - 3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root@sfu-oclp
+      MYSQL_DATABASE: sfu_oclp_user_db
+      SERVICE_NAME: mysqldb
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - "./db/init.sql:/docker-entrypoint-initdb.d/init.sql"
+    networks:
+      - user-service-network
+  nodejsserver:
+    container_name: nodejsserver
+    build: ./src
+    depends_on:
+      - mysqldb
+    restart: always
+    ports:
+      - 8080:3000
+    command: npm run start
+    env_file: ./src/.env
+    networks:
+      - user-service-network
+networks:
+  user-service-network:
+    driver: bridge
