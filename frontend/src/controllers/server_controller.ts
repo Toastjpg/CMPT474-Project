@@ -4,8 +4,8 @@ const serverUrl: string = `http://localhost:${portNumber}`;
 export const serverController: any = {
     
     getPosts: async function() {
-        return fetch("https://post-service-cqiosuewjq-uc.a.run.app/api/posts")
-            .then(response => response.json())
+        return fetch(`{serverUrl}/api/posts`)
+            .then(response => response)
             .then(data => {
                 console.log(data);
                 return data;
