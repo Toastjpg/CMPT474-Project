@@ -1,12 +1,25 @@
-const { Pool } = require('pg')
+const { Pool } = require("pg");
+const { Connector } = require("@google-cloud/cloud-sql-connector");
 
-const pool = new Pool({
-	host: 'localhost',
-	user: 'postgres',
-	password: 'root',
-})
+const connector = new Connector();
+let pool;
 
 const helpers = {
+	init: async () => {
+		const clientOpts = await connector.getOptions({
+			instanceConnectionName: process.env.DB_CONN_NAME,
+			ipType: 'PUBLIC',
+		});
+
+		pool = new Pool({
+			...clientOpts,
+			user: process.env.DB_USER,
+			password: process.env.DB_PASS,
+			database: process.env.DB_NAME,
+			max: 5,
+		});
+	},
+
 	setup_tables: async () => {
 		const q1 = "CREATE TABLE IF NOT EXISTS AuthCodes (email VARCHAR(64) NOT NULL, code CHAR(6) NOT NULL)"
 		const res1 = await pool.query(q1)
@@ -17,7 +30,7 @@ const helpers = {
 		const search_q = "SELECT * FROM AuthCodes where email = $1"
 		const search_res = await pool.query(search_q, [email])
 
-		if (search_res.rowCount > 0){
+		if (search_res.rowCount > 0) {
 			return search_res.rows[0].code
 		}
 
@@ -39,4 +52,4 @@ const helpers = {
 	}
 }
 
-module.exports = {helpers}
+module.exports = { helpers }
