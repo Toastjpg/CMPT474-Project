@@ -29,6 +29,6 @@ db.helpers
     .then(
         app.listen(PORT, "0.0.0.0", () => {
             console.log(`Server is running on port ${PORT}`);
-            console.log(process.env.DB_CONN_NAME);
+            console.log("Connected to database instance: ", process.env.DB_CONN_NAME);
         })
     );
