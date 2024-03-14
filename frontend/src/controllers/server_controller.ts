@@ -1,10 +1,11 @@
-const portNumber: number = 3000;
-const serverUrl: string = `http://localhost:${portNumber}`;
+const postURL: string = `https://post-service-container-2nmgx5zaoa-uw.a.run.app/api`;
+const authURL: string = `https://auth-service-container-2nmgx5zaoa-uw.a.run.app`;
+const userURL: string = `https://user-service-container-2nmgx5zaoa-uw.a.run.app/api`;
 
 export const serverController: any = {
     
     getPosts: async function() {
-        return fetch(`${serverUrl}/posts`)
+        return fetch(`${postURL}/posts`)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
@@ -14,7 +15,7 @@ export const serverController: any = {
     },
 
     savePost: async function(post: any) {
-        return fetch(`${serverUrl}/posts`, {
+        return fetch(`${postURL}/posts`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -27,7 +28,7 @@ export const serverController: any = {
     },
 
     registerAuthRequest: async function (email: string) {
-        return fetch(`${serverUrl}/register_auth_request`, {
+        return fetch(`${authURL}/register_auth_request`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -41,7 +42,7 @@ export const serverController: any = {
     },
 
     authRequest: async function (email: string, code: string) {
-        return fetch(`${serverUrl}/auth_request`, {
+        return fetch(`${authURL}/auth_request`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -53,7 +54,7 @@ export const serverController: any = {
     },
 
     createAccount: async function (email: string, username: string, password: string) {
-        return fetch(`${serverUrl}/account`, {
+        return fetch(`${userURL}/account`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -63,8 +64,5 @@ export const serverController: any = {
             .then(response => response.status)
             .catch(error => console.log(error));
     }
-
-
-
     
 }
