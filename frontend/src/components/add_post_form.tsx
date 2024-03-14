@@ -13,19 +13,20 @@ export function AddPostForm(props: any) {
 
     async function handleSubmit(){
         if (postForm.values.title && postForm.values.content) {
-            props.onClose();
-
+            
             let post = {
                 title: postForm.values.title.toLowerCase(),
                 content: postForm.values.content.toLowerCase(),
                 lastTimeModified: new Date()
             }
-
+            
             await serverController.savePost(post)
-                .then((data: any) => {
-                    console.log(data);
-                })
-                .catch((error: any) => console.log(error));
+            .then((data: any) => {
+                console.log(data);
+            })
+            .catch((error: any) => console.log(error));
+            
+            props.onClose();
 
             window.location.reload();
         }
