@@ -2,17 +2,17 @@ export class Post {
     id?: string | undefined;
     title: string;
     content: string;
-    lastTimeModified: Date;
+    last_modified: Date;
 
-    constructor(id: string, title: string, content: string, lastTimeModified: Date) {
+    constructor(id: string, title: string, content: string, last_modified: Date) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.lastTimeModified = lastTimeModified;
+        this.last_modified = last_modified;
     }
 
     static fromJSON(json: any): Post {
-        return new Post(json.id, json.title, json.content, new Date(json.lastTimeModified));
+        return new Post(json.id, json.title, json.content, new Date(json.last_modified));
     }
 
     toJSON(): any {
@@ -20,7 +20,7 @@ export class Post {
             id: this.id,
             title: this.title,
             content: this.content,
-            lastTimeModified: this.lastTimeModified
+            last_modified: this.last_modified
         }
     }
 
@@ -36,7 +36,7 @@ export class Post {
         return this.content;
     }
 
-    getLastTimeModified(): string {
-        return this.lastTimeModified.toLocaleString();
+    getlast_modified(): string {
+        return this.last_modified.toLocaleString();
     }
 }

@@ -1,98 +1,55 @@
-import { useDisclosure } from "@mantine/hooks";
-import { Text, Title, Space, Group, Modal, Card, Grid, rem } from "@mantine/core"
+import React from "react";
 import { useState, useEffect } from "react";
 
+import { useDisclosure } from "@mantine/hooks";
+import { Text, Title, Space, Group, Modal, Card, Grid, rem, Button } from "@mantine/core"
+
 import { serverController } from "../controllers/server_controller"
-import { EditPostForm } from "./edit_post_form";
-
-import "../styles/recipe_list.css";
-import "./edit_post_form";
-
 import { Post } from "../models/post";
-import { temp_posts } from "../models/temp_posts";
+import { ViewPost } from "./view_post";
+import "../styles/recipe_list.css";
+
 
 export function PostList() {
     const [opened, {open, close}] = useDisclosure();
-/*     const [recipeToEdit, setRecipeToEdit] = useState<Recipe | null>(null);
 
-    async function handleDelete(id: string){
-        if (confirm("Are you sure you want to delete this recipe?")){
-            await serverClient.deleteRecipe(id)
-                .then(() => {
-                    window.location.reload();
-                })
-                .catch((error: any) => console.log(error));
-
-            alert("Recipe was deleted.");
-            console.log(`Recipe with ID ${id} was deleted.`);
-        }
-        else {
-            alert("Recipe was not deleted.");
-        }
-    }
-
-    const recipeList = recipes.map((recipe) => {
-        return (
-            <Accordion.Item key={recipe.id} value={recipe.getTitle()}>
-                <Accordion.Control>{recipe.getTitle()}</Accordion.Control>
-                <Accordion.Panel>
-                    <h3>Ingredients:</h3>
-                    <Text className="textbox"      >
-                        {recipe.getIngredients()}
-                    </Text>
-
-                    <h3>Instructions:</h3>
-                    <Text className="textbox">
-                        {recipe.getInstructions()}
-                    </Text>
-
-                    <Space h="md" />
-
-                    <Group>
-                        <Button bg={"red"} onClick={() => handleDelete(recipe.id ?? "")}>
-                            Delete
-                        </Button>
-
-                        <Button bg={"blue"} onClick={() => {
-                            open();
-                            console.log("Editing recipeID: ", recipe.id ?? "");
-                            setRecipeToEdit(recipe);
-                        }}>
-                            Edit
-                        </Button>
-
-                        <Text>
-                            Last Modified: {recipe.getLastTimeModified()}
-                        </Text>
-                    </Group>
-                </Accordion.Panel>
-            </Accordion.Item>
-        );
-    }); */
-
+    const [selectedPost, setSelectedPost] = useState<Post | null>(null);
     const [posts, setPosts] = useState<Post[]>([]);
+    let reloadList = React.useCallback(async () => {
+        serverController.getPosts()
+            .then((data: any) => {
+                setPosts(data.map(
+                    (post: any) => {
+                        console.log(
+                            
+                        );
+                        return new Post(post.id, post.title, post.content, new Date(post.last_modified));
+                    }
+                ));
+            })
+            .catch((error: any) => console.log(error));
+    }, []);
     useEffect(() => {
-        // serverClient.getPosts()
-        //     .then((data: any) => {
-        //         setPosts(data.map((post: any) => Post.fromJSON(post)));
-        //     })
-        //     .catch((error: any) => console.log(error));
-        setPosts(temp_posts.map((post) => Post.fromJSON(post)));
-    });
+        reloadList();
+    }, [reloadList]);
 
     const postList = posts.map((post) => {
         return (
             <Grid.Col key={post.getId()} span={3}>
-                <Card 
-                    key={post.getId()} 
-                    shadow="sm" 
-                    padding="lg" 
-                    radius="md" 
-                    withBorder 
+                <Card
+                    key={post.getId()}
+                    shadow="sm"
+                    padding="lg"
+                    radius="md"
+                    withBorder
                     className="post-card"
-                    style={{ minHeight: rem(200) }}
+                    style={{ minHeight: rem(200), cursor: "pointer"}}
+                    onClick={() => {
+                        console.log("Editing postID: ", post.getId());
+                        setSelectedPost(post);
+                        open();
+                    }}
                 >
-
                     <Title order={3} lineClamp={1}>
                         {post.getTitle()}
                     </Title>
@@ -102,7 +59,6 @@ export function PostList() {
                             {post.getContent()}
                         </Text>
                     </Group>
-
                 </Card>
             </Grid.Col>
         );
@@ -111,11 +67,12 @@ export function PostList() {
     return (
         <>
             <Title order={3} td={"underline"}>
-                Recent Posts
+                Posts
             </Title>
 
-            <Modal opened={opened} onClose={close} title="Edit Post">
-                <EditPostForm 
+            <Modal opened={opened} onClose={close} centered withCloseButton={false}>
+                <ViewPost 
+                    selectedPost={selectedPost}
                     onClose={close}
                 />
             </Modal>
