@@ -1,12 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
 const mailService = require('nodemailer');
 const authCode = require('./utils/authcode');
 const db = require('./models/db');
 const cors = require('cors');
-const { configDotenv } = require('dotenv');
 const app = express();
+
+const PORT = process.env.PORT || 8080;
 
 // setup middleware 
 app.use(cors());
@@ -121,9 +121,12 @@ app.get("/auth_request", async (req, res) => {
     }
 });
 
-
-db.helpers.setup_tables().then(() => {
-    app.listen(3000, () => {
-        console.log("Auth Service is running on port 3000");
-    });
-})
+db.helpers.init()
+    .then(() => {
+        db.helpers.setup_tables()
+    })
+    .then(
+        app.listen(PORT, "0.0.0.0", () => {
+            console.log("Auth Service is running on port 8080");
+        })
+    );
