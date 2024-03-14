@@ -4,7 +4,7 @@ const serverUrl: string = `http://localhost:${portNumber}`;
 export const serverController: any = {
     
     getPosts: async function() {
-        return fetch(`{serverUrl}/api/posts`)
+        return fetch(`${serverUrl}/posts`)
             .then(response => response)
             .then(data => {
                 console.log(data);
@@ -14,7 +14,7 @@ export const serverController: any = {
     },
 
     savePost: async function(post: any) {
-        return fetch(`https://post-service-cqiosuewjq-uc.a.run.app/api/posts`, {
+        return fetch(`${}/posts`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -26,8 +26,10 @@ export const serverController: any = {
         .catch(error => console.log(error));
     },
 
+
+    // auth
     registerAuthRequest: async function(email: string) {
-        return fetch(`${serverUrl}/auth_request/`, {
+        return fetch(`${serverUrl}/auth_request`, {
             method: "POST",
             headers: {
             "Content-Type": "application/json"
@@ -51,4 +53,8 @@ export const serverController: any = {
         .then(response => response.status)
         .catch(error => console.log(error));
     }
+
+
+
+    
 }
