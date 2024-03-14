@@ -96,7 +96,7 @@ app.post('/verify', async (req, res) => {
         });
 });
 
-app.post('/create', async (req, res) => {
+app.post('/account', async (req, res) => {
     // NEXT TIME: do verify here first, then create
 
     fetch(`${process.env.USER_SERVICE_URL}/api/create`, {

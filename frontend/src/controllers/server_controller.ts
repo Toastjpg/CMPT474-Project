@@ -14,44 +14,54 @@ export const serverController: any = {
     },
 
     savePost: async function(post: any) {
-        return fetch(`${}/posts`, {
+        return fetch(`${serverUrl}/posts`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(post)
         })
-        .then(response => response.json())
-        .then(data => data)
-        .catch(error => console.log(error));
+            .then(response => response.json())
+            .then(data => data)
+            .catch(error => console.log(error));
     },
 
-
-    // auth
-    registerAuthRequest: async function(email: string) {
-        return fetch(`${serverUrl}/auth_request`, {
+    registerAuthRequest: async function (email: string) {
+        return fetch(`${serverUrl}/register_auth_request`, {
             method: "POST",
             headers: {
-            "Content-Type": "application/json"
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify({ 
-                email: email 
+            body: JSON.stringify({
+                email: email
             })
         })
-        .then(response => response.status)
-        .catch(error => console.log(error));
+            .then(response => response.status)
+            .catch(error => console.log(error));
     },
 
-    authRequest: async function(email: string, code: string) {
-        return fetch(`${serverUrl}/auth_request/`, {
+    authRequest: async function (email: string, code: string) {
+        return fetch(`${serverUrl}/auth_request`, {
             method: "GET",
             headers: {
-            "Content-Type": "application/json"
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({ email: email, code: code })
         })
-        .then(response => response.status)
-        .catch(error => console.log(error));
+            .then(response => response.status)
+            .catch(error => console.log(error));
+    },
+
+    createAccount: async function (email: string, username: string, password: string) {
+        return fetch(`${serverUrl}/account`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email: email, username: username, password: password })
+        })
+            .then(response => response.status)
+            .catch(error => console.log(error));
     }
 
 
