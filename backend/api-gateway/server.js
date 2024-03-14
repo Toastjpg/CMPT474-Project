@@ -121,7 +121,7 @@ app.post('/account', async (req, res) => {
 
 
 // connections to auth service
-app.post(`/register_auth_request`, async (req, res) => {
+app.post(`/register`, async (req, res) => {
 
     fetch(`${process.env.AUTH_SERVICE_URL}/api/register`, {
         method: 'POST',
@@ -136,8 +136,8 @@ app.post(`/register_auth_request`, async (req, res) => {
         });
 })
 
-app.post(`/auth_request`, async (req, res) => {
-    fetch(`${process.env.AUTH_SERVICE_URL}/api/validate`, {
+app.post(`/authorize`, async (req, res) => {
+    fetch(`${process.env.AUTH_SERVICE_URL}/api/authorize`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
