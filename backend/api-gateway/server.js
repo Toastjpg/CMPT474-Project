@@ -99,7 +99,7 @@ app.post('/verify', async (req, res) => {
 app.post('/create', async (req, res) => {
     // NEXT TIME: do verify here first, then create
 
-    fetch(`${process.env.AUTH_SERVICE_URL}/api/create`, {
+    fetch(`${process.env.USER_SERVICE_URL}/api/create`, {
         method: 'POST',
         header: {
             'Content-Type': 'application/json',
