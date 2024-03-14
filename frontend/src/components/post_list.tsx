@@ -72,13 +72,19 @@ export function PostList() {
 
     const [posts, setPosts] = useState<Post[]>([]);
     useEffect(() => {
-        // serverClient.getPosts()
-        //     .then((data: any) => {
-        //         setPosts(data.map((post: any) => Post.fromJSON(post)));
-        //     })
-        //     .catch((error: any) => console.log(error));
-        setPosts(temp_posts.map((post) => Post.fromJSON(post)));
-    });
+        serverController.getPosts()
+            .then((data: any) => {
+                setPosts(data.map(
+                    (post: any) => {
+                        console.log(
+                            
+                        );
+                        return new Post(post.id, post.title, post.content, new Date(post.last_modified));
+                    }
+                ));
+            })
+            .catch((error: any) => console.log(error));
+    }, []);
 
     const postList = posts.map((post) => {
         return (
