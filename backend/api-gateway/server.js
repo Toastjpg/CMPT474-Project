@@ -95,14 +95,20 @@ app.get('/accounts', async (req, res) => {
 });
 
 app.post('/verify', async (req, res) => {
-    fetch(`${process.env.USER_SERVICE_URL}/api/verify`)
+    fetch(`${process.env.USER_SERVICE_URL}/api/verify`, {
+        method: 'POST',
+        header: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(req.body),
+    })
         .then(response => response.json())
         .then(data => {
             res.send(data);
         });
 });
 
-app.post('/account', async (req, res) => {
+app.post('/create', async (req, res) => {
     // NEXT TIME: do verify here first, then create
 
     fetch(`${process.env.USER_SERVICE_URL}/api/create`, {

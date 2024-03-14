@@ -46,7 +46,7 @@ router.post("/verify", async (req, res) => {
     try {
         const result = await db.helpers.verify_unique_username(values)
         console.log("QUERY RESULT ", result)
-        res.status(200).json(result)
+        res.status(200).json({ num_users: result })
     }
     catch (e) {
         res.status(500).json(e)

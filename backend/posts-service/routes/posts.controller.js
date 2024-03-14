@@ -59,7 +59,7 @@ router.delete("/posts/:id", async (req, res) => {
             res.status(404).json({ message: "Invalid post to delete" });
             return;
         }
-        res.json(result);
+        res.json({ num_deleted: result });
     } catch (e) {
         res.status(500).json(e);
     }
@@ -85,7 +85,7 @@ router.put("/posts/:id", async (req, res) => {
             return;
         }
 
-        res.status(201).json(result);
+        res.status(201).json({ num_changed: result });
     } catch (e) {
         console.log(e);
         res.status(500).json(e);
