@@ -19,18 +19,26 @@ app.use(express.urlencoded({ extended: false }));
 
 
 // connections to post service
-app.get('/get-post', async (req, res) => {
+app.get('/posts', async (req, res) => {
     fetch(`${process.env.POST_SERVICE_URL}/api/posts`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                return data;
-            })
-            .then(data => res.send(data))
-            .catch(error => console.log(error));
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            return data;
+        })
+        .then(data => res.send(data))
+        .catch(error => console.log(error));
 });
 
-app.post('/create-post', (req, res) => {
+app.get('/posts/:id', async (req, res) => {
+    fetch(`${process.env.POST_SERVICE_URL}/api/posts/${req.params.id}`)
+        .then(response => response.json())
+        .then(data => {
+            res.send(data);
+        });
+});
+
+app.post('/posts', (req, res) => {
     fetch(`${process.env.POST_SERVICE_URL}/api/posts`, {
         method: 'POST',
         headers: {
@@ -44,11 +52,44 @@ app.post('/create-post', (req, res) => {
         });
 });
 
+app.delete('/posts/:id', (req, res) => {
+    fetch(`${process.env.POST_SERVICE_URL}/api/posts/${req.params.id}`, {
+        method: 'DELETE',
+    })
+        .then(response => response.json())
+        .then(data => {
+            res.send(data);
+        });
+});
+
+app.put('/posts/:id', (req, res) => {
+    fetch(`${process.env.POST_SERVICE_URL}/api/posts/${req.params.id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(req.body),
+    })
+        .then(response => response.json())
+        .then(data => {
+            res.send(data);
+        });
+});
+
+
 
 
 // connections to user-account service
+app.get('/accounts', async (req, res) => {
+    fetch(`${process.env.USER_SERVICE_URL}/api/accounts`)
+        .then(response => response.json())
+        .then(data => {
+            res.send(data);
+        });
+});
+
 app.post('/verify', async (req, res) => {
-    fetch('http://localhost:8080/verify')
+    fetch(`${process.env.USER_SERVICE_URL}/api/verify`)
         .then(response => response.json())
         .then(data => {
             res.send(data);
@@ -58,7 +99,7 @@ app.post('/verify', async (req, res) => {
 app.post('/create', async (req, res) => {
     // NEXT TIME: do verify here first, then create
 
-    fetch('http://localhost:8080/create', {
+    fetch(`${process.env.AUTH_SERVICE_URL}/api/create`, {
         method: 'POST',
         header: {
             'Content-Type': 'application/json',
@@ -73,9 +114,30 @@ app.post('/create', async (req, res) => {
 
 
 
-// conentions to auth service
+// connections to auth service
+app.post(`/register_auth_request`, async (req, res) => {
 
+    fetch(`${process.env.AUTH_SERVICE_URL}/register_auth_request`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(req.body),
+    })
+        .then(response => response.json())
+        .then(data => {
+            res.send(data);
+        });
+})
+
+app.get(`/auth_request`, async (req, res) => {
+    fetch(`${process.env.AUTH_SERVICE_URL}/auth_request`)
+        .then(response => response.json())
+        .then(data => {
+            res.send(data);
+        });
+})
 
 app.listen(PORT, () => {
-  console.log(`API Gateway is running on port ${PORT}`);
+    console.log(`API Gateway is running on port ${PORT}`);
 });
