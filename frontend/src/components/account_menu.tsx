@@ -12,10 +12,12 @@ export function AccountMenu() {
                 </Menu.Target>
 
                 <Menu.Dropdown>
+                    {/* TODO:  */}
                     <Menu.Item>Profile</Menu.Item>
-
+                    {/* NOTE:  */}
                     <Menu.Item>Settings</Menu.Item>
 
+                    {/* TODO: link with logout endpoint, ends session state */}
                     <Menu.Item onClick={() => {navigate("/loginpage")}}>Log out</Menu.Item>
                 </Menu.Dropdown>
             </Menu>

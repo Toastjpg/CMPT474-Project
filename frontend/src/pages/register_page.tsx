@@ -1,7 +1,7 @@
-import { Center, Box, Flex, Title, Text, TextInput, Button, Anchor} from "@mantine/core"
+import { Center, Box, Flex, Title, Text, TextInput, Button, Anchor } from "@mantine/core"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { serverController } from "../controllers/server_controller";
 
 export function RegisterPage() {
     const [email, setEmail] = useState('');
@@ -10,9 +10,22 @@ export function RegisterPage() {
     const [confirmPassword, setConfirmPassword] = useState('');
     let navigate = useNavigate();
 
-    function handleSignIn() {
+    async function handleSignUp() {
         console.log(`Registering with username: ${username} and password: ${password}`);
-        navigate("/homepage");
+
+        await serverController.createAccount(email, username, password)
+            .then((response: any) => {
+                if (response.status === 200) {
+                    console.log("Account created");
+                    navigate("/homepage");
+                }
+                else {
+                    alert("Account creation failed");
+                    console.log("Account creation failed");
+                    // TODO: handle error in form
+                }
+            })
+            .catch((error: any) => console.log(error));
     }
 
     return (
@@ -24,23 +37,23 @@ export function RegisterPage() {
                         <Title order={1} >Sign Up</Title>
                     </Center>
 
-                    <TextInput 
+                    <TextInput
                         label="SFU Email"
                         placeholder="example@sfu.ca"
                         value={email}
                         onChange={(event) => setEmail(event.currentTarget.value)}
                     />
-                    
-                    <TextInput 
+
+                    <TextInput
                         label="Username"
-                        placeholder="edampleusername" 
+                        placeholder="edampleusername"
                         value={username}
                         onChange={(event) => setUsername(event.currentTarget.value)}
                     />
 
-                    <TextInput 
+                    <TextInput
                         label="Password"
-                        placeholder="eXaMpLePaSsWoRd123!" 
+                        placeholder="eXaMpLePaSsWoRd123!"
                         value={password}
                         onChange={(event) => setPassword(event.currentTarget.value)}
                     />
@@ -59,7 +72,7 @@ export function RegisterPage() {
                         </Flex>
                     </Text>
 
-                    <Button color="gray" onClick={handleSignIn}>
+                    <Button color="gray" onClick={handleSignUp}>
                         Register your account
                     </Button>
                 </Flex>
