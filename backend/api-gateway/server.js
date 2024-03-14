@@ -5,6 +5,14 @@ const PORT = process.env.PORT || 3000;
 const dotenv = require('dotenv');
 dotenv.config();
 
+const path = require('path');
+
+app.use("/", express.static(path.join(__dirname, "/build")));
+// Handle all other routes
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, "/build/index.html"));
+});
+
 // CORS policy
 const cors = require('cors');
 const corsOptions = {
@@ -20,6 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // connections to post service
 app.get('/posts', async (req, res) => {
+    console.log("GETTING POSTS");
     fetch(`${process.env.POST_SERVICE_URL}/api/posts`)
         .then(response => response.json())
         .then(data => {
@@ -75,9 +84,6 @@ app.put('/posts/:id', (req, res) => {
             res.send(data);
         });
 });
-
-
-
 
 // connections to user-account service
 app.get('/accounts', async (req, res) => {
