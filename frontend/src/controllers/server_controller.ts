@@ -1,11 +1,9 @@
-const postURL: string = `https://post-service-container-2nmgx5zaoa-uw.a.run.app/api`;
-const authURL: string = `https://auth-service-container-2nmgx5zaoa-uw.a.run.app`;
-const userURL: string = `https://user-service-container-2nmgx5zaoa-uw.a.run.app/api`;
+const gatewayURL = ``;
 
 export const serverController: any = {
     
     getPosts: async function() {
-        return fetch(`${postURL}/posts`)
+        return fetch(`${gatewayURL}/posts`)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
@@ -15,7 +13,7 @@ export const serverController: any = {
     },
 
     savePost: async function(post: any) {
-        return fetch(`${postURL}/posts`, {
+        return fetch(`${gatewayURL}/posts`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -28,7 +26,7 @@ export const serverController: any = {
     },
 
     registerAuthRequest: async function (email: string) {
-        return fetch(`${authURL}/register_auth_request`, {
+        return fetch(`${gatewayURL}/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -42,7 +40,7 @@ export const serverController: any = {
     },
 
     authRequest: async function (email: string, code: string) {
-        return fetch(`${authURL}/auth_request`, {
+        return fetch(`${gatewayURL}/authorize`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -54,7 +52,7 @@ export const serverController: any = {
     },
 
     createAccount: async function (email: string, username: string, password: string) {
-        return fetch(`${userURL}/account`, {
+        return fetch(`${gatewayURL}/create`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
