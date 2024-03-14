@@ -130,8 +130,14 @@ app.post(`/register_auth_request`, async (req, res) => {
         });
 })
 
-app.get(`/auth_request`, async (req, res) => {
-    fetch(`${process.env.AUTH_SERVICE_URL}/auth_request`)
+app.post(`/auth_request`, async (req, res) => {
+    fetch(`${process.env.AUTH_SERVICE_URL}/auth_request`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(req.body),
+    })
         .then(response => response.json())
         .then(data => {
             res.send(data);

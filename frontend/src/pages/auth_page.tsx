@@ -20,7 +20,7 @@ export function AuthPage() {
                 responseCode = status;
 
                 if (responseCode === 200) {
-                    navigate("/home");
+                    navigate("/homepage");
                 }
                 else {
                     console.log("Invalid code");
