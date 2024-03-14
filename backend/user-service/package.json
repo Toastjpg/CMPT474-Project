@@ -1,0 +1,19 @@
+{
+    "name": "sfu-oclp-user-service",
+    "description": "User Service",
+    "version": "1.0.0",
+    "main": "server.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "author": "Risa.K",
+    "license": "ISC",
+    "dependencies": {
+        "@google-cloud/cloud-sql-connector": "^1.2.4",
+        "body-parser": "^1.20.2",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.18.3",
+        "pg": "^8.11.3"
+    }
+}
