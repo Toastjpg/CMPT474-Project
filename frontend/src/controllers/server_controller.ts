@@ -42,7 +42,7 @@ export const serverController: any = {
 
     authRequest: async function (email: string, code: string) {
         return fetch(`${serverUrl}/auth_request`, {
-            method: "GET",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
