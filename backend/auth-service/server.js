@@ -98,7 +98,7 @@ app.post("/api/register", async (req, res) => {
     }
 });
 
-app.post("/api/validate", async (req, res) => {
+app.post("/api/authorize", async (req, res) => {
     // get auth code, username, email from request
     const authCode = req.body.authCode;
     const email = req.body.email;
