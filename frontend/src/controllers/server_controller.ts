@@ -1,5 +1,3 @@
-import { Post } from "../models/post";
-
 const portNumber: number = 3000;
 const serverUrl: string = `http://localhost:${portNumber}`;
 
