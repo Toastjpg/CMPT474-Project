@@ -11,11 +11,9 @@ export function LoginPage() {
     async function handleSignIn() {
         console.log(`Signing in with username: ${email}`);
 
-        let responseCode: number;
         await serverController.registerAuthRequest(email)
             .then((status: any) => {
                 console.log("Request status: ", status);
-                responseCode = status;
             });
         
         navigate("/authpage", { state: { data: email } });

@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 
 import { useDisclosure } from "@mantine/hooks";
-import { Text, Title, Space, Group, Modal, Card, Grid, rem, Button } from "@mantine/core"
+import { Text, Title, Space, Group, Modal, Card, Grid, rem } from "@mantine/core"
 
 import { serverController } from "../controllers/server_controller"
 import { Post } from "../models/post";
