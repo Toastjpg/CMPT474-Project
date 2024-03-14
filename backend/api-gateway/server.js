@@ -1,17 +1,17 @@
 const express = require('express');
 const app = express();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 const dotenv = require('dotenv');
 dotenv.config();
 
-const path = require('path');
+// const path = require('path');
 
-app.use("/", express.static(path.join(__dirname, "/build")));
-// Handle all other routes
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, "/build/index.html"));
-});
+// app.use("/", express.static(path.join(__dirname, "/build")));
+// // Handle all other routes
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, "/build/index.html"));
+// });
 
 // CORS policy
 const cors = require('cors');
@@ -123,7 +123,7 @@ app.post('/account', async (req, res) => {
 // connections to auth service
 app.post(`/register_auth_request`, async (req, res) => {
 
-    fetch(`${process.env.AUTH_SERVICE_URL}/register_auth_request`, {
+    fetch(`${process.env.AUTH_SERVICE_URL}/api/register`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -137,7 +137,7 @@ app.post(`/register_auth_request`, async (req, res) => {
 })
 
 app.post(`/auth_request`, async (req, res) => {
-    fetch(`${process.env.AUTH_SERVICE_URL}/auth_request`, {
+    fetch(`${process.env.AUTH_SERVICE_URL}/api/validate`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
