@@ -1,19 +1,31 @@
 const express = require('express');
-//const bodyParser = require('body-parser');
-
 const app = express();
-//app.use(bodyParser.json());
-app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
+app.use(express.json());
+// CORS policy
+const cors = require('cors');
+const corsOptions = {
+    origin: "*",
+    credentials: true,
+    optionSuccessStatus: 200,
+}
+
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 // connections to post service
 app.get('/get-post', async (req, res) => {
-    fetch('http://localhost:8080/posts')
-        .then(response => response.json())
-        .then(data => {
-            res.send(data);
-        });
+    fetch("https://post-service-cqiosuewjq-uc.a.run.app/api/posts")
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                return data;
+            })
+            .then(data => res.send(data))
+            .catch(error => console.log(error));
 });
 
 app.post('/create-post', (req, res) => {
@@ -56,6 +68,3 @@ app.post('/create', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`API Gateway is running on port ${PORT}`);
 });
-
-
-const postRouter = require("../backend/post-service/routes/posts.controller.js")
