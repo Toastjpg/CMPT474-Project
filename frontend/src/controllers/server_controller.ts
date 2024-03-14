@@ -1,12 +1,10 @@
-import { Post } from "../models/post";
-
 const portNumber: number = 3000;
 const serverUrl: string = `http://localhost:${portNumber}`;
 
 export const serverController: any = {
-
-    getPosts: async function () {
-        return fetch("https://post-service-cqiosuewjq-uc.a.run.app/api/posts")
+    
+    getPosts: async function() {
+        return fetch(`${serverUrl}/posts`)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
@@ -15,8 +13,8 @@ export const serverController: any = {
             .catch(error => console.log(error));
     },
 
-    savePost: async function (post: any) {
-        return fetch(`https://post-service-cqiosuewjq-uc.a.run.app/api/posts`, {
+    savePost: async function(post: any) {
+        return fetch(`${serverUrl}/posts`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -29,7 +27,7 @@ export const serverController: any = {
     },
 
     registerAuthRequest: async function (email: string) {
-        return fetch(`${serverUrl}/auth_request/`, {
+        return fetch(`${serverUrl}/register_auth_request`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -43,8 +41,8 @@ export const serverController: any = {
     },
 
     authRequest: async function (email: string, code: string) {
-        return fetch(`${serverUrl}/auth_request/`, {
-            method: "GET",
+        return fetch(`${serverUrl}/auth_request`, {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -55,7 +53,7 @@ export const serverController: any = {
     },
 
     createAccount: async function (email: string, username: string, password: string) {
-        return fetch(`${serverUrl}/create_account/`, {
+        return fetch(`${serverUrl}/account`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -65,4 +63,8 @@ export const serverController: any = {
             .then(response => response.status)
             .catch(error => console.log(error));
     }
+
+
+
+    
 }
