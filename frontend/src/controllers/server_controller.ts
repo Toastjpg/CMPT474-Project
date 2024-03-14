@@ -5,7 +5,7 @@ export const serverController: any = {
     
     getPosts: async function() {
         return fetch(`${serverUrl}/posts`)
-            .then(response => response)
+            .then(response => response.json())
             .then(data => {
                 console.log(data);
                 return data;
