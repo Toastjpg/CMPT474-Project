@@ -36,7 +36,11 @@ app.get('/posts', async (req, res) => {
             return data;
         })
         .then(data => res.send(data))
-        .catch(error => console.log(error));
+        .catch(error => {
+            console.log("gateway-api: get request to post-service/posts")
+            console.log(error)
+            res.status(500).send("gateway-api: get request to post-service/posts")
+        });
 });
 
 app.get('/posts/:id', async (req, res) => {
@@ -44,6 +48,11 @@ app.get('/posts/:id', async (req, res) => {
         .then(response => response.json())
         .then(data => {
             res.send(data);
+        })
+        .catch(error => {
+            console.log("gateway-api: get request to post-service/posts/:id")
+            console.log(error)
+            res.status(500).send("gateway-api: get request to post-service/posts/:id")
         });
 });
 
@@ -58,6 +67,11 @@ app.post('/posts', (req, res) => {
         .then(response => response.json())
         .then(data => {
             res.send(data);
+        })
+        .catch(error => {
+            console.log("gateway-api: post request to post-service/posts")
+            console.log(error)
+            res.status(500).send("gateway-api: post request to post-service/posts")
         });
 });
 
@@ -68,7 +82,12 @@ app.delete('/posts/:id', (req, res) => {
         .then(response => response.json())
         .then(data => {
             res.send(data);
-        });
+        })
+        .catch(error => {
+            console.log("gateway-api: delete request to posts-service//posts/:id")
+            console.log(error)
+            res.status(500).send("gateway-api: delete request to posts-service//posts/:id")
+        })
 });
 
 app.put('/posts/:id', (req, res) => {
@@ -82,8 +101,16 @@ app.put('/posts/:id', (req, res) => {
         .then(response => response.json())
         .then(data => {
             res.send(data);
-        });
+        })
+        .catch(error => {
+            console.log("gateway-api: put request to posts-service//posts/:id")
+            console.log(error)
+            res.status(500).send("gateway-api: put request to posts-service//posts/:id")
+        })
 });
+
+
+
 
 // connections to user-account service
 app.get('/accounts', async (req, res) => {
@@ -91,7 +118,12 @@ app.get('/accounts', async (req, res) => {
         .then(response => response.json())
         .then(data => {
             res.send(data);
-        });
+        })
+        .catch(error => {
+            console.log("gateway-api: get request to user-service/accounts")
+            console.log(error)
+            res.status(500).send("gateway-api: get request to user-service/accounts")
+        })
 });
 
 app.post('/verify', async (req, res) => {
@@ -105,7 +137,12 @@ app.post('/verify', async (req, res) => {
         .then(response => response.json())
         .then(data => {
             res.send(data);
-        });
+        })
+        .catch(error => {
+            console.log("gateway-api: post request to user-service/verify")
+            console.log(error)
+            res.status(500).send("gateway-api: post request to user-service/verify")
+        })
 });
 
 app.post('/create', async (req, res) => {
@@ -121,7 +158,12 @@ app.post('/create', async (req, res) => {
         .then(response => response.json())
         .then(data => {
             res.send(data);
-        });
+        })
+        .catch(error => {
+            console.log("gateway-api: post request to user-service/create")
+            console.log(error)
+            res.status(500).send("gateway-api: post request to user-service/create")
+        })
 });
 
 
@@ -139,7 +181,12 @@ app.post('/register', async (req, res) => {
         .then(response => response.json())
         .then(data => {
             res.send(data);
-        });
+        })
+        .catch(error => {
+            console.log("gateway-api: post request to auth-service/register")
+            console.log(error)
+            res.status(500).send("gateway-api: post request to auth-service/register")
+        })
 })
 
 app.post('/authorize', async (req, res) => {
@@ -153,7 +200,12 @@ app.post('/authorize', async (req, res) => {
         .then(response => response.json())
         .then(data => {
             res.send(data);
-        });
+        })
+        .catch(error => {
+            console.log("gateway-api: post request to auth-service/authorize")
+            console.log(error)
+            res.status(500).send("gateway-api: post request to auth-service/authorize")
+        })
 })
 
 // For dev purposes to see Auth Code table
@@ -167,7 +219,12 @@ app.get('/authcodes', async (req, res) => {
         .then(response => response.json())
         .then(data => {
             res.send(data);
-        });
+        })
+        .catch(error => {
+            console.log("gateway-api: get request to auth-service/authcodes")
+            console.log(error)
+            res.status(500).send("gateway-api: get request to auth-service/authcodes")
+        })
 })
 
 app.delete('/authcodes', async (req, res) => {
@@ -181,6 +238,11 @@ app.delete('/authcodes', async (req, res) => {
         .then(response => response.json())
         .then(data => {
             res.send(data);
+        })
+        .catch(error => {
+            console.log("gateway-api: delete request to auth-service/authcodes")
+            console.log(error)
+            res.status(500).send("gateway-api: delete request to auth-service/authcodes")
         })
 });
 
