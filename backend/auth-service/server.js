@@ -5,12 +5,38 @@ const authCode = require("./utils/authcode");
 const db = require("./models/db");
 const cors = require("cors");
 const app = express();
+c;
 
 const PORT = process.env.PORT || 8080;
 
 // setup middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.get("/api/authcodes", async (req, res) => {
+    try {
+        const allCodes = await db.helpers.get_all_auth_codes();
+        console.log("Auth Codes in DB: ", allCodes);
+        res.status(200).json(allCodes);
+    } catch (e) {
+        console.log(e);
+        res.status(500).json(e);
+    }
+});
+
+app.delete("/api/authcodes", async (req, res) => {
+    const email = req.body.email;
+
+    try {
+        const deleted_code = await db.helpers.delete_auth_code(email);
+        console.log(`Deleted ${deleted_code} rows`);
+        res.status(200).json({ num_deleted: deleted_code });
+    } catch (e) {
+        console.log(e);
+        res.status(500).json(e);
+    }
+});
 
 // setup endpoints for authentication
 app.post("/api/register", async (req, res) => {
@@ -23,28 +49,9 @@ app.post("/api/register", async (req, res) => {
 
     // send auth code to email
     try {
-        // 1. check if email has been registered by another user
-        // const promise1 = new Promise((resolve, reject) => {
-        //     const queryEmail = 'SELECT COUNT(*) AS count FROM Users WHERE email=?'
+        // NOTE: at this point, the email should be validated by user-service
 
-        //     db.query(queryEmail, [email], (err, data) => {
-        //         if (err) return reject(err)
-        //         // console.log(data)
-        //         // console.log('Users with same email: ' + data[0].count)
-        //         if (data[0].count > 0) {
-        //             return resolve(false)
-        //         } else {
-        //             return resolve(true)
-        //         }
-        //     })
-        // })
-
-        // const uniqueEmail = await promise1
-        // if (!uniqueEmail) {
-        //     return res.status(400).json(`Account registered with <${email}> already exists! Please log in.`)
-        // }
-
-        // 2. Record email, code
+        // 1. Record email, code
         // NOTE: returns the same code if requested again
         const promise2 = new Promise(async (resolve, reject) => {
             const rows = await db.helpers.create_auth_entry(email, code);
@@ -105,18 +112,20 @@ app.post("/api/authorize", async (req, res) => {
 
     // validate against in db
     try {
-        const promise2 = new Promise(async (resolve, reject) => {
-            const rows = await db.helpers.get_auth_code(email);
-            console.log(rows);
-            if (rows.code != authCode || rows === undefined) {
+        const authorizeAuthCodePromise = new Promise(async (resolve, reject) => {
+            const obj = await db.helpers.get_auth_code(email);
+            console.log(obj);
+            if (obj === undefined || obj.code !== authCode) {
                 reject();
             }
-            resolve(rows);
+            resolve(obj);
         });
 
-        await promise2
-            .then((rows) => {
-                db.helpers.delete_auth_code(email);
+        await authorizeAuthCodePromise
+            .then(async (rows) => {
+                const deleteResult = await db.helpers.delete_auth_code(email);
+
+                console.log("Correct code: Deleted " + deleteResult + " auth code from table");
                 return res.status(200).json("Authentication successful");
             })
             .catch((e) => {

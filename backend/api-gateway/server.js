@@ -127,7 +127,7 @@ app.post('/create', async (req, res) => {
 
 
 // connections to auth service
-app.post(`/register`, async (req, res) => {
+app.post('/register', async (req, res) => {
 
     fetch(`${process.env.AUTH_SERVICE_URL}/api/register`, {
         method: 'POST',
@@ -142,7 +142,7 @@ app.post(`/register`, async (req, res) => {
         });
 })
 
-app.post(`/authorize`, async (req, res) => {
+app.post('/authorize', async (req, res) => {
     fetch(`${process.env.AUTH_SERVICE_URL}/api/authorize`, {
         method: "POST",
         headers: {
@@ -155,6 +155,34 @@ app.post(`/authorize`, async (req, res) => {
             res.send(data);
         });
 })
+
+// For dev purposes to see Auth Code table
+app.get('/authcodes', async (req, res) => {
+    fetch(`${process.env.AUTH_SERVICE_URL}/api/authcodes`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            res.send(data);
+        });
+})
+
+app.delete('/authcodes', async (req, res) => {
+    fetch(`${process.env.AUTH_SERVICE_URL}/api/authcodes`, {
+        method: 'DELETE',
+        header: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(req.body),
+    })
+        .then(response => response.json())
+        .then(data => {
+            res.send(data);
+        })
+});
 
 app.listen(PORT, () => {
     console.log(`API Gateway is running on port ${PORT}`);
