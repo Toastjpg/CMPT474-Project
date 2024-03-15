@@ -28,6 +28,7 @@ app.delete("/api/authcodes", async (req, res) => {
     const email = req.body.email;
 
     try {
+        console.log('Email passed: ', email)
         const deleted_code = await db.helpers.delete_auth_code(email);
         console.log(`Deleted ${deleted_code} rows`);
         res.status(200).json({ num_deleted: deleted_code });

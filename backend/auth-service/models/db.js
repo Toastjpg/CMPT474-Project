@@ -29,8 +29,9 @@ const helpers = {
     create_auth_entry: async (email, code) => {
         // Just in case user tries to get another auth code
         // Make sure to not leave stale codes in database
-        const resDelete = await delete_auth_code(email);
-        console.log(`Deleted ${resDelete} rows from auth code tables`);
+        const deleteQ = "DELETE FROM AuthCodes WHERE email = $1";
+        const deleteRes = await pool.query(deleteQ, [email]);
+        console.log(`Deleted ${deleteRes.rowCount} rows from auth code tables`);
 
         const q = "INSERT INTO AuthCodes (email, code) VALUES ($1, $2)";
         const res = await pool.query(q, [email, code]);
@@ -53,6 +54,7 @@ const helpers = {
     delete_auth_code: async (email) => {
         const q = "DELETE FROM AuthCodes WHERE email = $1";
         const res = await pool.query(q, [email]);
+        console.log(res)
         return res.rowCount;
     },
 };
