@@ -5,7 +5,6 @@ const authCode = require("./utils/authcode");
 const db = require("./models/db");
 const cors = require("cors");
 const app = express();
-c;
 
 const PORT = process.env.PORT || 8080;
 
