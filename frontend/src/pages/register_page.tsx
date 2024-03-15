@@ -13,7 +13,7 @@ export function RegisterPage() {
     async function handleSignUp() {
         console.log(`Registering with username: ${username} and password: ${password}`);
 
-        await serverController.createAccount(email, username, password)
+        serverController.createAccount(email, username, password)
             .then((response: any) => {
                 if (response.status === 200) {
                     console.log("Account created");
@@ -25,7 +25,10 @@ export function RegisterPage() {
                     // TODO: handle error in form
                 }
             })
-            .catch((error: any) => console.log(error));
+            .catch((error: any) => { 
+                console.log(error) 
+                alert("Account creation request failed due to internal server error.");
+            });
     }
 
     return (

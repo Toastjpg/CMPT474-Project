@@ -29,6 +29,7 @@ export function AuthPage() {
             })
             .catch((error: any) => {
                 console.log("Error: ", error);
+                alert("Authorization request failed due to internal server error.");
             })
     }
 
