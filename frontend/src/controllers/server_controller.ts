@@ -1,15 +1,15 @@
-const gatewayURL = ``;
+const gatewayURL = `https://cmpt474-414403.ue.r.appspot.com/`;
 
 export const serverController: any = {
     
     getPosts: async function() {
-        return fetch(`${gatewayURL}/posts`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                return data;
-            })
-            .catch(error => console.log(error));
+        try {
+            const response = await fetch(`${gatewayURL}/posts`)
+            const data = response.json()
+            return data
+        }catch(error) {
+            throw error
+        }
     },
 
     savePost: async function(post: any) {

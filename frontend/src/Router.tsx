@@ -1,19 +1,10 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { HomePage } from './pages/home_page';
-import { LoginPage } from './pages/login_page';
 import { RegisterPage } from './pages/register_page';
 import { AuthPage } from './pages/auth_page';
 
 const router = createBrowserRouter([
-    {
-        path: '/loginpage',
-        element: <LoginPage />,
-    },
-    {
-        path: '/registerpage',
-        element: <RegisterPage />,
-    },
     {
         path: '/homepage',
         element: <HomePage />,
@@ -24,8 +15,13 @@ const router = createBrowserRouter([
     },
     {
         path: '/',
-        element: <LoginPage />,
+        element: <RegisterPage />,
+    },
+    {
+        path: '*',
+        element: <RegisterPage />, // redirect to root/ instead of displaying on whildcard
     }
+
 ]);
 
 export function Router() {

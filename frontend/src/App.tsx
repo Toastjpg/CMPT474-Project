@@ -1,6 +1,7 @@
 import { Router } from './Router';
 
 import '@mantine/core/styles.css';
+import './App.css';
 
 import {
     MantineProvider,
@@ -8,7 +9,7 @@ import {
 
 export default function App() {
     return (
-        <MantineProvider defaultColorScheme='dark'>
+        <MantineProvider>
             <>
                 <Router />
             </>
