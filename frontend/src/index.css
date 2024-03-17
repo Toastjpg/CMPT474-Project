@@ -48,12 +48,33 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
-p.designHeading {
+/* Reused components */
+.designHeading {
   font-size: 24px;
   font-weight: bold;
   margin: 0;
   line-height: 24px;
   color: var(--accent-color);
+}
+div.navigation {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+div.navigation span {
+  font-size: 40px;
+  opacity: .3;
+}
+div.navigation span:hover {
+  cursor: pointer;
+  color: var(--accent-color);
+  opacity: .7;
+}
+div.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 24px;
 }
 
 /* Signup Page */
@@ -88,20 +109,7 @@ p.designHeading {
   background-size: cover;
   background-position: center;
 }
-#signupPage div.navigation {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-#signupPage div.navigation span {
-  font-size: 40px;
-  opacity: .3;
-}
-#signupPage div.navigation span:hover {
-  cursor: pointer;
-  color: var(--accent-color);
-  opacity: .7;
-}
+
 #signupPage button.spin span {
   animation: spin 2.5s infinite linear;
 }
@@ -112,4 +120,20 @@ p.designHeading {
   #signupPage .cover {
     min-height: 35vh;
   }
+}
+
+#richTextEditor {
+  padding:  40px 16px;
+  height: max-content;
+  width: 100%;
+  max-width: 820px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#richTextEditor h1 {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+#richTextEditor .navigation {
+  margin-bottom: 12px;
 }
