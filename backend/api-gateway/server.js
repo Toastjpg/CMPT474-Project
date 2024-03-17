@@ -1,28 +1,22 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-
-const PORT = process.env.PORT || 8080;
 const dotenv = require('dotenv');
 dotenv.config();
 
 // const path = require('path');
-
 // app.use("/", express.static(path.join(__dirname, "/build")));
 // // Handle all other routes
 // app.get('*', (req, res) => {
 //     res.sendFile(path.join(__dirname, "/build/index.html"));
 // });
 
-// CORS policy
 
-// const corsOptions = {
-//     origin: process.env.FRONTEND_URL,
-//     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-//     credentials: true,
-//     optionSuccessStatus: 200,
-//     allowedHeaders: ['Content-Type', 'Authorization'],
-// }
+
+
+/**
+ * Middleware Configurations
+ */
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -37,7 +31,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
-// connections to post service
+
+
+/**
+ * Post Service Endpoints
+ */
 app.get('/posts', async (req, res) => {
     print_debug("app.get('/posts'")
 
@@ -53,8 +51,7 @@ app.get('/posts', async (req, res) => {
             console.log(error)
             res.status(500).send("gateway-api: get request to post-service/posts")
         });
-});
-
+})
 app.get('/posts/:id', async (req, res) => {
     fetch(`${process.env.POST_SERVICE_URL}/api/posts/${req.params.id}`)
         .then(response => response.json())
@@ -66,8 +63,7 @@ app.get('/posts/:id', async (req, res) => {
             console.log(error)
             res.status(500).send("gateway-api: get request to post-service/posts/:id")
         });
-});
-
+})
 app.post('/posts', (req, res) => {
     fetch(`${process.env.POST_SERVICE_URL}/api/posts`, {
         method: 'POST',
@@ -85,8 +81,7 @@ app.post('/posts', (req, res) => {
             console.log(error)
             res.status(500).send("gateway-api: post request to post-service/posts")
         });
-});
-
+})
 app.delete('/posts/:id', (req, res) => {
     fetch(`${process.env.POST_SERVICE_URL}/api/posts/${req.params.id}`, {
         method: 'DELETE',
@@ -100,8 +95,7 @@ app.delete('/posts/:id', (req, res) => {
             console.log(error)
             res.status(500).send("gateway-api: delete request to posts-service//posts/:id")
         })
-});
-
+})
 app.put('/posts/:id', (req, res) => {
     fetch(`${process.env.POST_SERVICE_URL}/api/posts/${req.params.id}`, {
         method: 'PUT',
@@ -119,12 +113,15 @@ app.put('/posts/:id', (req, res) => {
             console.log(error)
             res.status(500).send("gateway-api: put request to posts-service//posts/:id")
         })
-});
+})
 
 
 
 
-// connections to user-account service
+
+/**
+ * User Account Service Endpoints
+ */
 app.get('/accounts', async (req, res) => {
     try {
         const response = await fetch(`${process.env.USER_SERVICE_URL}/api/accounts`, {
@@ -173,7 +170,6 @@ app.get('/account/check-unique/email/:email', async (req, res) => {
         return res.status(500).send("Something went wrong, plase try again later.")
     }
 })
-
 app.post('/account', async (req, res) => {
     try {
         print_debug(`email=${req.body.username}`)
@@ -195,11 +191,14 @@ app.post('/account', async (req, res) => {
         print_error(error)
         return res.status(500).send("Something went wrong, plase try again later.")
     }
-});
+})
 
 
 
-// connections to auth service
+
+/**
+ * Authentication Service Endpoints
+ */
 app.post('/register', async (req, res) => {
     try {
         const response = await fetch(`${process.env.AUTH_SERVICE_URL}/api/register`, {
@@ -219,7 +218,6 @@ app.post('/register', async (req, res) => {
         return res.status(500).send("Something went wrong, plase try again later.")
     }
 })
-
 app.post('/authorize', async (req, res) => {
     try {
         const response = await fetch(`${process.env.AUTH_SERVICE_URL}/api/authorize`, {
@@ -239,7 +237,6 @@ app.post('/authorize', async (req, res) => {
         return res.status(500).send("Something went wrong, plase try again later.")
     }
 })
-
 // For dev purposes to see Auth Code table
 app.get('/authcodes', async (req, res) => {
     try {
@@ -256,7 +253,6 @@ app.get('/authcodes', async (req, res) => {
         return res.status(500).send("Something went wrong, plase try again later.")
     }
 })
-
 app.delete('/authcodes', async (req, res) => {
     try {
         const response = await fetch(`${process.env.AUTH_SERVICE_URL}/api/authcodes`, {
@@ -275,11 +271,18 @@ app.delete('/authcodes', async (req, res) => {
         print_error(error)
         return res.status(500).send("Something went wrong, plase try again later.")
     }
-});
+})
 
+
+
+
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`API Gateway is running on port ${PORT}`);
-});
+})
+
+
+
 
 // Helper functions
 function print_debug(content) {

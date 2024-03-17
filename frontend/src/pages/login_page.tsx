@@ -2,29 +2,25 @@ import { Title, TextInput, Button } from "@mantine/core"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { registerEmailAuthenticatoin } from "../controllers/authentication.controller";
+import { signinUser } from "../controllers/account.controller";
 
 export function SigninPage() {
-    const [email] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    // const [buttonIdle, setButtonIdle] = useState(false)
+    const [buttonIdle, setButtonIdle] = useState(false)
     let navigate = useNavigate();
 
     async function signin() {
-        console.log(`Signing in with email: ${email}`);
-        const response = await registerEmailAuthenticatoin(email)
+        setButtonIdle(true)
+        const response = await signinUser(username, password) // signinUser not implemented yet!!!
         const data = await response.json()
         if(response.ok) {
-            navigate("/authpage", { state: { data: email } })
+            navigate("/homepage" )
             return
         }
+        setButtonIdle(false)
         alert(data)
     }
-
-    // function redirectToSignupPage() {
-    //     navigate("/registerpage");
-    // }
 
     const signinForm = () => {
         return (
@@ -40,7 +36,7 @@ export function SigninPage() {
                 onChange={(event) => setPassword(event.currentTarget.value)}
             />
             
-            <Button color="gray" onClick={signin}>Sign in</Button>
+            <Button color="gray" disabled={buttonIdle} onClick={signin} className={buttonIdle ? "spin" : ''}>Sign in</Button>
             </>
         )
     }

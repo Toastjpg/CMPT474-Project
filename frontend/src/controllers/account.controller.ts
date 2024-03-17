@@ -23,6 +23,17 @@ export const isUniqueEmail = async (email: string) => {
     const unique = await response.json()
     return unique
 }
+export const signinUser = async (username: string, password: string) => {
+    // attache session info with login credentials
+    // expect server to return true if signin success else false
+    // DO NOT add info in paramter or url! use SESSIONS
+    const response = await fetch(`${gatewayURL}/account/signin`, {
+        method: "GET",
+        mode: 'cors',
+    })
+    const signinStatus = await response.json()
+    return signinStatus
+}
 export const deleteAccount = async (username: string) => {
     return await fetch(`${gatewayURL}/account`, {
         method: "DELETE",

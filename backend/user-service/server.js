@@ -1,45 +1,34 @@
 const express = require("express");
+const cors = require("cors");
 const mailService = require("nodemailer");
 const { pgdb } = require("./models/db");
-const cors = require("cors");
 const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
 
-const PORT = process.env.PORT || 8080;
 
 
-// const corsOps = {
-//     origin: "*",
-//     optionSuccessStatus: 200,
-//     credentials: true,
-// };
 
-// setup middleware
-app.use('/', (req, res, next) => {
-    console.log(req.method, 'request: ', req.url, JSON.stringify(req.body))
-    next()
-})
+/**
+ * Middleware Configurations
+ */
 app.use(cors());
 app.use(express.json());
-// app.use(cors(corsOps));
-// app.use(express.urlencoded({ extended: true }));
 
-// app.use("/api", userController)
 
-// routes
+
+
+/**
+ * Endpoints
+ */
 app.post("/api/account", async (req, res) => {
-    const email = req.body.email;
-    const username = req.body.username;
-    const password = req.body.password;
-    print_debug("email=" + email);
-    print_debug("username=" + username);
-    print_debug("password=" + password);
+    const email = req.body.email
+    const username = req.body.username
+    const password = req.body.password
     
     if(!email || !username || !password) {
-        return res.status(500).json("USER SERVICE ERROR: Missing account setup fields in request body");
+        return res.status(500).json("USER SERVICE ERROR: Missing account setup fields in request body")
     }
-
 
     try {
         await pgdb.create_account(username, email, password)
@@ -55,8 +44,6 @@ app.delete("/api/account", async (req, res) => {
     if(!username) {
         return res.status(500).json("USER SERVICE ERROR: Missing username in request body");
     }
-
-    print_debug("username=" + username);
 
     try {
         await pgdb.delete_account(username)
@@ -74,19 +61,15 @@ app.get("/api/account/email/:email", async (req, res) => {
 
     try {
         const account = await pgdb.get_account_by_email(email);
-        print_debug("account in DB:")
-        console.debug(account)
         return res.status(200).json(account);
     } catch (e) {
         console.warn(e);
         return res.status(500).json("USER SERVICE ERROR: Databse query failed");
     }
-});
+})
 app.get("/api/accounts", async (req, res) => {
     try {
         const allAccounts = await pgdb.get_accounts();
-        print_debug("accounts in DB:")
-        console.debug(allAccounts)
         return res.status(200).json(allAccounts);
     } catch (e) {
         console.warn(e);
@@ -94,9 +77,16 @@ app.get("/api/accounts", async (req, res) => {
     }
 });
 
+
+
+const PORT = process.env.PORT || 8080
 app.listen(PORT, "0.0.0.0", () => {
     console.log("USER SERVICE: running on port 8080");
 })
+
+
+
+
 
 // Helper functions
 function print_debug(content) {

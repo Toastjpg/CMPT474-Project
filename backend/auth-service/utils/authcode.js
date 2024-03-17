@@ -1,10 +1,8 @@
-// helper functions
 function generateAuthCode() {
-    var code = '';
+    var code = ''
+    const AUTH_CODE_LENGTH = 6
 
-    // append random digits
-    const len = 6;
-    for (let i = 0; i < len; i++) {
+    for (let i = 0; i < AUTH_CODE_LENGTH; i++) {
         const num = Math.floor(Math.random() * 10)
         code += num.toString()
     }
