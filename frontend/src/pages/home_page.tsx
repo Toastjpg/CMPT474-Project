@@ -77,8 +77,8 @@ export function HomePage() {
         </Group>
       </AppShell.Header>
       <AppShell.Navbar>
-        <Flex h="100%" justify="space-between" direction="column">
-            <ScrollArea className="links" p="md">
+        <Flex h="100%" justify="space-between" direction="column" mih={0}>
+            <ScrollArea className="links" p="md" scrollbarSize={8}>
                 <NavLink
                     onClick={() => {
                       handleNavLinkClick("dashboard")
@@ -130,7 +130,7 @@ export function HomePage() {
             </AppShell.Section>
         </Flex>
       </AppShell.Navbar>
-      <AppShell.Main>
+      <AppShell.Main h="100vh">
         {menuItems.has(active) ? menuItems.get(active) : <Course course={active} />}
       </AppShell.Main>
     </AppShell>
