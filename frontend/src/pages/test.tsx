@@ -1,9 +1,9 @@
-import { RichTextEditor } from "../components/rich_text_editor";
+import { QuizConfigurationPage } from "./quiz_configuration_page";
 
 export function Test() {
     return (
         <div>
-            <RichTextEditor />
+            <QuizConfigurationPage />
         </div>
     );
 }

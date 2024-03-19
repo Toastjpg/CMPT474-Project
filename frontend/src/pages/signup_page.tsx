@@ -1,31 +1,33 @@
-import { TextInput, Button, Title } from "@mantine/core"
+import { TextInput, Button, Title, PasswordInput, rem } from "@mantine/core"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createAccount, isUniqueEmail } from "../controllers/account.controller";
 import { registerEmailAuthenticatoin, verifyEmailAuthenticatoin } from "../controllers/authentication.controller";
+import { useInputState } from "@mantine/hooks";
+import { IconLock, IconUser, IconMail } from '@tabler/icons-react';
 
 export function SignupPage() {
     enum Display {
         EMAIL_FORM, AUTH_CODE_FORM, ACCOUNT_SETUP_FORM
     }
     const [display, setDisplay] = useState(Display.EMAIL_FORM)
-    const [email, setEmail] = useState('');
-    const [authCode, setAuthCode] = useState('')
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [buttonIdle, setButtonIdle] = useState(false)
+    const [email, setEmail] = useInputState('');
+    const [authCode, setAuthCode] = useInputState('')
+    const [username, setUsername] = useInputState('');
+    const [password, setPassword] = useInputState('');
+    const [confirmPassword, setConfirmPassword] = useInputState('');
+    const [loading, setloading] = useState(false)
     let navigate = useNavigate();
 
     useEffect(() => {
-        setButtonIdle(false)
+        setloading(false)
     }, [display])
 
     async function registerEmail() {
-        setButtonIdle(true)
+        setloading(true)
         const isUnique = await isUniqueEmail(email)
         if(!isUnique) {
-            setButtonIdle(false)
+            setloading(false)
             alert("This email is used by an existing account. Please enter another email.")
             return
         }
@@ -35,31 +37,31 @@ export function SignupPage() {
             setDisplay(Display.AUTH_CODE_FORM)
             return
         }
-        setButtonIdle(false)
+        setloading(false)
         alert(data)
     }
 
     async function verifyEmail() {
-        setButtonIdle(true)
+        setloading(true)
         const response = await verifyEmailAuthenticatoin(email, authCode)
         const data = await response.json()
         if(response.ok) {
             setDisplay(Display.ACCOUNT_SETUP_FORM)
             return
         }
-        setButtonIdle(false)
+        setloading(false)
         alert(data)
     }
 
     async function signup() {
-        setButtonIdle(true)
+        setloading(true)
         const response = await createAccount(username, email, password)
         const data = await response.json()
         if(response.ok) {
             navigate("/homepage");
             return
         }
-        setButtonIdle(false)
+        setloading(false)
         alert(data)
     }
 
@@ -70,12 +72,10 @@ export function SignupPage() {
                 label="SFU Email"
                 placeholder="example@sfu.ca"
                 value={email}
-                onChange={(event) => setEmail(event.currentTarget.value)}
+                onChange={setEmail}
+                required
             />
-            <Button color="gray" disabled={buttonIdle} onClick={registerEmail} className={buttonIdle ? "spin" : ''}>
-                {buttonIdle && <span className="material-symbols-outlined">progress_activity</span>}
-                {!buttonIdle && "Send authentication code"}
-            </Button>
+            <Button color="gray" mt={12} onClick={registerEmail} loading={loading}>Send authentication code</Button>
             </>
         )
     }
@@ -88,16 +88,17 @@ export function SignupPage() {
             <TextInput
                 label="Authentication Code"
                 value={authCode}
-                onChange={(event) => setAuthCode(event.currentTarget.value)}
+                onChange={setAuthCode}
+                required
             />
-            <Button color="gray" disabled={buttonIdle} onClick={verifyEmail} className={buttonIdle ? "spin" : ''}>
-                {buttonIdle && <span className="material-symbols-outlined">progress_activity</span>}
-                {!buttonIdle && "Verify email"}
-            </Button>
+            <Button color="gray" mt={12} onClick={verifyEmail} loading={loading}>Verify email</Button>
             </>
         )
     }
     const accountSetupForm = () => {
+        const iconUser = <IconUser style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+        const iconLock = <IconLock style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+        const iconMail = <IconMail style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
         return (
             <>
             <div className="navigation">
@@ -107,27 +108,20 @@ export function SignupPage() {
                 label="SFU Email"
                 disabled
                 value={email}
+                leftSection={iconMail}
+                required
             />
             <TextInput
                 label="Username"
-                placeholder="edampleusername"
                 value={username}
-                onChange={(event) => setUsername(event.currentTarget.value)}
+                required
+                leftSection={iconUser}
+                onChange={setUsername}
             />
-            <TextInput
-                label="Password"
-                placeholder="eXaMpLePaSsWoRd123!"
-                value={password}
-                onChange={(event) => setPassword(event.currentTarget.value)}
-            />
-            <TextInput
-                label="Confirm Password"
-                placeholder="eXaMpLePaSsWoRd123!"
-                value={confirmPassword}
-                onChange={(event) => setConfirmPassword(event.currentTarget.value)}
-            />
+            <PasswordInput label="Password" leftSection={iconLock} value={password} onChange={setPassword} required />
+            <PasswordInput label="Confirm Password" leftSection={iconLock} value={confirmPassword} onChange={setConfirmPassword} required />
             
-            <Button color="gray" onClick={signup}>Sign up</Button>
+            <Button color="gray" mt={12} onClick={signup} loading={loading}>Sign up</Button>
             </>
         )
     }
