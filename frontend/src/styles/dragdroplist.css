@@ -1,0 +1,56 @@
+.drag-drop-list {
+    width: 100%;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+.drag-drop-list > * {
+    width: 100%;
+}
+.drag-drop-list .item {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    border-radius: var(--mantine-radius-md);
+    border: 1px solid var(--mantine-color-gray-2);
+    padding: var(--mantine-spacing-sm);
+    padding-left: calc(var(--mantine-spacing-xl) - var(--mantine-spacing-md));
+    background-color: var(--mantine-color-white);
+    margin-bottom: var(--mantine-spacing-sm);
+}
+  
+.drag-drop-list .itemDragging {
+    box-shadow: var(--mantine-shadow-sm);
+}
+  
+.drag-drop-list .symbol {
+    font-size: 28px;
+    font-weight: 700;
+    width: 48px;
+}
+
+.drag-drop-list .question {
+    flex: 1;
+    min-width: 0;
+    align-self: flex-start;
+}
+.drag-drop-list .question p {
+    margin: 0;
+    min-width: 0;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+  
+.drag-drop-list .dragHandle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--mantine-color-dark-6);
+    padding-left: var(--mantine-spacing-sm);
+    padding-right: var(--mantine-spacing-sm);
+}
+.drag-drop-list .dragHandle:hover {
+    cursor: pointer;
+}

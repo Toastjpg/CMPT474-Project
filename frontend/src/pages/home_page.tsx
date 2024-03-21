@@ -1,5 +1,5 @@
-import { FC, useState } from 'react';
-import { AppShell, Burger, Group, ScrollArea, Image, Flex, NavLink, Divider, Menu, ActionIcon, rem } from '@mantine/core';
+import { useState } from 'react';
+import { AppShell, Burger, Group, ScrollArea, Image, Flex, NavLink, Divider } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
     IconLayoutDashboardFilled,
@@ -8,10 +8,6 @@ import {
     IconStar,
     IconReportAnalytics,
     IconNotebook,
-    IconDots,
-    IconMessages,
-    IconNote,
-    IconTrash
 } from '@tabler/icons-react';
 import logo from '../images/logo-transparent-png.png';
 
@@ -54,7 +50,7 @@ export function HomePage() {
               description={item.description}
               leftSection={<IconNotebook size="1rem" stroke={1.5} />}
               onClick={() => handleNavLinkClick(item.id)}
-              // color="#8C1627"
+              color="#ce0030"
               variant="subtle"
           />))
         )
@@ -130,7 +126,7 @@ export function HomePage() {
             </AppShell.Section>
         </Flex>
       </AppShell.Navbar>
-      <AppShell.Main h="100vh">
+      <AppShell.Main h="100vh" className='scroll-frame'>
         {menuItems.has(active) ? menuItems.get(active) : <Course course={active} />}
       </AppShell.Main>
     </AppShell>

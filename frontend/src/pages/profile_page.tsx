@@ -1,7 +1,9 @@
+import { UnreleasedFeatureNotification } from "../components/unreleased_feature";
+
 export function Profile() {
     return (
         <section>
-            Profile
+            <UnreleasedFeatureNotification />
         </section>
     )
 }

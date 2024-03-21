@@ -1,10 +1,9 @@
 
-import {  Flex, Title, Button } from '@mantine/core';
-import { useState } from 'react';
+import {  Flex, Title, Button, ScrollArea } from '@mantine/core';
+import { FC, useState } from 'react';
 
 import {
     Table,
-    ScrollArea,
     UnstyledButton,
     Group,
     Text,
@@ -14,7 +13,8 @@ import {
     keys,
   } from '@mantine/core';
   import { IconSelector, IconChevronDown, IconChevronUp, IconSearch, IconSquarePlus } from '@tabler/icons-react';
-  import '../styles/table.css';
+  import '../../styles/table.css';
+import { Display } from './quizzerhub_tab';
   
   interface RowData {
     name: string;
@@ -104,7 +104,11 @@ const data = [
     },
   ];
 
-export function QuizzerHubTab() {
+
+interface Props {
+    setDisplay: (display: Display) => void
+}
+export const QuizzerHubList: FC<Props> = ({ setDisplay }) => {
     const [search, setSearch] = useState('');
     const [sortedData, setSortedData] = useState(data);
     const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
@@ -133,10 +137,10 @@ export function QuizzerHubTab() {
 
 
     return (
-        <section id="quizzerHubTab">
-            <Flex justify={"space-between"} direction={"row"} mb={12}>
+        <Flex id="quizzerHubList" direction={"column"} h={"100%"}>
+            <Flex justify={"space-between"} direction={"row"} mb={12} align={"center"}>
                 <Title size="h4">Quizzes</Title>
-                <Button variant="light" leftSection={<IconSquarePlus style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}>Create New Quiz</Button>
+                <Button variant="default" onClick={() => setDisplay(Display.CREATE)}  leftSection={<IconSquarePlus style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}>Create New Quiz</Button>
             </Flex>
             <TextInput
                 placeholder="Search by any field"
@@ -145,28 +149,30 @@ export function QuizzerHubTab() {
                 value={search}
                 onChange={handleSearchChange}
             />
-            <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} layout="fixed">
-                <Table.Tbody>
-                <Table.Tr>
-                    <Th sorted={sortBy === 'name'} reversed={reverseSortDirection} onSort={() => setSorting('name')}>Title</Th>
-                    <Th sorted={sortBy === 'email'} reversed={reverseSortDirection} onSort={() => setSorting('email')}>Average Score</Th>
-                    <Th sorted={sortBy === 'company'} reversed={reverseSortDirection} onSort={() => setSorting('company')}>Likes</Th>
-                </Table.Tr>
-                </Table.Tbody>
-                <Table.Tbody>
-                {rows.length > 0 ? (
-                    rows
-                ) : (
+            <ScrollArea scrollbarSize={8} w={"100%"} flex={1}>
+                <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} layout="fixed">
+                    <Table.Tbody>
                     <Table.Tr>
-                    <Table.Td colSpan={Object.keys(data[0]).length}>
-                        <Text fw={500} ta="center">
-                        Nothing found
-                        </Text>
-                    </Table.Td>
+                        <Th sorted={sortBy === 'name'} reversed={reverseSortDirection} onSort={() => setSorting('name')}>Title</Th>
+                        <Th sorted={sortBy === 'email'} reversed={reverseSortDirection} onSort={() => setSorting('email')}>Average Score</Th>
+                        <Th sorted={sortBy === 'company'} reversed={reverseSortDirection} onSort={() => setSorting('company')}>Likes</Th>
                     </Table.Tr>
-                )}
-                </Table.Tbody>
-            </Table>
-        </section>
+                    </Table.Tbody>
+                    <Table.Tbody>
+                    {rows.length > 0 ? (
+                        rows
+                    ) : (
+                        <Table.Tr>
+                        <Table.Td colSpan={Object.keys(data[0]).length}>
+                            <Text fw={500} ta="center">
+                            Nothing found
+                            </Text>
+                        </Table.Td>
+                        </Table.Tr>
+                    )}
+                    </Table.Tbody>
+                </Table>
+            </ScrollArea>
+        </Flex>
     )
 }
