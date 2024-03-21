@@ -4,8 +4,8 @@ import { placeholder } from 'jodit/esm/plugins/placeholder/placeholder';
 import { Button, ScrollArea, Select, Text, Title } from '@mantine/core';
 import { Form } from './quiz_creation_form';
 import { Question, QuestionType, getDefaultAnswer, questionTypeOptions } from '../../models/question';
-import { useInputState, useListState } from '@mantine/hooks';
-import { InputMultipleChoice } from './quiz_answer_forms/multiple_choice';
+import { useInputState } from '@mantine/hooks';
+// import { InputMultipleChoice } from './quiz_answer_forms/multiple_choice';
 
 interface Props {
     placeholder?: string;

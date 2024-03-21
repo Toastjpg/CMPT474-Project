@@ -1,4 +1,4 @@
-import { ActionIcon, Container, Flex, Radio, Stack, Text, TextInput, Textarea, Button } from "@mantine/core";
+import { Container, Radio, Stack, TextInput, Button } from "@mantine/core";
 import { FC, useEffect, useState } from "react";
 import { IconPlus } from "@tabler/icons-react";
 import { AnswerType } from "../../../models/question";

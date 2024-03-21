@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react"
-import { Button,Divider,Flex, ScrollArea, Select, Space, Text, TextInput, Textarea, Title, rem } from "@mantine/core"
+import { Button,Divider,Flex, ScrollArea, Space, Text, TextInput, Textarea, Title, rem } from "@mantine/core"
 import { Quiz } from "../../models/quiz"
 import { Form } from "./quiz_creation_form"
 import { DragDropList } from "./draggable_questions_list"
@@ -20,7 +20,7 @@ export const QuizConfigForm: FC<Props> = ({ heading, quiz, setForm, setDisplay, 
     const [title, setTitle] = useInputState(quiz.title)
     const [summary, setSummary] = useInputState(quiz.summary)
     const [valid, setValid] = useState(false)
-    const [loading, setLoading] = useState(false)
+    const [loading] = useState(false)
     useEffect(() => {
         quiz.setTitle(title)
         quiz.setSummary(summary)

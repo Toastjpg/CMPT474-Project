@@ -45,8 +45,7 @@ export const RichTextEditor: FC<ExampleProps> = ({placeholder}) => {
             value={content1}
             config={config}
             // tabIndex={1} // tabIndex of textarea
-            onBlur={newContent => setContent1(newContent)} // preferred to use only this option to update the content for performance reasons
-            onChange={(newContent: any) => {}} // Typing as any since the type depends on JoditEditor's implementation
+            onChange={newContent => setContent1(newContent)}
             />
             <h3>Answer</h3>
             <JoditEditor
@@ -54,8 +53,7 @@ export const RichTextEditor: FC<ExampleProps> = ({placeholder}) => {
             value={content2}
             config={config}
             // tabIndex={1} // tabIndex of textarea
-            onBlur={newContent => setContent2(newContent)} // preferred to use only this option to update the content for performance reasons
-            onChange={(newContent: any) => {}} // Typing as any since the type depends on JoditEditor's implementation
+            onChange={newContent => setContent2(newContent)}
             />
             <h3>Explanation</h3>
             <JoditEditor
@@ -63,8 +61,7 @@ export const RichTextEditor: FC<ExampleProps> = ({placeholder}) => {
             value={content3}
             config={config}
             // tabIndex={1} // tabIndex of textarea
-            onBlur={newContent => setContent3(newContent)} // preferred to use only this option to update the content for performance reasons
-            onChange={(newContent: any) => {}} // Typing as any since the type depends on JoditEditor's implementation
+            onChange={newContent => setContent3(newContent)}
             />
             
         </section>

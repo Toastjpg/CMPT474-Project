@@ -3,7 +3,6 @@ import { Display } from "./quizzerhub_tab";
 import { Quiz } from "../../models/quiz";
 import { QuizConfigForm } from "./quiz_config_form";
 import { QuestionForm } from "./question_creation_form";
-import { Question } from "../../models/question";
 
 export const enum Form {
     CONFIG_FORM, NEW_QUESTION_FORM
@@ -13,7 +12,7 @@ interface Props {
 }
 
 export const QuizForm: FC<Props> = ({ setDisplay }) => {
-    const [quiz, setQuiz] = useState(new Quiz())
+    const [quiz] = useState(new Quiz())
     const [form, setForm] = useState(Form.CONFIG_FORM)
     // const [questionOnFocus, setQuestionOnFocus] = useState(new Question())
     const [questionOnFocus, setQuestionOnFocus] = useState(-1)

@@ -8,20 +8,11 @@ import { Question, questionTypeOptions } from '../../models/question';
 import { FC, useEffect } from 'react';
 import parse from "html-react-parser"
 
-const data = [
-  { position: 6, mass: 12.011, symbol: 'C', name: 'Carbon' },
-  { position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
-  { position: 39, mass: 88.906, symbol: 'Y', name: 'Yttrium' },
-  { position: 56, mass: 137.33, symbol: 'Ba', name: 'Barium' },
-  { position: 58, mass: 140.12, symbol: 'Ce', name: 'Cerium' },
-];
-
 interface Props {
     questions: Array<Question>
 }
 export const DragDropList: FC<Props> = ({ questions }) => {
   const [state, handlers] = useListState(questions);
-//   const [state, handlers] = useListState(data);
 
 useEffect(() => {
     questions = state
@@ -46,26 +37,6 @@ useEffect(() => {
         </div>
       )}
     </Draggable>
-    // <Draggable key={item.symbol} index={index} draggableId={item.symbol}>
-    //   {(provided, snapshot) => (
-    //     <div
-    //       className={cx("item", { "itemDragging": snapshot.isDragging })}
-    //       ref={provided.innerRef}
-    //       {...provided.draggableProps}
-    //     >
-    //       <div {...provided.dragHandleProps} className="dragHandle">
-    //         <IconGripVertical style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
-    //       </div>
-    //       <Text className="symbol">{item.symbol}</Text>
-    //       <div>
-    //         <Text>{item.name}</Text>
-    //         <Text c="dimmed" size="sm">
-    //           Position: {item.position} • Mass: {item.mass}
-    //         </Text>
-    //       </div>
-    //     </div>
-    //   )}
-    // </Draggable>
   ));
 
     function getExtract(questionHtml: string):string {

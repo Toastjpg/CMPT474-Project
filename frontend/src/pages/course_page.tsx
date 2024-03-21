@@ -1,4 +1,4 @@
-import { Center, Container, Flex, ScrollArea, SegmentedControl, Tabs, Title, rem } from "@mantine/core"
+import { Center, Flex, ScrollArea, SegmentedControl, Tabs, rem } from "@mantine/core"
 import { IconBrain, IconDatabase, IconLayoutGrid, IconListDetails, IconMessages } from "@tabler/icons-react";
 import { FC } from "react"
 import { QuizzerHubTab } from "../components/quizzerhub_components/quizzerhub_tab";
@@ -8,7 +8,7 @@ import { UnreleasedFeatureNotification } from "../components/unreleased_feature"
 interface Props {
     course: string
 }
-export const Course: FC<Props> = ({ course }) => {
+export const Course: FC<Props> = () => {
 
       const iconStyle = { width: rem(12), height: rem(12) };
     return (
