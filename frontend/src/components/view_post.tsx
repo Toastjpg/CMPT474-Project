@@ -1,7 +1,6 @@
 import { Text, Title, Space, Group, ActionIcon } from "@mantine/core"
 import { IconX } from "@tabler/icons-react"
 
-import "../styles/recipe_list.css";
 
 export function ViewPost(props: any) {
     return (

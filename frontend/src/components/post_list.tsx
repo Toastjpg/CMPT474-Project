@@ -7,7 +7,6 @@ import { Text, Title, Space, Group, Modal, Card, Grid, rem } from "@mantine/core
 import { serverController } from "../controllers/server_controller"
 import { Post } from "../models/post";
 import { ViewPost } from "./view_post";
-import "../styles/recipe_list.css";
 
 
 export function PostList() {
