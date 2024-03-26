@@ -9,24 +9,24 @@ interface Props {
     options: Array<Option>
     test: boolean // true if displaying form for quiz testing
 }
-export const InputMultipleChoice: FC<Props> = ({ options, test }) => {
+export const InputMultipleSelect: FC<Props> = ({ options, test }) => {
     const [currentOptions, setCurrentOptions] = useState<Array<Option>>(options)
     const [label, setLabel] = useInputState('')
-    const [selected, setSelected] = useInputState('')
+    // const [selected, setSelected] = useInputState('')
 
     useEffect(() => {
         options = [...currentOptions]
         console.log("currentOptions: ", currentOptions)
         console.log("options: ", options)
-        if(currentOptions.length <= 1) {
-            setSelected('0')
-        }
+        // if(currentOptions.length <= 1) {
+        //     setSelected('0')
+        // }
     }, [currentOptions])
 
-    useEffect(() => {
-        console.log("selected changed: " + selected)
-        options.forEach((option, index) => option.setUserSelect(index === Number(selected)))
-    }, [selected])
+    // useEffect(() => {
+    //     console.log("selected changed: " + selected)
+    //     options.forEach((option, index) => option.setUserSelect(index === Number(selected)))
+    // }, [selected])
 
     const addOption = () => {
         const option: Option = new Option(label, false)
@@ -35,23 +35,16 @@ export const InputMultipleChoice: FC<Props> = ({ options, test }) => {
     }
 
     const selectOption = (index: number) => {
-        setSelected(index.toString())
+        console.log('selectOption')
         if(currentOptions.length > 0 && index >= 0 && index < currentOptions.length ) {
-            const updatedoptions: Array<Option> = currentOptions.map((option, index) => {
-                option.setAnswer(index.toString() === selected)
-                return option
-            })
-            setCurrentOptions(updatedoptions)
+            const selected = currentOptions.at(index)?.answer
+            currentOptions.at(index)?.setAnswer(selected !== undefined ? !selected : false)
+            setCurrentOptions([...currentOptions])
         }
     }
 
     const deleteOption = (index: number) => {
         if(currentOptions.length > 0 && index >= 0 && index < currentOptions.length ) {
-            if(index.toString() === selected && currentOptions.length === 1) {
-                setSelected('')
-            }else {
-                selectOption((index + 1) % currentOptions.length)
-            }
             currentOptions.splice(index, 1)
             setCurrentOptions([...currentOptions])
         }
@@ -84,7 +77,7 @@ export const InputMultipleChoice: FC<Props> = ({ options, test }) => {
                         <Table.Td>
                           <Checkbox
                             aria-label="Select row"
-                            checked={index.toString() === selected}
+                            checked={option.answer}
                             onChange={() => selectOption(index)}
                           />
                         </Table.Td>

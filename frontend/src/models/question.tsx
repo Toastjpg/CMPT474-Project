@@ -1,4 +1,5 @@
 import { IconAB, IconAlignBoxLeftTop, IconBracketsContain, IconList, IconListCheck, IconNumber123, IconWashDrycleanOff } from "@tabler/icons-react"
+import { text } from "stream/consumers"
 
 
 export enum QuestionType {
@@ -15,21 +16,21 @@ questionTypeOptions.set(QuestionType.MULTIPLE_SELECT, {
     icon: <IconListCheck />,
     answerFactory: () => {return { choices: new Array<string>(), answer: new Array<number>() }}
 })
-questionTypeOptions.set(QuestionType.TRUE_FALSE, { 
-    label: "True/False", 
-    icon: <IconAB />,
-    answerFactory: () => {return { choices: new Array<string>('True', 'False'), answer: 0 }}
-})
-questionTypeOptions.set(QuestionType.FILLIN_BLANK, { 
-    label: "Fill in the Blank", 
-    icon: <IconBracketsContain />,
-    answerFactory: () => {return { choices: null, answer: '' }}
-})
-questionTypeOptions.set(QuestionType.INPUT_NUMBER, { 
-    label: "Input Number", 
-    icon: <IconNumber123 />,
-    answerFactory: () => {return { choices: null, answer: undefined }}
-})
+// questionTypeOptions.set(QuestionType.TRUE_FALSE, { 
+//     label: "True/False", 
+//     icon: <IconAB />,
+//     answerFactory: () => {return { choices: new Array<string>('True', 'False'), answer: 0 }}
+// })
+// questionTypeOptions.set(QuestionType.FILLIN_BLANK, { 
+//     label: "Fill in the Blank", 
+//     icon: <IconBracketsContain />,
+//     answerFactory: () => {return { choices: null, answer: '' }}
+// })
+// questionTypeOptions.set(QuestionType.INPUT_NUMBER, { 
+//     label: "Input Number", 
+//     icon: <IconNumber123 />,
+//     answerFactory: () => {return { choices: null, answer: undefined }}
+// })
 questionTypeOptions.set(QuestionType.SHORT_ANSWER, { 
     label: "Short Answer", 
     icon: <IconAlignBoxLeftTop />,
@@ -69,45 +70,76 @@ type InputNone = {
 
 
 
-// export class Answer {
-//     choices: AnswerType['choices']
-//     answer: AnswerType['answer']
-//     constructor(type: QuestionType) {
-//         const newAnswer:AnswerType = questionTypeOptions.get(type)?.answerFactory() || { choices: null, answer: null }
-//         this.choices = newAnswer.choices
-//         this.answer = newAnswer.answer
-//     }
-//     setChoices(choices: AnswerType['choices']) {
-//         this.choices = choices
-//     }
-//     setAnswer(answer: AnswerType['answer']) {
-//         this.answer = answer
-//     }
-// }
+export class Option {
+    label: string
+    answer: boolean
+    user_select: boolean = false
+    user_input: string = ''
+    constructor(label: string, answer: boolean) {
+        this.label = label
+        this.answer = answer
+    }
+    setOption(label: string, answer: boolean) {
+        this.label = label
+        this.answer = answer
+    }
+    setAnswer(answer: boolean) {
+        this.answer = answer
+    }
+    setUserSelect(user_select: boolean) {
+        this.user_select = user_select
+    }
+    setUserInput(user_input: string) {
+        this.user_input = user_input
+    }
+}
 
 export class Question {
-
+    id: string = "id_usedby_quizzes_to_identify_questions_that_belong_to_the_quiz"
     question: string = ''
     type: QuestionType = QuestionType.NO_ANSWER
-    answer: AnswerType = getDefaultAnswer(QuestionType.NO_ANSWER)
+    options: Array<Option> = new Array()
     notes: string = ''
 
     setQuestion(question: string) {
         this.question = question
-    }
-    setAnswer( answer: AnswerType ) {
-        this.answer.choices = answer.choices
-        this.answer.answer = answer.answer
     }
     setNotes(notes: string) {
         this.notes = notes
     }
     setType(type: QuestionType) {
         if(this.type !== type) {
-            this.answer = getDefaultAnswer(type)
+            this.options.splice(0, this.options.length)
             this.type = type
-            console.log(this.answer)
-            console.log(this.type)
+            if(type == QuestionType.TRUE_FALSE) {
+                this.options = Question.createTrueFalseOptions()
+            }
         }
     }
+    setOptions(options: Array<Option>) {
+        this.options = options
+    }
+    removeOption(idx: number) {
+        if(this.options.length > 0 && idx >= 0 && idx < this.options.length) {
+            this.options.splice(idx, 1)
+        }
+    }
+    addOptions(option: Option) {
+        this.options.push(option)
+    }
+    isValid() {
+        // validate the question state
+    }
+
+    static createNoAnswerQuestion() {
+        return new Question()
+    }
+    static createTrueFalseOptions() {
+        const trueFalseOptions = new Array()
+        const isTrueStatement = true
+        trueFalseOptions.push(new Option("True", isTrueStatement))
+        trueFalseOptions.push(new Option("False", !isTrueStatement))
+        return trueFalseOptions
+    }
+    
 }

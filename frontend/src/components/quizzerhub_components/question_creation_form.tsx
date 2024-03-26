@@ -3,9 +3,11 @@ import JoditEditor from 'jodit-react';
 import { placeholder } from 'jodit/esm/plugins/placeholder/placeholder';
 import { Button, ScrollArea, Select, Text, Title } from '@mantine/core';
 import { Form } from './quiz_creation_form';
-import { Question, QuestionType, getDefaultAnswer, questionTypeOptions } from '../../models/question';
+import { Option, Question, QuestionType, getDefaultAnswer, questionTypeOptions } from '../../models/question';
 import { useInputState } from '@mantine/hooks';
-// import { InputMultipleChoice } from './quiz_answer_forms/multiple_choice';
+import { InputMultipleChoice } from './quiz_answer_forms/multiple_choice';
+import { InputMultipleSelect } from './quiz_answer_forms/multiple_select';
+import { InputTrueFalse } from './quiz_answer_forms/true_false';
 
 interface Props {
     placeholder?: string;
@@ -18,7 +20,7 @@ interface Props {
 export const QuestionForm: FC<Props> = ({ placeholder, title, questionIdx, questions, setForm }) => {
     const editor:any = useRef<placeholder | null>(null);
     const [question, setQuestion] = useState<string>('');
-    const [answer, setAnswer] = useState(getDefaultAnswer(QuestionType.NO_ANSWER))
+    const [options, setOptions] = useState<Array<Option>>([])
     const [notes, setNotes] = useState<string>('');
     const [type, setType] = useInputState<number>(QuestionType.NO_ANSWER);
     const [currentIdx, setCurrentIdx] = useState(questionIdx)
@@ -27,8 +29,8 @@ export const QuestionForm: FC<Props> = ({ placeholder, title, questionIdx, quest
         questions.at(currentIdx)?.setQuestion(question)
     }, [question])
     useEffect(() => {
-        questions.at(currentIdx)?.setAnswer(answer)
-    }, [answer])
+        questions.at(currentIdx)?.setOptions([...options])
+    }, [options])
     useEffect(() => {
         questions.at(currentIdx)?.setNotes(notes)
     }, [notes])
@@ -41,7 +43,7 @@ export const QuestionForm: FC<Props> = ({ placeholder, title, questionIdx, quest
             setQuestion(current.question)
             setNotes(current.notes)
             setType(current.type)
-            setAnswer(current.answer)
+            setOptions([...current.options])
         }
     }, [currentIdx])
 
@@ -90,7 +92,6 @@ export const QuestionForm: FC<Props> = ({ placeholder, title, questionIdx, quest
             // tabIndex={1} // tabIndex of textarea
             onBlur={newContent => setQuestion(newContent)}
             />
-            <Title size={"h5"}>Answer</Title>
             <Select
                 label="Type"
                 mb={12}
@@ -104,16 +105,13 @@ export const QuestionForm: FC<Props> = ({ placeholder, title, questionIdx, quest
                 }}
                 data={answerOptionList}
             />
-            {/* {type === QuestionType.MULTIPLE_CHOICE 
-                    && <InputMultipleChoice answer={answer} test={false} />} // causes error*/} 
-            {/* <JoditEditor
-            ref={editor}
-            value={answer}
-            config={config}
-            // tabIndex={1} // tabIndex of textarea
-            onBlur={newContent => setAnswer(newContent)}
-            /> */}
-            <h3>Notes</h3>
+            <Title size={"h5"}>Answer</Title>
+            {type === QuestionType.MULTIPLE_CHOICE && <InputMultipleChoice options={options} test={false} />}
+            {type === QuestionType.MULTIPLE_SELECT && <InputMultipleSelect options={options} test={false} />}
+            {/* {type === QuestionType.TRUE_FALSE && <InputTrueFalse options={options} test={false} />} */}
+
+
+            <Title size={"h5"}>Notes</Title>
             <JoditEditor
             ref={editor}
             value={notes}
