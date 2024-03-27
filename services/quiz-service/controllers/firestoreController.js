@@ -1,36 +1,39 @@
-const firebaseAdmin = require('firebase-admin');
+const { initializeApp, cert } = require('firebase-admin/app');
+const { getFirestore } = require('firebase-admin/firestore');
 const dotenv = require('dotenv');
 
 dotenv.config();
+const firebaseConfig = process.env.FIREBASE_CONFIG;
+const firestoreId = process.env.FIRESTORE_DB_ID;
 
 let firebaseApp;
 let firestoreDatabase;
 
-const firebaseConfig = process.env.FIREBASE_CONFIG;
-const firestoreId = process.env.FIRESTORE_DB_ID;
-
 const Collections = {
-    SHORT_ANSWER: "shortAnswer",
     MULTIPLE_CHOICE: "multipleChoice",
-    MULTIPLE_ANSWER: "multipleAnswer",
-    TRUE_FALSE: "trueFalse"
+    MULTIPLE_SELECT: "multipleSelect",
+    TRUE_FALSE: "trueFalse",
+    FILLIN_BLANK: "fillInBlank",
+    INPUT_NUMBER: "inputNumber",
+    SHORT_ANSWER: "shortAnswer",
+    NO_ANSWER: "noAnswer"
 }
 
 const firebaseController = {
-    initializeConnection: () => {
+    initialize: () => {
         // initialize the firebase app
         try {
             if (firebaseConfig != "CLOUD") {
                 const serviceAccount = require(`../${firebaseConfig}`);
 
-                firebaseApp = firebaseAdmin.initializeApp({
-                    credential: firebaseAdmin.credential.cert(serviceAccount)
+                firebaseApp = initializeApp({
+                    credential: cert(serviceAccount)
                 });
-                console.log("Connected to Firebase Firestore locally with firebase configuration file")
+                console.log("Connected to Firebase Firestore locally with firebase configuration file");
             }
             else {
-                firebaseApp = firebaseAdmin.initializeApp();
-                console.log("Connected to Firebase Firestore over cloud configuration")
+                firebaseApp = initializeApp();
+                console.log("Connected to Firebase Firestore over cloud configuration");
             }
         }
         catch (error) {
@@ -42,8 +45,7 @@ const firebaseController = {
         // try connecting to the firestore database defined in the environment variables
         // currently, firestore is connecting to the default database.
         try {
-            //firestoreDatabase = firebaseAdmin.firestore(firebaseApp, firestoreId);
-            firestoreDatabase = firebaseAdmin.firestore(firebaseApp);
+            firestoreDatabase = getFirestore(firebaseApp, firestoreId);
             console.log(`Connected to Firestore Database: ${firestoreId}`);
         }
         catch (error) {
@@ -52,6 +54,16 @@ const firebaseController = {
         }
     },
 
+    createQuiz: async (quizData) => {
+        const quizRef = firestoreDatabase.collection("shortAnswer").doc();
+        const quizId = quizRef.id;
+        await quizRef.set({
+            id: quizId,
+            question: "is this working?",
+            answer: "yes, this is working"
+        });
+        console.log(`Quiz created with ID: ${quizId}`);
+    }
 }
 
 module.exports = firebaseController;

@@ -23,5 +23,5 @@ app.use("/api/quiz", quizRouter);
 app.listen(PORT, () => {
     console.log(`QUIZ SERVICE: Server is running on port ${PORT}\n`);
 
-    firebaseController.initializeConnection();
+    firebaseController.initialize();
 });
