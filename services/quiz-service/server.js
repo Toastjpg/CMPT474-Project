@@ -2,6 +2,7 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const firebaseController = require("./controllers/firestoreController");
 
 /* ------------------------------- server setup ------------------------------ */
 const app = express();
@@ -20,5 +21,7 @@ app.use("/api/quiz", quizRouter);
 
 /* ----------------------------- starting server ---------------------------- */
 app.listen(PORT, () => {
-    console.log(`QUIZ SERVICE: Server is running on port ${PORT}`);
+    console.log(`QUIZ SERVICE: Server is running on port ${PORT}\n`);
+
+    firebaseController.initializeConnection();
 });
