@@ -8,8 +8,12 @@ router.get("/", (req, res) => {
     res.send("Quiz service is running");
 });
 
-router.get("/create", async (req, res) => {
-    await firebaseController.createQuiz();
+router.post("/create", async (req, res) => {
+    data = {
+        type: "shortAnswer",
+    }
+
+    await firebaseController.createQuiz(data);
     res.send("Creating a quiz");
 });
 

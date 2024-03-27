@@ -19,6 +19,36 @@ const Collections = {
     NO_ANSWER: "noAnswer"
 }
 
+const quizFactory = {
+    createMultipleChoice: async (data) => {
+        console.log("Creating a multiple choice question");
+    }, 
+
+    createMultipleSelect: async (data) => {
+        console.log("Creating a multiple select question");
+    }, 
+
+    createTrueFalse: async (data) => {
+        console.log("Creating a true/false question");
+    },
+
+    createFillInBlank: async (data) => {
+        console.log("Creating a fill in the blank question");
+    }, 
+
+    createInputNumber: async (data) => {
+        console.log("Creating an input number question");
+    },
+
+    createShortAnswer: async (data) => {
+        console.log("Creating a short answer question");
+    },
+
+    createNoAnswer: async (data) => {
+        console.log("Creating a question with no answer");
+    },
+}
+
 const firebaseController = {
     initialize: () => {
         // initialize the firebase app
@@ -53,15 +83,32 @@ const firebaseController = {
         }
     },
 
-    createQuiz: async (quizData) => {
-        const quizRef = firestoreDatabase.collection("shortAnswer").doc();
-        const quizId = quizRef.id;
-        await quizRef.set({
-            id: quizId,
-            question: "is this working?",
-            answer: "yes, this is working"
-        });
-        console.log(`Quiz created with ID: ${quizId}`);
+    createQuiz: async (data) => {
+        switch(data.type) {
+            case "MULTIPLE_CHOICE":
+                await quizFactory.createMultipleChoice(data);
+                break;
+            case "MULTIPLE_SELECT":
+                await firebaseController.createMultipleSelect(data);
+                break;
+            case "TRUE_FALSE":
+                await firebaseController.createTrueFalse(data);
+                break;
+            case "FILL_IN_BLANK":
+                await firebaseController.createFillInBlank(data);
+                break;
+            case "INPUT_NUMBER":
+                await firebaseController.createInputNumber(data);
+                break;
+            case "SHORT_ANSWER":
+                await firebaseController.createShortAnswer(data);
+                break;
+            case "NO_ANSWER":
+                await firebaseController.createNoAnswer(data);
+                break;
+            default:
+                console.log("ERROR: Invalid question type");
+        }
     }
 }
 
