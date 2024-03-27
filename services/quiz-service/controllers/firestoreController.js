@@ -17,7 +17,7 @@ const firebaseController = {
                 firebaseApp = firebaseAdmin.initializeApp({
                     credential: cert(serviceAccount),
                 });
-                console.log("Connected to Firebase Firestore over firebase configuration file")
+                console.log("Connected to Firebase Firestore locally with firebase configuration file")
             }
             else {
                 try {
