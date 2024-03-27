@@ -1,5 +1,5 @@
 import { Container, TextInput, Button, Text, Group, rem, Table, Checkbox } from "@mantine/core";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
 import { Option } from "../../../models/question";
 import { useInputState } from "@mantine/hooks";
@@ -7,46 +7,33 @@ import { useInputState } from "@mantine/hooks";
 
 interface Props {
     options: Array<Option>
+    setOptions: (options: Array<Option>) => void
     test: boolean // true if displaying form for quiz testing
 }
-export const InputMultipleSelect: FC<Props> = ({ options, test }) => {
-    const [currentOptions, setCurrentOptions] = useState<Array<Option>>(options)
+export const InputMultipleSelect: FC<Props> = ({ options, setOptions, test }) => {
     const [label, setLabel] = useInputState('')
-    // const [selected, setSelected] = useInputState('')
 
-    useEffect(() => {
-        options = [...currentOptions]
-        console.log("currentOptions: ", currentOptions)
-        console.log("options: ", options)
-        // if(currentOptions.length <= 1) {
-        //     setSelected('0')
-        // }
-    }, [currentOptions])
-
-    // useEffect(() => {
-    //     console.log("selected changed: " + selected)
-    //     options.forEach((option, index) => option.setUserSelect(index === Number(selected)))
-    // }, [selected])
 
     const addOption = () => {
         const option: Option = new Option(label, false)
-        setCurrentOptions([...currentOptions, option])
+        setOptions([...options, option])
         setLabel('')
     }
 
-    const selectOption = (index: number) => {
-        console.log('selectOption')
-        if(currentOptions.length > 0 && index >= 0 && index < currentOptions.length ) {
-            const selected = currentOptions.at(index)?.answer
-            currentOptions.at(index)?.setAnswer(selected !== undefined ? !selected : false)
-            setCurrentOptions([...currentOptions])
+    const selectOption = (optionIdx: number) => {
+        if(options.length > 0 && optionIdx >= 0 && optionIdx < options.length ) {
+            const tmp = [...options]
+            const option : Option = options.at(optionIdx)!
+            tmp.splice(optionIdx, 1, new Option(option.label, !option.answer))
+            setOptions([...tmp])
         }
     }
 
-    const deleteOption = (index: number) => {
-        if(currentOptions.length > 0 && index >= 0 && index < currentOptions.length ) {
-            currentOptions.splice(index, 1)
-            setCurrentOptions([...currentOptions])
+    const deleteOption = (deleteOptionIdx: number) => {
+        if(options.length > 0 && deleteOptionIdx >= 0 && deleteOptionIdx < options.length ) {
+            const tmp = [...options]
+            tmp.splice(deleteOptionIdx, 1)
+            setOptions([...tmp])
         }
     }
 
@@ -70,7 +57,7 @@ export const InputMultipleSelect: FC<Props> = ({ options, test }) => {
                     </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
-                    {currentOptions.map((option, index) => (
+                    {options.map((option, index) => (
                         <Table.Tr
                         key={index}
                       >
@@ -88,7 +75,7 @@ export const InputMultipleSelect: FC<Props> = ({ options, test }) => {
                     
                 </Table.Tbody>
             </Table>
-            {currentOptions.length === 0 && <Text mt={12} c="gray" size='sm'>You haven't added any options yet.</Text>}
+            {options.length === 0 && <Text mt={12} c="gray" size='sm'>You haven't added any options yet.</Text>}
         </Container>
     )
 }

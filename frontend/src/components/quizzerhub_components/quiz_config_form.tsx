@@ -11,28 +11,35 @@ import { useInputState } from "@mantine/hooks"
 interface Props {
     heading: string
     quiz: Quiz
+    setQuiz: (quiz: Quiz) => void
     setForm: (form: Form) => void
     setDisplay: (display: Display) => void
     setQuestionOnFocus: (questionIdx: number) => void
     createQuiz: () => void
 }
-export const QuizConfigForm: FC<Props> = ({ heading, quiz, setForm, setDisplay, createQuiz, setQuestionOnFocus }) => {
+export const QuizConfigForm: FC<Props> = ({ heading, quiz, setQuiz, setForm, setDisplay, createQuiz, setQuestionOnFocus }) => {
     const [title, setTitle] = useInputState(quiz.title)
     const [summary, setSummary] = useInputState(quiz.summary)
+    const [questions, setQuestions] = useState(quiz.questions)
+
     const [valid, setValid] = useState(false)
     const [loading] = useState(false)
+
     useEffect(() => {
-        quiz.setTitle(title)
-        quiz.setSummary(summary)
+        setQuiz(Quiz.createInstance(title, summary, questions))
         setValid(quiz.isValid())
-    }, [title, summary])
+    }, [title, summary, questions])
+
     function addQuestion() {
-        const newQuestionIdx = quiz.questions.length
-        const newQuestion = new Question()
-        quiz.addQuestion(newQuestion)
+        const newQuestionIdx = questions.length
+        const updatedQuestions = [...questions, new Question()]
+        setQuestions(updatedQuestions)
+        setQuiz(Quiz.createInstance(title, summary, updatedQuestions))
+        
         setQuestionOnFocus(newQuestionIdx)
         setForm(Form.NEW_QUESTION_FORM)
     }
+
     return (
         <ScrollArea w={"100%"} h={"100%"} scrollbarSize={8} scrollbars="y" offsetScrollbars >
             <div className="navigation justify-start">
@@ -74,7 +81,7 @@ export const QuizConfigForm: FC<Props> = ({ heading, quiz, setForm, setDisplay, 
                 <Title size="h5">Questions</Title>
                 <Button variant="default" onClick={addQuestion}  leftSection={<IconSquarePlus style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}>Create New Question</Button>
             </Flex>
-            <DragDropList questions={quiz.questions} />
+            <DragDropList questions={questions} setQuestions={setQuestions} />
             <Divider size={"lg"} />
             <Flex direction={"row"} justify={"end"}>
                 <Button color="#ce0030" variant="outline" onClick={createQuiz} mt={12} disabled={!valid} loading={loading} >Create</Button>

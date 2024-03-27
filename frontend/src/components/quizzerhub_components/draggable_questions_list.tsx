@@ -10,12 +10,14 @@ import parse from "html-react-parser"
 
 interface Props {
     questions: Array<Question>
+    setQuestions: (questions: Array<Question>) => void
 }
-export const DragDropList: FC<Props> = ({ questions }) => {
+export const DragDropList: FC<Props> = ({ questions, setQuestions }) => {
   const [state, handlers] = useListState(questions);
 
 useEffect(() => {
     questions = state
+    setQuestions([...state])
 }, state)
 
   const items = state.map((item, index) => (

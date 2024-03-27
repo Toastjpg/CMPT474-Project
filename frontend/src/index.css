@@ -144,5 +144,4 @@ div.pagination {
 }
 .menu-subitem[data-active] {
   border-left: 1.8px solid var(--accent-color);
-  /* border-left: 1px solid var(--accent-color-dark); */
 }
