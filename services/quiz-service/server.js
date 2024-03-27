@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 /* -------------------------------- endpoints ------------------------------- */
 
 const quizRouter = require("./routes/quiz.js");
-app.use("/api", quizRouter);
+app.use("/api/quiz", quizRouter);
 
 /* ----------------------------- starting server ---------------------------- */
 app.listen(PORT, () => {
