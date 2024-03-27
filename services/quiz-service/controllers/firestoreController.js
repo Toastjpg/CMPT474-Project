@@ -43,7 +43,6 @@ const firebaseController = {
 
         // https://stackoverflow.com/questions/77061688/how-can-i-connect-to-a-non-default-firestore-database-using-node-using-multiple
         // try connecting to the firestore database defined in the environment variables
-        // currently, firestore is connecting to the default database.
         try {
             firestoreDatabase = getFirestore(firebaseApp, firestoreId);
             console.log(`Connected to Firestore Database: ${firestoreId}`);
