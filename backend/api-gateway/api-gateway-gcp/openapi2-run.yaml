@@ -5,7 +5,7 @@ info:
   description: API on API Gateway with a Cloud Run backend
   version: 1.0.0
 schemes:
-- https
+- http
 produces:
 - application/json
 paths:
