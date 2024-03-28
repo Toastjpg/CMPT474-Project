@@ -27,6 +27,7 @@ export const signinUser = async (username: string, password: string) => {
     // attache session info with login credentials
     // expect server to return true if signin success else false
     // DO NOT add info in paramter or url! use SESSIONS
+    console.log(username, password)
     const response = await fetch(`${gatewayURL}/account/signin`, {
         method: "GET",
         mode: 'cors',

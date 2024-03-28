@@ -1,5 +1,6 @@
 :root {
   --accent-color: #ce0030;
+  --accent-color-dark: #8C1627;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -10,10 +11,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-@keyframes spin {
-  from {transform: rotate(0deg);}
-  to {transform: rotate(360deg);}
-}
+
 
 a {
   font-weight: 500;
@@ -44,16 +42,40 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-p.designHeading {
+
+/* Reused components */
+.designHeading {
   font-size: 24px;
   font-weight: bold;
   margin: 0;
   line-height: 24px;
   color: var(--accent-color);
+}
+div.navigation {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+}
+div.navigation.justify-start {
+    justify-content: flex-start;
+}
+
+div.navigation span {
+  font-size: 40px;
+  opacity: .3;
+}
+div.navigation span:hover {
+  cursor: pointer;
+  color: var(--accent-color);
+  opacity: .7;
+}
+div.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 24px;
 }
 
 /* Signup Page */
@@ -70,16 +92,13 @@ p.designHeading {
   justify-content: center;
 }
 #signupPage .form-container {
-  max-width: 400px;
+  max-width: 360px;
   width: 90%;
   margin-left: auto;
   margin-right: auto;
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
-#signupPage .form-container button {
-  margin-top: 16px;
 }
 
 #signupPage .cover {
@@ -88,23 +107,7 @@ p.designHeading {
   background-size: cover;
   background-position: center;
 }
-#signupPage div.navigation {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-#signupPage div.navigation span {
-  font-size: 40px;
-  opacity: .3;
-}
-#signupPage div.navigation span:hover {
-  cursor: pointer;
-  color: var(--accent-color);
-  opacity: .7;
-}
-#signupPage button.spin span {
-  animation: spin 2.5s infinite linear;
-}
+
 @media (max-width: 820px) {
   #signupPage {
     flex-direction: column;
@@ -112,4 +115,33 @@ p.designHeading {
   #signupPage .cover {
     min-height: 35vh;
   }
+}
+
+#richTextEditor {
+  height: max-content;
+  width: 100%;
+  max-width: 820px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#richTextEditor h1 {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+#richTextEditor .navigation {
+  margin-bottom: 12px;
+}
+
+#quizConfigurationPage {
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 40px 16px;
+}
+
+.menu-subitem {
+  border-left: 1.8px solid var(--mantine-color-gray-3);
+}
+.menu-subitem[data-active] {
+  border-left: 1.8px solid var(--accent-color);
 }
