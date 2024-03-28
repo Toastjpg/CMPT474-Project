@@ -145,3 +145,27 @@ div.pagination {
 .menu-subitem[data-active] {
   border-left: 1.8px solid var(--accent-color);
 }
+
+/* Quiz cards list */
+.quiz-list .card {
+    background-color: var(--mantine-color-body);
+}
+  
+.quiz-list .stats {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--mantine-spacing-lg);
+    border-top: 1px solid var(--mantine-color-gray-2);
+    border-bottom: 1px solid var(--mantine-color-gray-2);
+}
+.quiz-list .footer {
+    display: flex;
+    justify-content: space-between;
+    padding-top: var(--mantine-spacing-lg);
+}
+
+.quiz-list .like {
+    color: var(--mantine-color-red-6);
+    width: rem(20px);
+    height: rem(20px);
+}

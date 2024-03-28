@@ -9,7 +9,7 @@ export class Quiz {
     // tags: Array<string> = new Array<string>()
     questions: Array<Question> = new Array<Question>()
     likes: number = 0
-    playCount: number = 0
+    stats: { avgTime: number, avgScore: number } = { avgTime: 0, avgScore: 0 }
     setId(id: string) {
         this.id = id
     }
@@ -47,7 +47,7 @@ export class Quiz {
         clone.setSummary(quiz.summary)
         clone.questions = [...quiz.questions]
         clone.likes = quiz.likes
-        clone.playCount = quiz.playCount
+        clone.stats = quiz.stats
         return clone
     }
     incLikes() {
@@ -56,8 +56,11 @@ export class Quiz {
     decLikes() {
         this.likes--
     }
-    incPlayCount() {
-        this.playCount++
+    setLikes(count: number) {
+        this.likes = count
+    }
+    setStats(stats: { avgTime: number, avgScore: number }) {
+        this.stats = stats
     }
     
     addQuestion(question: Question) {
