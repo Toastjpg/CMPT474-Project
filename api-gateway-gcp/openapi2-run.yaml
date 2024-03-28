@@ -1,7 +1,7 @@
 # openapi2-run.yaml
 swagger: '2.0'
 info:
-  title: cmpt474-api-gateway The API portion of the Gateway for 474 
+  title: cmpt474-api-gateway-config The API portion of the Gateway for 474 
   description: API on API Gateway with a Cloud Run backend
   version: 1.0.0
 schemes:
@@ -9,29 +9,117 @@ schemes:
 produces:
 - application/json
 paths:
-  /post
-
-  /assets/{asset}:
+# NOTE: until there is a better way to do this
+#       we'll have to individually list each route
+# USER SERVICE ROUTES
+  /accounts:
     get:
-      parameters:
-        - in: path
-          name: asset
-          type: string
-          required: true
-          description: Name of the asset.
-      summary: Assets
-      operationId: getAsset
+      summary: Get all accounts
+      operationId: getAccounts
+      x-google-backend:
+        address: https://cmpt474-user-service-xvpbl7esma-uc.a.run.app/api/accounts
       responses:
         '200':
           description: A successful response
           schema:
             type: string
-  /hello:
+        '500':
+          description: Something went wrong, plase try again later.
+          schema:
+            type: string
+
+# POST SERVICE ROUTES
+  /posts:
     get:
-      summary: Cloud Run hello world
-      operationId: hello
+      summary: Get all posts
+      operationId: getPosts
+      x-google-backend:
+        address: https://cmpt474-post-service-xvpbl7esma-uc.a.run.app/api/posts
       responses:
         '200':
           description: A successful response
+          schema:
+            type: string
+        '500':
+          description: Something went wrong, plase try again later.
+          schema:
+            type: string 
+    post:
+      summary: Create a new post
+      operationId: createPost
+      x-google-backend:
+        address: https://cmpt474-post-service-xvpbl7esma-uc.a.run.app/api/posts
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              content:
+                type: string
+  
+  /posts/{id}:
+    get:
+      summary: Get a post by id
+      operationId: getPostById
+      x-google-backend:
+        address: https://cmpt474-post-service-xvpbl7esma-uc.a.run.app/api/posts/{id}
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: The id of the post
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+        '500':
+          description: Something went wrong, plase try again later.
+          schema:
+            type: string
+    put:
+      summary: Update a post by id
+      operationId: updatePostById
+      x-google-backend:
+        address: https://cmpt474-post-service-xvpbl7esma-uc.a.run.app/api/posts/{id}
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: The id of the post
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              content:
+                type: string
+    delete:
+      summary: Delete a post by id
+      operationId: deletePostById
+      x-google-backend:
+        address: https://cmpt474-post-service-xvpbl7esma-uc.a.run.app/api/posts/{id}
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: The id of the post
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+        '500':
+          description: Something went wrong, plase try again later.
           schema:
             type: string
