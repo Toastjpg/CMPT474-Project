@@ -1,7 +1,7 @@
 # openapi2-run.yaml
 swagger: '2.0'
 info:
-  title: cmpt474-api-gateway-config The API portion of the Gateway for 474 
+  title: cmpt474-api-gateway-config The API portion of the Gateway for 474
   description: API on API Gateway with a Cloud Run backend
   version: 1.0.0
 schemes:
@@ -9,9 +9,9 @@ schemes:
 produces:
 - application/json
 paths:
-# NOTE: until there is a better way to do this
-#       we'll have to individually list each route
-# USER SERVICE ROUTES
+  # NOTE: until there is a better way to do this
+  #       we'll have to individually list each route
+  # USER SERVICE ROUTES
   /accounts:
     get:
       summary: Get all accounts
@@ -24,11 +24,11 @@ paths:
           schema:
             type: string
         '500':
-          description: Something went wrong, plase try again later.
+          description: Something went wrong, please try again later.
           schema:
             type: string
 
-# POST SERVICE ROUTES
+  # POST SERVICE ROUTES
   /posts:
     get:
       summary: Get all posts
@@ -41,9 +41,9 @@ paths:
           schema:
             type: string
         '500':
-          description: Something went wrong, plase try again later.
+          description: Something went wrong, please try again later.
           schema:
-            type: string 
+            type: string
     post:
       summary: Create a new post
       operationId: createPost
@@ -60,6 +60,13 @@ paths:
                 type: string
               content:
                 type: string
+      responses:  
+        '201':  
+          description: Post created successfully
+        '500': 
+          description: Something went wrong, please try again later.
+          schema:
+            type: string
   
   /posts/{id}:
     get:
@@ -103,6 +110,15 @@ paths:
                 type: string
               content:
                 type: string
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+        '500':
+          description: Something went wrong, plase try again later.
+          schema:
+            type: string
     delete:
       summary: Delete a post by id
       operationId: deletePostById
