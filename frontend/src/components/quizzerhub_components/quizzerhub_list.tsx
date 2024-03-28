@@ -1,6 +1,6 @@
 
 import {  Flex, Title, Button, ScrollArea } from '@mantine/core';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import {
     Table,
@@ -15,6 +15,8 @@ import {
   import { IconSelector, IconChevronDown, IconChevronUp, IconSearch, IconSquarePlus } from '@tabler/icons-react';
   import '../../styles/table.css';
 import { Display } from './quizzerhub_tab';
+import { getAllQuizzes } from '../../controllers/quiz.controller';
+import { Quiz } from '../../models/quiz';
   
   interface RowData {
     name: string;
@@ -110,28 +112,59 @@ interface Props {
 }
 export const QuizzerHubList: FC<Props> = ({ setDisplay }) => {
     const [search, setSearch] = useState('');
-    const [sortedData, setSortedData] = useState(data);
+    const [sortedData, setSortedData] = useState([]);
+    // const [sortedData, setSortedData] = useState(data);
     const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
     const [reverseSortDirection, setReverseSortDirection] = useState(false);
+    const [quizzes, setQuizzes] = useState<Array<Quiz>>([])
+
+    useEffect(() => {
+      const init = async() => {
+        const response = await getAllQuizzes()
+        if(response.ok) {
+          const list = await response.json()
+          console.log(list)
+          // const jsonObj = JSON.parse(list) // causes error
+          // console.log(jsonObj)
+          // list.forEach(item => {
+          //   const obj = JSON.parse(item)
+          //   const quiz = Quiz.createInstance(obj.data.title, obj.data.summary, obj.data.questions)
+          //   quiz.setId(obj.id)
+          //   setQuizzes([...quizzes, quiz])
+          // })
+          // setSortedData(list)
+        }
+      }
+      init()
+    }, [])
+
+    useEffect(() => {
+      console.log("quizzes: ", quizzes)
+    }, [quizzes])
 
     const setSorting = (field: keyof RowData) => {
-        const reversed = field === sortBy ? !reverseSortDirection : false;
-        setReverseSortDirection(reversed);
-        setSortBy(field);
-        setSortedData(sortData(data, { sortBy: field, reversed, search }));
+        // const reversed = field === sortBy ? !reverseSortDirection : false;
+        // setReverseSortDirection(reversed);
+        // setSortBy(field);
+        // setSortedData(sortData(data, { sortBy: field, reversed, search }));
     };
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.currentTarget;
-        setSearch(value);
-        setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
+        // const { value } = event.currentTarget;
+        // setSearch(value);
+        // setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
     };
 
-    const rows = sortedData.map((row) => (
-        <Table.Tr key={row.name}>
+    const rows = quizzes.map((quiz) => (
+    // const rows = sortedData.map((row) => (
+        <Table.Tr key={quiz.id}>
+        <Table.Td>{quiz.title}</Table.Td>
+        <Table.Td>{quiz.summary}</Table.Td>
+        <Table.Td>{quiz.playCount}</Table.Td>
+        {/* <Table.Tr key={row.name}>
         <Table.Td>{row.name}</Table.Td>
         <Table.Td>{row.email}</Table.Td>
-        <Table.Td>{row.company}</Table.Td>
+        <Table.Td>{row.company}</Table.Td> */}
         </Table.Tr>
     ));
 

@@ -1,8 +1,6 @@
-import assert from "assert";
 import { Question } from "./question";
 
 export class Quiz {
-    // id: string // when required in order to uniquely identify quiz when storing in database
     // author: // add when user login and session/cookie stuff is implemented
     // course: { value: string, label: string }
     id: string = "random_id"
@@ -12,7 +10,9 @@ export class Quiz {
     questions: Array<Question> = new Array<Question>()
     likes: number = 0
     playCount: number = 0
-
+    setId(id: string) {
+        this.id = id
+    }
     setTitle(title: string) {
         this.title = title
     }
