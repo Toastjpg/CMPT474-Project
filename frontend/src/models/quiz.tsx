@@ -5,6 +5,7 @@ export class Quiz {
     // id: string // when required in order to uniquely identify quiz when storing in database
     // author: // add when user login and session/cookie stuff is implemented
     // course: { value: string, label: string }
+    id: string = "random_id"
     title: string = ''
     summary: string = ''
     // tags: Array<string> = new Array<string>()

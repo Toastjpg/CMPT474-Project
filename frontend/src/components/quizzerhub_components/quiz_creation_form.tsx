@@ -4,6 +4,69 @@ import { Quiz } from "../../models/quiz";
 import { QuizConfigForm } from "./quiz_config_form";
 import { QuestionForm } from "./question_creation_form";
 
+export const SAMPLE_QUIZ_JSON = `
+{
+    "id":"random_id",
+    "title":"Sample Quiz",
+    "summary":"",
+    "questions":[
+        {
+            "id":"random_question_id",
+            "question":"<p>no answer question</p>","type":3,
+            "options":[],
+            "notes":""
+        },
+        {
+            "id":"random_question_id",
+            "question":"<p>first MC question</p>","type":0,
+            "options":[
+                {
+                    "label":"option 1",
+                    "answer":true,
+                    "user_select":false,
+                    "user_input":""},
+                {
+                    "label":"option 2",
+                    "answer":false,
+                    "user_select":false,
+                    "user_input":""}],
+            "notes":""},
+        {
+            "id":"random_question_id",
+            "question":"<p>first MS question</p>","type":1,
+            "options":[
+                {
+                    "label":"one",
+                    "answer":true,
+                    "user_select":false,
+                    "user_input":""},
+                {
+                    "label":"two",
+                    "answer":true,
+                    "user_select":false,
+                    "user_input":""
+                }
+            ],
+            "notes":""
+        },
+        {
+            "id":"random_question_id",
+            "question":"<p>short answer question</p>","type":2,
+            "options":[
+                {
+                    "label":"just write anything",
+                    "answer":true,
+                    "user_select":false,
+                    "user_input":""
+                }
+            ],
+            "notes":""
+        }
+    ],
+    "likes":0,
+    "playCount":0
+}`
+
 export const enum Form {
     CONFIG_FORM, NEW_QUESTION_FORM
 }

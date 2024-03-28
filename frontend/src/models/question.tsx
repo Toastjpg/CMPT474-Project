@@ -117,5 +117,4 @@ export class Question {
         trueFalseOptions.push(new Option("False", !isTrueStatement))
         return trueFalseOptions
     }
-    
 }
