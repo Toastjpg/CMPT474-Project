@@ -12,12 +12,14 @@ export const createQuiz = async (quiz: Quiz) => {
         body: JSON.stringify(quiz)
     })
 }
+
 export const getAllQuizzes = async () => {
     return await fetch(`${gatewayURL}/quizzes`, {
         method: "GET",
         mode: 'cors',
     })
 }
+
 export const getQuiz = async (quizId: string) => {
     return await fetch(`${gatewayURL}/quizzes/${quizId}`, {
         method: "GET",

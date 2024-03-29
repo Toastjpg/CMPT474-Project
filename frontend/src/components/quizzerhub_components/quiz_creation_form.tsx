@@ -25,12 +25,12 @@ export const QuizForm: FC<Props> = ({ setDisplay }) => {
         console.debug('creating new quiz')
         console.log(JSON.stringify(quiz))
         const response = await createQuiz(quiz)
-        if(response.ok) {
+        if (response.ok) {
             const data = await response.json()
             console.log(data)
             alert("Successfully created your quiz!")
             // setDisplay(Display.PLAY)
-        }else {
+        } else {
             const data = await response.json()
             console.log(data)
         }
@@ -38,8 +38,8 @@ export const QuizForm: FC<Props> = ({ setDisplay }) => {
 
     return (
         <>
-        {form === Form.CONFIG_FORM && <QuizConfigForm heading="New Quiz" quiz={quiz} setQuiz={setQuiz} setForm={setForm} setDisplay={setDisplay} createQuiz={create} setQuestionOnFocus={setQuestionOnFocus} />}
-        {form === Form.NEW_QUESTION_FORM && <QuestionForm quiz={quiz} setQuiz={setQuiz} title={quiz.title} questionIdx={questionOnFocus} questions={quiz.questions} setForm={setForm} />}
+            {form === Form.CONFIG_FORM && <QuizConfigForm heading="New Quiz" quiz={quiz} setQuiz={setQuiz} setForm={setForm} setDisplay={setDisplay} createQuiz={create} setQuestionOnFocus={setQuestionOnFocus} />}
+            {form === Form.NEW_QUESTION_FORM && <QuestionForm quiz={quiz} setQuiz={setQuiz} title={quiz.title} questionIdx={questionOnFocus} questions={quiz.questions} setForm={setForm} />}
         </>
     )
 }

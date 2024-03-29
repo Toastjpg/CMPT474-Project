@@ -1,5 +1,5 @@
 
-import {  Flex, Title, Button, ScrollArea, SimpleGrid } from '@mantine/core';
+import { Flex, Title, Button, ScrollArea, SimpleGrid } from '@mantine/core';
 import { FC, useEffect, useState } from 'react';
 
 import { TextInput, rem } from '@mantine/core';
@@ -21,23 +21,23 @@ export const QuizzerHubList: FC<Props> = ({ setDisplay }) => {
     const [filteredQuizzes, setFilteredQuizzes] = useState<Array<Quiz>>([])
 
     useEffect(() => {
-      const init = async() => {
-        const response = await getAllQuizzes()
-        if(response.ok) {
-            const list = await response.json()
-            const tmp: Array<Quiz> = new Array()
-            for(const item of list) {
-                const quiz = Quiz.createInstance(item.data.title, item.data.summary, item.data.questions)
-                quiz.setId(item.id)
-                quiz.setLikes(item.data.likes)
-                quiz.setStats(item.data.stats)
-                tmp.push(quiz)
+        const init = async () => {
+            const response = await getAllQuizzes()
+            if (response.ok) {
+                const list = await response.json()
+                const tmp: Array<Quiz> = new Array()
+                for (const item of list) {
+                    const quiz = Quiz.createInstance(item.data.title, item.data.summary, item.data.questions)
+                    quiz.setId(item.id)
+                    quiz.setLikes(item.data.likes)
+                    quiz.setStats(item.data.stats)
+                    tmp.push(quiz)
+                }
+                setQuizzes([...tmp])
+                setFilteredQuizzes([...tmp])
             }
-            setQuizzes([...tmp])
-            setFilteredQuizzes([...tmp])
         }
-      }
-      init()
+        init()
     }, [])
 
     const filterQuizzes = () => {
@@ -59,13 +59,15 @@ export const QuizzerHubList: FC<Props> = ({ setDisplay }) => {
         <Flex id="quizzerHubList" direction={"column"} h={"100%"}>
             <Flex justify={"space-between"} direction={"row"} mb={12} align={"center"}>
                 <Title size="h4">Quizzes</Title>
-                <Button 
-                    variant="default" 
-                    onClick={() => setDisplay(Display.CREATE)}  
-                    leftSection={<IconSquarePlus 
-                    style={{ width: rem(16), 
-                    height: rem(16) }} 
-                    stroke={1.5} />}>
+                <Button
+                    variant="default"
+                    onClick={() => setDisplay(Display.CREATE)}
+                    leftSection={<IconSquarePlus
+                        style={{
+                            width: rem(16),
+                            height: rem(16)
+                        }}
+                        stroke={1.5} />}>
                     Create New Quiz
                 </Button>
             </Flex>

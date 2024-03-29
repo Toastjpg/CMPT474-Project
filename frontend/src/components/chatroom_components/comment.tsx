@@ -29,26 +29,26 @@ export function Comment() {
     ]
 
     const randomNum = Math.floor(Math.random() * dummyUsers.length)
-  return (
-    <div>
-      <Group>
-        <Avatar
-          src={dummyUsers[randomNum].avatar}
-          alt={dummyUsers[randomNum].name}
-          radius="xl"
-        />
+    return (
         <div>
-          <Text size="sm">Jacob Warnhalter</Text>
-          <Text size="xs" c="dimmed">
-            10 minutes ago
-          </Text>
+            <Group>
+                <Avatar
+                    src={dummyUsers[randomNum].avatar}
+                    alt={dummyUsers[randomNum].name}
+                    radius="xl"
+                />
+                <div>
+                    <Text size="sm">Jacob Warnhalter</Text>
+                    <Text size="xs" c="dimmed">
+                        10 minutes ago
+                    </Text>
+                </div>
+            </Group>
+            <Text pl={54} pt="sm" size="sm">
+                This Pokémon likes to lick its palms that are sweetened by being soaked in honey. Teddiursa
+                concocts its own honey by blending fruits and pollen collected by Beedrill. Blastoise has
+                water spouts that protrude from its shell. The water spouts are very accurate.
+            </Text>
         </div>
-      </Group>
-      <Text pl={54} pt="sm" size="sm">
-        This Pokémon likes to lick its palms that are sweetened by being soaked in honey. Teddiursa
-        concocts its own honey by blending fruits and pollen collected by Beedrill. Blastoise has
-        water spouts that protrude from its shell. The water spouts are very accurate.
-      </Text>
-    </div>
-  );
+    );
 }

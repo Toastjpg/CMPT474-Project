@@ -14,7 +14,7 @@ export function RegisterPage() {
                     {hasAccount && <SigninPage />}
                     {!hasAccount && <SignupPage />}
                     <Flex direction={"row"} gap={"xs"}>
-                    <Text size="xs">{hasAccount ? "Don't have an account?" : "Already have an account?"}</Text>
+                        <Text size="xs">{hasAccount ? "Don't have an account?" : "Already have an account?"}</Text>
                         <Anchor onClick={() => setHasAccount(!hasAccount)} size="xs">{hasAccount ? "Sign Up" : "Sign In"}</Anchor>
                     </Flex>
                 </div>

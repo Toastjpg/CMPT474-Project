@@ -1,6 +1,7 @@
 const gatewayURL = `https://api-gateway-container-zr4kfxliwa-uc.a.run.app`;
 
-// TODO: encod password for security
+// NOTE: This controller interacts with User Service to provide signin features
+// Will be replaced with Firestore Auth when integrated
 export const createAccount = async (username: string, email: string, password: string) => {
     return await fetch(`${gatewayURL}/account`, {
         method: "POST",
