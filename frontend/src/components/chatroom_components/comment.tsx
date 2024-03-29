@@ -1,6 +1,8 @@
 import { Text, Avatar, Group } from '@mantine/core';
+import { FC } from 'react';
 
-export function Comment() {
+
+export const Comment : FC = () => {
     const dummyUsers = [
         {
             avatar: "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png",
