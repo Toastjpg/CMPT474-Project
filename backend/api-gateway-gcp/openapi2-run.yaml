@@ -8,6 +8,21 @@ schemes:
 - http
 produces:
 - application/json
+
+# FIREBASE AUTH
+ securityDefinitions:
+    firebase:
+      authorizationUrl: ""
+      flow: "implicit"
+      type: "oauth2"
+      x-google-issuer: "https://securetoken.google.com/winter-berm-413619"
+      x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
+      x-google-audiences: "winter-berm-413619"
+
+security:
+  # API-level security applies to all API methods
+  - firebase: [] 
+
 paths:
   # NOTE: until there is a better way to do this
   #       we'll have to individually list each route
