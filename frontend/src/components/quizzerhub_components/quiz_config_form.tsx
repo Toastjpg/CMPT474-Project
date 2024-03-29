@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react"
 import { Button,Divider,Flex, ScrollArea, Space, Text, TextInput, Textarea, Title, rem } from "@mantine/core"
 import { Quiz } from "../../models/quiz"
-import { Form } from "./quiz_creation_form"
+import { Form } from "./quizzerhub_create"
 import { DragDropList } from "./draggable_questions_list"
 import { Question } from "../../models/question"
 import { Display } from "./quizzerhub_tab"

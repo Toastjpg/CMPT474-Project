@@ -2,7 +2,7 @@ import { useState, useRef, useMemo, FC, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 import { placeholder } from 'jodit/esm/plugins/placeholder/placeholder';
 import { Button, ScrollArea, Select, Text, Title } from '@mantine/core';
-import { Form } from './quiz_creation_form';
+import { Form } from './quizzerhub_create';
 import { Option, Question, QuestionType, questionTypeOptions } from '../../models/question';
 import { useInputState } from '@mantine/hooks';
 import { InputMultipleChoice } from './quiz_answer_forms/multiple_choice';
@@ -33,7 +33,6 @@ export const QuestionForm: FC<Props> = ({ quiz, setQuiz, placeholder, questionId
     useEffect(() => {
         const updateQuestions = [...quiz.questions]
         updateQuestions.splice(currentIdx, 1, Question.creatInstance(question, type, options, notes))
-        console.log("updating parent options state")
         setQuiz(Quiz.createInstance(quiz.title, quiz.summary, updateQuestions))
     }, [question, options, notes])
 
@@ -45,13 +44,11 @@ export const QuestionForm: FC<Props> = ({ quiz, setQuiz, placeholder, questionId
             setOptions([...current.options])
             setNotes(current.notes)
         }else {
-            console.log("current is not an instance of Question")
+            alert("Something went wrong. Please refrech browser and try again.")
         }
     }, [currentIdx])
 
     const changeType = (typeValue: string) => {
-        console.log("changing type!")
-        console.log(answerOptionList)
         setOptions(new Array<Option>())
         setType(parseInt(typeValue))
     }

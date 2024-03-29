@@ -1,29 +1,32 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import '../../styles/table.css';
 import { QuizzerHubList } from './quizzerhub_list';
 import { QuizzerHubCreate } from './quizzerhub_create';
 import { QuizzerHubEdit } from './quizzerhub_edit';
-import { QuizzerHubPlay } from './quizzerhub_play';
+import { QuizzerHubDetails } from './quizzerhub_details';
   
 
 export const enum Display {
-    LIST, CREATE, EDIT, PLAY
+    LIST, CREATE, EDIT, DETAILS
 }
 export function QuizzerHubTab() {
     const [display, setDisplay] = useState(Display.LIST);
+    const [quizId, setQuizId] = useState('')
+
+    useEffect(() => {
+        console.log("QUIZ ID: " + quizId)
+    }, [quizId])
+
     const displays = new Map<Display, JSX.Element>();
-    displays.set(Display.LIST, <QuizzerHubList setDisplay={setDisplay} />)
-    displays.set(Display.CREATE, <QuizzerHubCreate setDisplay={setDisplay} />)
+    displays.set(Display.LIST, <QuizzerHubList setDisplay={setDisplay} setQuizId={setQuizId} />)
+    displays.set(Display.CREATE, <QuizzerHubCreate setDisplay={setDisplay} setQuizId={setQuizId} />)
     displays.set(Display.EDIT, <QuizzerHubEdit />)
-    displays.set(Display.PLAY, <QuizzerHubPlay />)
+    displays.set(Display.DETAILS, <QuizzerHubDetails setDisplay={setDisplay} quizId={quizId} />)
 
     return (
         <>
-        {/* <section id="quizzerHubTab"> */}
             {displays.get(display)}
-        {/* </section> */}
         </>
     )
 }
