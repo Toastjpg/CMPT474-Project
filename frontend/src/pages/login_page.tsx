@@ -1,16 +1,19 @@
-import { Title, TextInput, Button } from "@mantine/core"
+import { Title, TextInput, Button, PasswordInput, rem } from "@mantine/core"
+import { IconLock, IconUser } from '@tabler/icons-react';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { signinUser } from "../controllers/account.controller";
+import { useInputState } from "@mantine/hooks";
 
 export function SigninPage() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useInputState('');
+    const [password, setPassword] = useInputState('');
     const [buttonIdle, setButtonIdle] = useState(false)
     let navigate = useNavigate();
 
     async function signin() {
+        
         setButtonIdle(true)
         const response = await signinUser(username, password) // signinUser not implemented yet!!!
         const data = await response.json()
@@ -23,20 +26,20 @@ export function SigninPage() {
     }
 
     const signinForm = () => {
+        const iconUser = <IconUser style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+        const iconLock = <IconLock style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
         return (
             <>
             <TextInput
                 label="Username"
                 value={username}
-                onChange={(event) => setUsername(event.currentTarget.value)}
+                onChange={setUsername}
+                leftSection={iconUser}
+                required
             />
-            <TextInput
-                label="Password"
-                value={password}
-                onChange={(event) => setPassword(event.currentTarget.value)}
-            />
+            <PasswordInput label="Password" id="your-password" leftSection={iconLock} value={password} onChange={setPassword} required />
             
-            <Button color="gray" disabled={buttonIdle} onClick={signin} className={buttonIdle ? "spin" : ''}>Sign in</Button>
+            <Button color="gray" mt={12} disabled={buttonIdle} onClick={signin} loading={buttonIdle}>Sign in</Button>
             </>
         )
     }
