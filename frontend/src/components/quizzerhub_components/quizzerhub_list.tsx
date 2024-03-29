@@ -1,5 +1,5 @@
 
-import {  Flex, Title, Button, ScrollArea, SimpleGrid, Text } from '@mantine/core';
+import { Flex, Title, Button, ScrollArea, SimpleGrid, Text } from '@mantine/core';
 import { FC, useEffect, useState } from 'react';
 
 import { TextInput, rem } from '@mantine/core';
@@ -21,13 +21,13 @@ export const QuizzerHubList: FC<Props> = ({ setDisplay, setQuizId }) => {
     const [filteredQuizzes, setFilteredQuizzes] = useState<Array<Quiz>>([])
 
     useEffect(() => {
-        const init = async() => {
+        const init = async () => {
             try {
                 const response = await getAllQuizzes()
-                if(response.ok) {
+                if (response.ok) {
                     const list = await response.json()
                     const tmp: Array<Quiz> = new Array()
-                    for(const item of list) {
+                    for (const item of list) {
                         const quiz = Quiz.createInstance(item.data.title, item.data.summary, item.data.questions)
                         quiz.setId(item.id)
                         quiz.setLikes(item.data.likes)
@@ -37,7 +37,7 @@ export const QuizzerHubList: FC<Props> = ({ setDisplay, setQuizId }) => {
                     setQuizzes([...tmp])
                     setFilteredQuizzes([...tmp])
                 }
-            }catch(error) {
+            } catch (error) {
                 console.log(error)
             }
         }

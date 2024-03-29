@@ -12,32 +12,32 @@ export const Course: FC = () => {
 
     const iconStyle = { width: rem(12), height: rem(12) };
     return (
-            <Tabs 
-                defaultValue="resources" 
-                h="100%" 
-                color="#ce0030" 
-                activateTabWithKeyboard={false} 
-                keepMounted={false}
-                value={tabValue}
-                onChange={(value) => {
-                    navigate(`/courses/${courseId}/${value}`)
-                }}>
-                <Flex direction="column" h="100%">
+        <Tabs
+            defaultValue="resources"
+            h="100%"
+            color="#ce0030"
+            activateTabWithKeyboard={false}
+            keepMounted={false}
+            value={tabValue}
+            onChange={(value) => {
+                navigate(`/courses/${courseId}/${value}`)
+            }}>
+            <Flex direction="column" h="100%">
                 <Tabs.List variant="scrollable">
-                    <Tabs.Tab 
-                        value="resources" 
+                    <Tabs.Tab
+                        value="resources"
                         leftSection={<IconDatabase style={iconStyle} />}>
-                            Resources
+                        Resources
                     </Tabs.Tab>
-                    <Tabs.Tab 
-                        value="quizzerhub" 
+                    <Tabs.Tab
+                        value="quizzerhub"
                         leftSection={<IconBrain style={iconStyle} />}>
-                            QuizzerHub
+                        QuizzerHub
                     </Tabs.Tab>
-                    <Tabs.Tab 
-                        value="chatroom" 
+                    <Tabs.Tab
+                        value="chatroom"
                         leftSection={<IconMessages style={iconStyle} />}>
-                            Chatroom
+                        Chatroom
                     </Tabs.Tab>
                 </Tabs.List>
                 <Tabs.Panel value="resources" pt={12} w="100%" flex={1} mih={0} className="scroll-frame"><ResourcesTab /></Tabs.Panel>

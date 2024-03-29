@@ -21,15 +21,15 @@ export const QuizzerHubCreate: FC<Props> = ({ setDisplay, setQuizId }) => {
 
     const create = async () => {
         const response = await createQuiz(quiz)
-        if(response.ok) {
+        if (response.ok) {
             const savedQuiz = await response.json()
             console.log(savedQuiz.id)
             console.log(savedQuiz.data)
-            if(savedQuiz.id !== undefined && savedQuiz.data !== undefined) {
+            if (savedQuiz.id !== undefined && savedQuiz.data !== undefined) {
                 setQuizId(savedQuiz.id)
                 setDisplay(Display.DETAILS)
             }
-        }else {
+        } else {
             const data = await response.json()
             alert(data)
         }
@@ -37,8 +37,8 @@ export const QuizzerHubCreate: FC<Props> = ({ setDisplay, setQuizId }) => {
 
     return (
         <>
-        {form === Form.CONFIG_FORM && <QuizConfigForm heading="New Quiz" quiz={quiz} setQuiz={setQuiz} setForm={setForm} setDisplay={setDisplay} createQuiz={create} setQuestionOnFocus={setQuestionOnFocus} />}
-        {form === Form.NEW_QUESTION_FORM && <QuestionForm quiz={quiz} setQuiz={setQuiz} title={quiz.title} questionIdx={questionOnFocus} questions={quiz.questions} setForm={setForm} />}
+            {form === Form.CONFIG_FORM && <QuizConfigForm heading="New Quiz" quiz={quiz} setQuiz={setQuiz} setForm={setForm} setDisplay={setDisplay} createQuiz={create} setQuestionOnFocus={setQuestionOnFocus} />}
+            {form === Form.NEW_QUESTION_FORM && <QuestionForm quiz={quiz} setQuiz={setQuiz} title={quiz.title} questionIdx={questionOnFocus} questions={quiz.questions} setForm={setForm} />}
         </>
     )
 }

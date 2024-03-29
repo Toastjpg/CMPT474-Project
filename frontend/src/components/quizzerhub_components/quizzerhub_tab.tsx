@@ -5,7 +5,7 @@ import { QuizzerHubList } from './quizzerhub_list';
 import { QuizzerHubCreate } from './quizzerhub_create';
 import { QuizzerHubEdit } from './quizzerhub_edit';
 import { QuizzerHubDetails } from './quizzerhub_details';
-  
+
 
 export const enum Display {
     LIST, CREATE, EDIT, DETAILS

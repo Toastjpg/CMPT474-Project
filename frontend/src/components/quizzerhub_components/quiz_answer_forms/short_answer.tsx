@@ -13,9 +13,9 @@ export const InputShortAnswer: FC<Props> = ({ options, setOptions, test }) => {
     const [shortAnswer, setShortAnswer] = useInputState('')
 
     useEffect(() => {
-        if(options.length !== 1) {
+        if (options.length !== 1) {
             setOptions([...options, new Option('', true)])
-        }else {
+        } else {
             setShortAnswer(options.at(0)!.label)
         }
     }, [options])
@@ -28,13 +28,13 @@ export const InputShortAnswer: FC<Props> = ({ options, setOptions, test }) => {
 
     return (
         <Container p={0}>
-            {!test  && 
+            {!test &&
                 <>
-                <Textarea 
-                    onChange={setShortAnswer}
-                    value={shortAnswer} 
-                    mb={12} 
-                    description="Type in the expected answer to the question." />
+                    <Textarea
+                        onChange={setShortAnswer}
+                        value={shortAnswer}
+                        mb={12}
+                        description="Type in the expected answer to the question." />
                     <Group justify="right">
                         <Button variant="light" onClick={updateOption}>Save</Button>
                     </Group>

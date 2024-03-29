@@ -43,7 +43,7 @@ export const QuestionForm: FC<Props> = ({ quiz, setQuiz, placeholder, questionId
             setType(current.type)
             setOptions([...current.options])
             setNotes(current.notes)
-        }else {
+        } else {
             alert("Something went wrong. Please refrech browser and try again.")
         }
     }, [currentIdx])
