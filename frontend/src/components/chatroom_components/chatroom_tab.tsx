@@ -8,8 +8,8 @@ export function ChatroomTab() {
             <ScrollArea scrollbarSize={8} flex={1} offsetScrollbars>
                 {Array(15)
                     .fill(0)
-                    .map(() => (
-                        <Comment />
+                    .map((_, index) => (
+                        <Comment key={index} />
                     ))}
             </ScrollArea>
             <Textarea placeholder='Type in here...' />
