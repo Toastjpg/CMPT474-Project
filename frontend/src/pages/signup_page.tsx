@@ -26,14 +26,14 @@ export function SignupPage() {
     async function registerEmail() {
         setloading(true)
         const isUnique = await isUniqueEmail(email)
-        if(!isUnique) {
+        if (!isUnique) {
             setloading(false)
             alert("This email is used by an existing account. Please enter another email.")
             return
         }
         const response = await registerEmailAuthenticatoin(email)
         const data = await response.json()
-        if(response.ok) {
+        if (response.ok) {
             setDisplay(Display.AUTH_CODE_FORM)
             return
         }
@@ -45,7 +45,7 @@ export function SignupPage() {
         setloading(true)
         const response = await verifyEmailAuthenticatoin(email, authCode)
         const data = await response.json()
-        if(response.ok) {
+        if (response.ok) {
             setDisplay(Display.ACCOUNT_SETUP_FORM)
             return
         }
@@ -57,7 +57,7 @@ export function SignupPage() {
         setloading(true)
         const response = await createAccount(username, email, password)
         const data = await response.json()
-        if(response.ok) {
+        if (response.ok) {
             navigate("/homepage");
             return
         }
@@ -66,32 +66,32 @@ export function SignupPage() {
     }
 
     const emailForm = () => {
-        return(
+        return (
             <>
-            <TextInput
-                label="SFU Email"
-                placeholder="example@sfu.ca"
-                value={email}
-                onChange={setEmail}
-                required
-            />
-            <Button color="gray" mt={12} onClick={registerEmail} loading={loading}>Send authentication code</Button>
+                <TextInput
+                    label="SFU Email"
+                    placeholder="example@sfu.ca"
+                    value={email}
+                    onChange={setEmail}
+                    required
+                />
+                <Button color="gray" mt={12} onClick={registerEmail} loading={loading}>Send authentication code</Button>
             </>
         )
     }
     const authCodeForm = () => {
-        return(
+        return (
             <>
-            <div className="navigation">
-                <span className="material-symbols-outlined" onClick={() => setDisplay(Display.EMAIL_FORM)}>arrow_circle_left</span>
-            </div>
-            <TextInput
-                label="Authentication Code"
-                value={authCode}
-                onChange={setAuthCode}
-                required
-            />
-            <Button color="gray" mt={12} onClick={verifyEmail} loading={loading}>Verify email</Button>
+                <div className="navigation">
+                    <span className="material-symbols-outlined" onClick={() => setDisplay(Display.EMAIL_FORM)}>arrow_circle_left</span>
+                </div>
+                <TextInput
+                    label="Authentication Code"
+                    value={authCode}
+                    onChange={setAuthCode}
+                    required
+                />
+                <Button color="gray" mt={12} onClick={verifyEmail} loading={loading}>Verify email</Button>
             </>
         )
     }
@@ -101,38 +101,38 @@ export function SignupPage() {
         const iconMail = <IconMail style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
         return (
             <>
-            <div className="navigation">
-                <span className="material-symbols-outlined" onClick={() => setDisplay(Display.EMAIL_FORM)}>arrow_circle_left</span>
-            </div>
-            <TextInput
-                label="SFU Email"
-                disabled
-                value={email}
-                leftSection={iconMail}
-                required
-            />
-            <TextInput
-                label="Username"
-                value={username}
-                required
-                leftSection={iconUser}
-                onChange={setUsername}
-            />
-            <PasswordInput label="Password" leftSection={iconLock} value={password} onChange={setPassword} required />
-            <PasswordInput label="Confirm Password" leftSection={iconLock} value={confirmPassword} onChange={setConfirmPassword} required />
-            
-            <Button color="gray" mt={12} onClick={signup} loading={loading}>Sign up</Button>
+                <div className="navigation">
+                    <span className="material-symbols-outlined" onClick={() => setDisplay(Display.EMAIL_FORM)}>arrow_circle_left</span>
+                </div>
+                <TextInput
+                    label="SFU Email"
+                    disabled
+                    value={email}
+                    leftSection={iconMail}
+                    required
+                />
+                <TextInput
+                    label="Username"
+                    value={username}
+                    required
+                    leftSection={iconUser}
+                    onChange={setUsername}
+                />
+                <PasswordInput label="Password" leftSection={iconLock} value={password} onChange={setPassword} required />
+                <PasswordInput label="Confirm Password" leftSection={iconLock} value={confirmPassword} onChange={setConfirmPassword} required />
+
+                <Button color="gray" mt={12} onClick={signup} loading={loading}>Sign up</Button>
             </>
         )
     }
 
     return (
         <>
-        <p className="designHeading">Sign up</p>
-        <Title order={1} >SFU Collaborative Learning Platform</Title>
-        {display === Display.EMAIL_FORM && emailForm()}
-        {display === Display.AUTH_CODE_FORM && authCodeForm()}
-        {display === Display.ACCOUNT_SETUP_FORM && accountSetupForm()}
+            <p className="designHeading">Sign up</p>
+            <Title order={1} >SFU Collaborative Learning Platform</Title>
+            {display === Display.EMAIL_FORM && emailForm()}
+            {display === Display.AUTH_CODE_FORM && authCodeForm()}
+            {display === Display.ACCOUNT_SETUP_FORM && accountSetupForm()}
         </>
     )
 }

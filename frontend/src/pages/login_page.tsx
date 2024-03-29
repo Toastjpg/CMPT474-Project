@@ -13,12 +13,12 @@ export function SigninPage() {
     let navigate = useNavigate();
 
     async function signin() {
-        
+
         setButtonIdle(true)
         const response = await signinUser(username, password) // signinUser not implemented yet!!!
         const data = await response.json()
-        if(response.ok) {
-            navigate("/homepage" )
+        if (response.ok) {
+            navigate("/homepage")
             return
         }
         setButtonIdle(false)
@@ -30,25 +30,25 @@ export function SigninPage() {
         const iconLock = <IconLock style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
         return (
             <>
-            <TextInput
-                label="Username"
-                value={username}
-                onChange={setUsername}
-                leftSection={iconUser}
-                required
-            />
-            <PasswordInput label="Password" id="your-password" leftSection={iconLock} value={password} onChange={setPassword} required />
-            
-            <Button color="gray" mt={12} disabled={buttonIdle} onClick={signin} loading={buttonIdle}>Sign in</Button>
+                <TextInput
+                    label="Username"
+                    value={username}
+                    onChange={setUsername}
+                    leftSection={iconUser}
+                    required
+                />
+                <PasswordInput label="Password" id="your-password" leftSection={iconLock} value={password} onChange={setPassword} required />
+
+                <Button color="gray" mt={12} disabled={buttonIdle} onClick={signin} loading={buttonIdle}>Sign in</Button>
             </>
         )
     }
 
     return (
         <>
-        <p className="designHeading">Sign in</p>
-        <Title order={1} >SFU Collaborative Learning Platform</Title>
-        {signinForm()}
+            <p className="designHeading">Sign in</p>
+            <Title order={1} >SFU Collaborative Learning Platform</Title>
+            {signinForm()}
         </>
     )
 }

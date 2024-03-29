@@ -1,23 +1,23 @@
-import { IconAB, IconAlignBoxLeftTop, IconBracketsContain, IconList, IconListCheck, IconNumber123, IconWashDrycleanOff } from "@tabler/icons-react"
-import { text } from "stream/consumers"
-
+// import { IconAB, IconAlignBoxLeftTop, IconBracketsContain, IconList, IconListCheck, IconNumber123, IconWashDrycleanOff } from "@tabler/icons-react"
+import { IconAlignBoxLeftTop, IconList, IconListCheck, IconWashDrycleanOff } from "@tabler/icons-react"
+// import { text } from "stream/consumers"
 
 export enum QuestionType {
-    MULTIPLE_CHOICE, 
-    MULTIPLE_SELECT, 
+    MULTIPLE_CHOICE,
+    MULTIPLE_SELECT,
     // TRUE_FALSE, 
     // FILLIN_BLANK, 
     // INPUT_NUMBER, 
-    SHORT_ANSWER, 
+    SHORT_ANSWER,
     NO_ANSWER
 }
-export const questionTypeOptions: Map<QuestionType, {label: string, icon: JSX.Element}> = new Map()
-questionTypeOptions.set(QuestionType.MULTIPLE_CHOICE, { 
-    label: "Multiple Choice", 
+export const questionTypeOptions: Map<QuestionType, { label: string, icon: JSX.Element }> = new Map()
+questionTypeOptions.set(QuestionType.MULTIPLE_CHOICE, {
+    label: "Multiple Choice",
     icon: <IconList />,
 })
-questionTypeOptions.set(QuestionType.MULTIPLE_SELECT, { 
-    label: "Multiple Select", 
+questionTypeOptions.set(QuestionType.MULTIPLE_SELECT, {
+    label: "Multiple Select",
     icon: <IconListCheck />,
 })
 // questionTypeOptions.set(QuestionType.TRUE_FALSE, { 
@@ -32,12 +32,12 @@ questionTypeOptions.set(QuestionType.MULTIPLE_SELECT, {
 //     label: "Input Number", 
 //     icon: <IconNumber123 />,
 // })
-questionTypeOptions.set(QuestionType.SHORT_ANSWER, { 
-    label: "Short Answer", 
+questionTypeOptions.set(QuestionType.SHORT_ANSWER, {
+    label: "Short Answer",
     icon: <IconAlignBoxLeftTop />,
 })
-questionTypeOptions.set(QuestionType.NO_ANSWER, { 
-    label: "No Answer", 
+questionTypeOptions.set(QuestionType.NO_ANSWER, {
+    label: "No Answer",
     icon: <IconWashDrycleanOff />,
 })
 
@@ -87,7 +87,7 @@ export class Question {
         this.options = [...options]
     }
     removeOption(idx: number) {
-        if(this.options.length > 0 && idx >= 0 && idx < this.options.length) {
+        if (this.options.length > 0 && idx >= 0 && idx < this.options.length) {
             this.options.splice(idx, 1)
         }
     }
@@ -98,7 +98,7 @@ export class Question {
         // validate the question state
     }
 
-    static creatInstance(question: string, type: QuestionType, options: Array<Option>, notes: string ) {
+    static creatInstance(question: string, type: QuestionType, options: Array<Option>, notes: string) {
         const instance = new Question()
         instance.setQuestion(question)
         instance.setType(type)

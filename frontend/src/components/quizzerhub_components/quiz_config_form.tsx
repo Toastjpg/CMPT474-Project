@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react"
-import { Button,Divider,Flex, ScrollArea, Space, Text, TextInput, Textarea, Title, rem } from "@mantine/core"
+import { Button, Divider, Flex, ScrollArea, Space, Text, TextInput, Textarea, Title, rem } from "@mantine/core"
 import { Quiz } from "../../models/quiz"
 import { Form } from "./quiz_creation_form"
 import { DragDropList } from "./draggable_questions_list"
@@ -35,7 +35,7 @@ export const QuizConfigForm: FC<Props> = ({ heading, quiz, setQuiz, setForm, set
         const updatedQuestions = [...questions, new Question()]
         setQuestions(updatedQuestions)
         setQuiz(Quiz.createInstance(title, summary, updatedQuestions))
-        
+
         setQuestionOnFocus(newQuestionIdx)
         setForm(Form.NEW_QUESTION_FORM)
     }
@@ -49,23 +49,23 @@ export const QuizConfigForm: FC<Props> = ({ heading, quiz, setQuiz, setForm, set
 
             <Title size={"h4"} mb={12} mt={12}>{heading}</Title>
             <div className="form-container">
-            <TextInput
-                label="Title"
-                value={title}
-                placeholder="Please provide a descriptive title for this quiz."
-                onChange={setTitle}
-                required
+                <TextInput
+                    label="Title"
+                    value={title}
+                    placeholder="Please provide a descriptive title for this quiz."
+                    onChange={setTitle}
+                    required
                 />
-            <Textarea
-                label="Summary"
-                placeholder="Please provide a brief description of this quiz."
-                autosize
-                value={summary}
-                onChange={setSummary}
-                minRows={3}
-                maxRows={4}
-            />
-            {/* <Select
+                <Textarea
+                    label="Summary"
+                    placeholder="Please provide a brief description of this quiz."
+                    autosize
+                    value={summary}
+                    onChange={setSummary}
+                    minRows={3}
+                    maxRows={4}
+                />
+                {/* <Select
                 label="Course"
                 placeholder="Search..."
                 description="Select a course or leave it uncategorized."
@@ -79,7 +79,7 @@ export const QuizConfigForm: FC<Props> = ({ heading, quiz, setQuiz, setForm, set
             <Space mb={24} />
             <Flex justify={"space-between"} direction={"row"} mb={12} align={"center"}>
                 <Title size="h5">Questions</Title>
-                <Button variant="default" onClick={addQuestion}  leftSection={<IconSquarePlus style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}>Create New Question</Button>
+                <Button variant="default" onClick={addQuestion} leftSection={<IconSquarePlus style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}>Create New Question</Button>
             </Flex>
             <DragDropList questions={questions} setQuestions={setQuestions} />
             <Divider size={"lg"} />

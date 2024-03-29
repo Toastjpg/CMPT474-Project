@@ -6,7 +6,7 @@ import { QuizzerHubList } from './quizzerhub_list';
 import { QuizzerHubCreate } from './quizzerhub_create';
 import { QuizzerHubEdit } from './quizzerhub_edit';
 import { QuizzerHubPlay } from './quizzerhub_play';
-  
+
 
 export const enum Display {
     LIST, CREATE, EDIT, PLAY
@@ -21,9 +21,9 @@ export function QuizzerHubTab() {
 
     return (
         <>
-        {/* <section id="quizzerHubTab"> */}
+            {/* <section id="quizzerHubTab"> */}
             {displays.get(display)}
-        {/* </section> */}
+            {/* </section> */}
         </>
     )
 }

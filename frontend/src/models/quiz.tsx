@@ -1,8 +1,6 @@
-import assert from "assert";
 import { Question } from "./question";
 
 export class Quiz {
-    // id: string // when required in order to uniquely identify quiz when storing in database
     // author: // add when user login and session/cookie stuff is implemented
     // course: { value: string, label: string }
     id: string = "random_id"
@@ -11,8 +9,10 @@ export class Quiz {
     // tags: Array<string> = new Array<string>()
     questions: Array<Question> = new Array<Question>()
     likes: number = 0
-    playCount: number = 0
-
+    stats: { avgTime: number, avgScore: number } = { avgTime: 0, avgScore: 0 }
+    setId(id: string) {
+        this.id = id
+    }
     setTitle(title: string) {
         this.title = title
     }
@@ -47,7 +47,7 @@ export class Quiz {
         clone.setSummary(quiz.summary)
         clone.questions = [...quiz.questions]
         clone.likes = quiz.likes
-        clone.playCount = quiz.playCount
+        clone.stats = quiz.stats
         return clone
     }
     incLikes() {
@@ -56,8 +56,11 @@ export class Quiz {
     decLikes() {
         this.likes--
     }
-    incPlayCount() {
-        this.playCount++
+    setLikes(count: number) {
+        this.likes = count
+    }
+    setStats(stats: { avgTime: number, avgScore: number }) {
+        this.stats = stats
     }
     
     addQuestion(question: Question) {

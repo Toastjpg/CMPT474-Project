@@ -10,9 +10,9 @@ export function ChatroomTab() {
                     .fill(0)
                     .map(() => (
                         <Comment />
-            ))}
+                    ))}
             </ScrollArea>
-            <Textarea placeholder='Type in here...'/>
+            <Textarea placeholder='Type in here...' />
         </Flex>
     )
 }

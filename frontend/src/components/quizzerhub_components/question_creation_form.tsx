@@ -21,7 +21,7 @@ interface Props {
 }
 
 export const QuestionForm: FC<Props> = ({ quiz, setQuiz, placeholder, questionIdx, setForm }) => {
-    const editor:any = useRef<placeholder | null>(null);
+    const editor: any = useRef<placeholder | null>(null);
 
     const [currentIdx, setCurrentIdx] = useState(questionIdx)
 
@@ -38,13 +38,13 @@ export const QuestionForm: FC<Props> = ({ quiz, setQuiz, placeholder, questionId
     }, [question, options, notes])
 
     useEffect(() => {
-        const current:Question = quiz.getQuestion(currentIdx)
-        if(current instanceof Question) {
+        const current: Question = quiz.getQuestion(currentIdx)
+        if (current instanceof Question) {
             setQuestion(current.question)
             setType(current.type)
             setOptions([...current.options])
             setNotes(current.notes)
-        }else {
+        } else {
             console.log("current is not an instance of Question")
         }
     }, [currentIdx])
@@ -58,7 +58,7 @@ export const QuestionForm: FC<Props> = ({ quiz, setQuiz, placeholder, questionId
 
 
 
-    const config:any = useMemo(() => ({
+    const config: any = useMemo(() => ({
         readonly: false,
         placeholder: placeholder || 'Start typings...',
         useSearch: false,
@@ -74,7 +74,7 @@ export const QuestionForm: FC<Props> = ({ quiz, setQuiz, placeholder, questionId
         showPlaceholder: false,
     }), []);
 
-    const answerOptionList = [...questionTypeOptions].map(([key, value ]) => {
+    const answerOptionList = [...questionTypeOptions].map(([key, value]) => {
         return {
             value: key.toString(),
             label: value.label
@@ -83,24 +83,24 @@ export const QuestionForm: FC<Props> = ({ quiz, setQuiz, placeholder, questionId
 
     return (
         <ScrollArea id="richTextEditor" w={"100%"} h={"100%"} scrollbarSize={8} offsetScrollbars>
-            
+
             <div className="navigation justify-start">
                 <span className="material-symbols-outlined" onClick={() => setForm(Form.CONFIG_FORM)}>arrow_circle_left</span>
                 <Text size='sm'>{quiz.title}</Text>
             </div>
-            
-            
+
+
             <Title size="h3">Question {(currentIdx + 1)}</Title>
             <div className='pagination'>
                 <Button color="gray" mt={12} onClick={() => setCurrentIdx(currentIdx - 1)} disabled={currentIdx < 1}>&lt; Back</Button>
                 <Button color="gray" mt={12} onClick={() => setCurrentIdx(currentIdx + 1)} disabled={currentIdx >= quiz.questions.length - 1}>Next &gt;</Button>
             </div>
             <JoditEditor
-            ref={editor}
-            value={question}
-            config={config}
-            // tabIndex={1} // tabIndex of textarea
-            onChange={newContent => setQuestion(newContent)}
+                ref={editor}
+                value={question}
+                config={config}
+                // tabIndex={1} // tabIndex of textarea
+                onChange={newContent => setQuestion(newContent)}
             />
             <Select
                 label="Type"
@@ -108,7 +108,7 @@ export const QuestionForm: FC<Props> = ({ quiz, setQuiz, placeholder, questionId
                 value={answerOptionList.at(type) !== undefined ? answerOptionList.at(type)!.value : QuestionType.NO_ANSWER.toString()}
                 allowDeselect={false}
                 defaultValue={type.toString()}
-                onChange={newContent => { if(newContent !== null) { changeType(newContent) }} }
+                onChange={newContent => { if (newContent !== null) { changeType(newContent) } }}
                 data={answerOptionList}
             />
             <Title size={"h5"}>Answer</Title>
@@ -119,13 +119,13 @@ export const QuestionForm: FC<Props> = ({ quiz, setQuiz, placeholder, questionId
 
             <Title size={"h5"}>Notes</Title>
             <JoditEditor
-            ref={editor}
-            value={notes}
-            config={config}
-            // tabIndex={1} // tabIndex of textarea
-            onChange={newContent => setNotes(newContent)}
+                ref={editor}
+                value={notes}
+                config={config}
+                // tabIndex={1} // tabIndex of textarea
+                onChange={newContent => setNotes(newContent)}
             />
-            
+
         </ScrollArea>
     );
 }
