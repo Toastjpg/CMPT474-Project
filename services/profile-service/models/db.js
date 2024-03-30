@@ -2,7 +2,6 @@ const { Pool } = require('pg')
 const { Connector } = require('@google-cloud/cloud-sql-connector')
 const connector = new Connector();
 
-
 class PostgresDB {
     pool = null;
     async connect() {
@@ -19,9 +18,10 @@ class PostgresDB {
             max: 5,
         })
     }
+
     async query(queryObj) {
         try {
-            if(this.pool === null) {
+            if (this.pool === null) {
                 await this.connect()
                 const createTableQuery = {
                     text: `
@@ -37,7 +37,7 @@ class PostgresDB {
             const res = await this.pool.query(queryObj)
             return res
 
-        }catch(error) {
+        } catch (error) {
             console.debug("PostgresDB class error: async query(queryObj) failed.")
             throw error
         }
@@ -51,7 +51,7 @@ class PostgresDB {
      */
     async create_account(username, email, password) {
         const usernameMatches = await this.count_username_match(username)
-        if(usernameMatches > 0) {
+        if (usernameMatches > 0) {
             throw new Error("Username is already registered with another account.")
         }
         const insertQuery = {
@@ -85,7 +85,6 @@ class PostgresDB {
         const res = await this.query(selectQuery);
         return parseInt(res.rows[0].count, 10);
     }
-    
 
     async get_accounts() {
         const selectQuery = {

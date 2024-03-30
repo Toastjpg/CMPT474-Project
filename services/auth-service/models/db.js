@@ -2,7 +2,6 @@ const { Pool } = require("pg");
 const { Connector } = require("@google-cloud/cloud-sql-connector");
 const connector = new Connector();
 
-
 class PostgresDB {
     pool = null;
     async connect() {
@@ -21,7 +20,7 @@ class PostgresDB {
     }
     async query(queryObj) {
         try {
-            if(this.pool === null) {
+            if (this.pool === null) {
                 await this.connect()
                 const createTableQuery = {
                     text: 'CREATE TABLE IF NOT EXISTS AuthCodes (email VARCHAR(64) NOT NULL, code CHAR(6) NOT NULL)',
@@ -32,7 +31,7 @@ class PostgresDB {
             const res = await this.pool.query(queryObj)
             return res
 
-        }catch(error) {
+        } catch (error) {
             console.debug("PostgresDB class error: async query (queryObj) failed.")
             throw error
         }
@@ -62,7 +61,7 @@ class PostgresDB {
         const res = await this.query(selectQuery);
         return parseInt(res.rows[0].count, 10);
     }
-    
+
 
     // DEVELOPMENT
     async get_all_auth_codes() {
