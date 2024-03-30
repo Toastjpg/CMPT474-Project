@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { createAccount, isUniqueEmail } from "../controllers/account.controller";
 import { registerEmailAuthenticatoin, verifyEmailAuthenticatoin } from "../controllers/authentication.controller";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
+import { UserCredential } from "firebase/auth";
 
 export function SignupPage() {
     enum Display {
@@ -60,23 +61,19 @@ export function SignupPage() {
         setButtonIdle(true)
 
         try {
-            const userCredential = await firebaseSignUp(email, password)
+            if(password !== confirmPassword) {
+                throw new Error("Passwords do not match")
+            }
+
+            const userCredential: UserCredential = await firebaseSignUp(email, password)
             console.log(userCredential)
 
             // store successful userCredential token in session storage
             const user = userCredential.user
+            const jwt = await user.getIdToken()
+            sessionStorage.setItem("token", jwt)
 
-            if(user === null) {
-                throw new Error("Failed to create user")
-            }
-
-            // TODO get token & make request to create a user in the backend
-            // const response = await createAccount(username, email, password)
-            // const data = await response.json()
-            // if(response.ok) {
-            //     navigate("/homepage");
-            //     return
-            // }
+            navigate("/homepage")
         } catch (e: any) {
             setButtonIdle(false)
             alert(e.message)

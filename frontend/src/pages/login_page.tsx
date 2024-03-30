@@ -3,37 +3,43 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { signinUser } from "../controllers/account.controller";
-
-import { useAuth0 } from "@auth0/auth0-react";
+import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
 
 export function SigninPage() {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [buttonIdle, setButtonIdle] = useState(false)
+    const { firebaseSignIn } = useFirebaseAuth();
+    
     let navigate = useNavigate();
 
     // NOTE: SIGN IN flow for firebase auth
     async function signin() {
         setButtonIdle(true)
 
-        // TODO: update the controller call to use firebase auth instead
-        const response = await signinUser(username, password) // signinUser not implemented yet!!!
-        const data = await response.json()
-        if (response.ok) {
+        try {
+            const userCredential = await firebaseSignIn(email, password)
+            console.log(userCredential.user)
+
+            const user = userCredential.user
+            const jwt = await user.getIdToken()
+            sessionStorage.setItem("token", jwt)
+
             navigate("/homepage")
-            return
+        } catch (e: any) {
+            setButtonIdle(false)
+            alert(e.message)
         }
-        setButtonIdle(false)
-        alert(data)
     }
 
     const signinForm = () => {
         return (
             <>
+            {/* NOTE: Changed Username to Email */}
             <TextInput
-                label="Username"
-                value={username}
-                onChange={(event) => setUsername(event.currentTarget.value)}
+                label="Email"
+                value={email}
+                onChange={(event) => setEmail(event.currentTarget.value)}
             />
             <TextInput
                 label="Password"
@@ -46,21 +52,12 @@ export function SigninPage() {
         )
     }
 
-    // NOTE: testing
-    const auth0Signin = () => {
-        const { loginWithRedirect } = useAuth0();
-
-        return (
-            <Button color="gray" onClick={() => loginWithRedirect()}>Sign in with Auth0</Button>
-        )
-    }
-
     return (
         <>
         <p className="designHeading">Sign in</p>
         <Title order={1} >SFU Collaborative Learning Platform</Title>
         {signinForm()}
-        {/* {auth0Signin()} */}
+
         </>
     )
 }

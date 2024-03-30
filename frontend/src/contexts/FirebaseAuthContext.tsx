@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User as FirebaseUser, UserCredential, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { User as FirebaseUser, UserCredential, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { authRef } from '../firebase.config';
 
 const AuthContext = createContext({} as any);
@@ -12,20 +12,29 @@ export function useFirebaseAuth() {
 export function FirebaseAuthProvider(props: { children: any }) {
     const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
     
-    function firebaseSignUp(email: string, password: string): Promise<UserCredential> {
+    function signUp(email: string, password: string): Promise<UserCredential> {
         return createUserWithEmailAndPassword(authRef, email, password)
+    }
+
+    function signIn(email: string, password: string): Promise<UserCredential> {
+        return signInWithEmailAndPassword(authRef, email, password)
     }
 
     // TODO: handle auth state changing
     useEffect(() => {
         const unsub = onAuthStateChanged(authRef, (user) => {
             // https://firebase.google.com/docs/reference/js/auth.user
-            setCurrentUser(user)
+
+            if (user){
+                setCurrentUser(user)
+            } else {
+                setCurrentUser(null)
+            }
         })
         return unsub
     }, [])
 
-    const value = { currentUser, firebaseSignUp }
+    const value = { currentUser, firebaseSignUp: signUp, firebaseSignIn: signIn }
     return (
         <AuthContext.Provider value={value}>
             {props.children}
