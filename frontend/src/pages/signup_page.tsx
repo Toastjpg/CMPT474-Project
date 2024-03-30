@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { createAccount, isUniqueEmail } from "../controllers/account.controller";
 import { registerEmailAuthenticatoin, verifyEmailAuthenticatoin } from "../controllers/authentication.controller";
 
+
+
 export function SignupPage() {
     enum Display {
         EMAIL_FORM, AUTH_CODE_FORM, ACCOUNT_SETUP_FORM
@@ -51,8 +53,15 @@ export function SignupPage() {
         alert(data)
     }
 
+    // NOTE: SIGN UP flow here w/ firebase auth
     async function signup() {
         setButtonIdle(true)
+
+        // TODO: update the controller call to use firebase auth instead
+        
+
+
+
         const response = await createAccount(username, email, password)
         const data = await response.json()
         if(response.ok) {
@@ -97,6 +106,7 @@ export function SignupPage() {
             </>
         )
     }
+
     const accountSetupForm = () => {
         return (
             <>

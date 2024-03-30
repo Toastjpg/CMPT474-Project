@@ -14,7 +14,5 @@ const firebaseConfig = {
 
 const firebase_app = initializeApp(firebaseConfig);
 
-// init firebase auth, store auth service ref in a context
-export const auth = getAuth(firebase_app); 
+export const authRef = getAuth(firebase_app); 
 export default firebase_app;
-// export const AuthContext = React.createContext(auth);

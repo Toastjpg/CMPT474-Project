@@ -10,7 +10,7 @@ produces:
 - application/json
 
 # FIREBASE AUTH
- securityDefinitions:
+securityDefinitions:
     firebase:
       authorizationUrl: ""
       flow: "implicit"

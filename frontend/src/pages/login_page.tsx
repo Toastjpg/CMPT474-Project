@@ -12,8 +12,11 @@ export function SigninPage() {
     const [buttonIdle, setButtonIdle] = useState(false)
     let navigate = useNavigate();
 
+    // NOTE: SIGN IN flow for firebase auth
     async function signin() {
         setButtonIdle(true)
+
+        // TODO: update the controller call to use firebase auth instead
         const response = await signinUser(username, password) // signinUser not implemented yet!!!
         const data = await response.json()
         if (response.ok) {
@@ -57,7 +60,7 @@ export function SigninPage() {
         <p className="designHeading">Sign in</p>
         <Title order={1} >SFU Collaborative Learning Platform</Title>
         {signinForm()}
-        {auth0Signin()}
+        {/* {auth0Signin()} */}
         </>
     )
 }
