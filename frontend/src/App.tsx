@@ -1,7 +1,7 @@
 import { MantineProvider } from '@mantine/core';
 import { Router } from './Router';
 
-import { FirebaseAuthProvider } from './contexts/AuthContext';
+import { FirebaseAuthProvider } from './contexts/FirebaseAuthContext';
 
 import '@mantine/core/styles.css';
 import './App.css';

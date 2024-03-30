@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createAccount, isUniqueEmail } from "../controllers/account.controller";
 import { registerEmailAuthenticatoin, verifyEmailAuthenticatoin } from "../controllers/authentication.controller";
-
-
+import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
 
 export function SignupPage() {
     enum Display {
@@ -17,6 +16,8 @@ export function SignupPage() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [buttonIdle, setButtonIdle] = useState(false)
+    const { firebaseSignUp } = useFirebaseAuth();
+
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -54,22 +55,32 @@ export function SignupPage() {
     }
 
     // NOTE: SIGN UP flow here w/ firebase auth
+    // TODO: cleanup *LATER*
     async function signup() {
         setButtonIdle(true)
 
-        // TODO: update the controller call to use firebase auth instead
-        
+        try {
+            const userCredential = await firebaseSignUp(email, password)
+            console.log(userCredential)
 
+            // store successful userCredential token in session storage
+            const user = userCredential.user
 
+            if(user === null) {
+                throw new Error("Failed to create user")
+            }
 
-        const response = await createAccount(username, email, password)
-        const data = await response.json()
-        if(response.ok) {
-            navigate("/homepage");
-            return
+            // TODO get token & make request to create a user in the backend
+            // const response = await createAccount(username, email, password)
+            // const data = await response.json()
+            // if(response.ok) {
+            //     navigate("/homepage");
+            //     return
+            // }
+        } catch (e: any) {
+            setButtonIdle(false)
+            alert(e.message)
         }
-        setButtonIdle(false)
-        alert(data)
     }
 
     const emailForm = () => {
