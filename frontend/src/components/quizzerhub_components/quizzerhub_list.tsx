@@ -16,7 +16,7 @@ interface Props {
     setQuizId: (id: string) => void
 }
 export const QuizzerHubList: FC<Props> = ({ setDisplay, setQuizId }) => {
-    const [search, setSearch] = useInputState('');
+    const [search, setSearch] = useInputState('')
     const [quizzes, setQuizzes] = useState<Array<Quiz>>([])
     const [filteredQuizzes, setFilteredQuizzes] = useState<Array<Quiz>>([])
 
@@ -81,7 +81,7 @@ export const QuizzerHubList: FC<Props> = ({ setDisplay, setQuizId }) => {
                 </Button>
             </Flex>
             <TextInput
-                placeholder="Search by any field"
+                placeholder="Search by keywords"
                 mb="md"
                 leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
                 value={search}

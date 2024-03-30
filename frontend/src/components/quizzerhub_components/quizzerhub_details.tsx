@@ -71,9 +71,9 @@ export const QuizzerHubDetails: FC<Props> = ({ setDisplay, quizId }) => {
                 <Text size='sm'>Quizzes</Text>
             </div>
             {quiz !== undefined && 
-                <Container mt={20}>
-                    <Text>{quiz.title}</Text>
-                    <Text>{quiz.summary}</Text>
+                <Container mt={20} className="quiz-details">
+                    <Title className="title">{quiz.title}</Title>
+                    <Text c="dimmed">{quiz.summary}</Text>
                     <Text>{quiz.likes}</Text>
                     <Text>Average Score: {quiz.stats.avgScore}</Text>
                     <Text>Average Completion Time: {quiz.stats.avgTime}</Text>
