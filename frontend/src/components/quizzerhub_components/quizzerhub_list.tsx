@@ -1,5 +1,5 @@
 
-import { Flex, Title, Button, ScrollArea, SimpleGrid, Text } from '@mantine/core';
+import { Flex, Title, Button, ScrollArea, SimpleGrid, Text, Modal } from '@mantine/core';
 import { FC, useEffect, useState } from 'react';
 
 import { TextInput, rem } from '@mantine/core';
@@ -7,7 +7,7 @@ import { IconSearch, IconSquarePlus } from '@tabler/icons-react';
 import { Display } from './quizzerhub_tab';
 import { getAllQuizzes } from '../../controllers/quiz.controller';
 import { Quiz } from '../../models/quiz';
-import { useInputState } from '@mantine/hooks';
+import { useDisclosure, useInputState } from '@mantine/hooks';
 import { QuizCard } from './quiz_card';
 
 
@@ -19,6 +19,7 @@ export const QuizzerHubList: FC<Props> = ({ setDisplay, setQuizId }) => {
     const [search, setSearch] = useInputState('')
     const [quizzes, setQuizzes] = useState<Array<Quiz>>([])
     const [filteredQuizzes, setFilteredQuizzes] = useState<Array<Quiz>>([])
+    const [opened, { open, close }] = useDisclosure(false);
 
     useEffect(() => {
         const init = async () => {
@@ -58,13 +59,26 @@ export const QuizzerHubList: FC<Props> = ({ setDisplay, setQuizId }) => {
     }
 
     const selectQuiz = (id: string) => {
+        open()
         console.log("selected quiz: " + id)
         setQuizId(id)
-        setDisplay(Display.DETAILS)
+        // setDisplay(Display.DETAILS)
     }
 
 
     return (
+        <>
+        <Modal
+            opened={opened}
+            onClose={close}
+            title="This is a fullscreen modal"
+            fullScreen
+            radius={0}
+            transitionProps={{ transition: 'fade', duration: 200 }}
+        >
+            {/* Modal content */}
+        </Modal>
+        
         <Flex id="quizzerHubList" direction={"column"} h={"100%"}>
             <Flex justify={"space-between"} direction={"row"} mb={12} align={"center"}>
                 <Title size="h4">Quizzes</Title>
@@ -94,5 +108,6 @@ export const QuizzerHubList: FC<Props> = ({ setDisplay, setQuizId }) => {
                 {filteredQuizzes.length === 0 && <Text c="gray" size='sm'>No quizzes found.</Text>}
             </ScrollArea>
         </Flex>
+        </>
     )
 }
