@@ -207,7 +207,13 @@ div.pagination {
     text-wrap: wrap;
     word-wrap: break-word;
 }
-
+.file-card {
+  background: var(--mantine-color-gray-2);
+}
+.file-card:hover {
+  cursor: pointer;
+  background: var(--mantine-color-gray-3);
+}
 .file-card .filename {
     text-wrap: wrap;
     word-wrap: break-word;

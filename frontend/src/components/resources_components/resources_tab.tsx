@@ -7,11 +7,59 @@ import { FileUploader } from './file_uploader/file_uploader';
 import { useEffect, useState } from 'react';
 import { FileCard, FileInfo } from './file_card';
 
+const dummyFiles: Array<FileInfo> = [
+    {
+        name: "welcome-page-bg-bdnOKvlu.jpg",
+        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
+        type: "image/png"
+    },
+        {
+        name: "welcome-page-bg-bdnOKvlu1.jpg",
+        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
+        type: "image/png"
+    },
+        {
+        name: "welcome-page-bg-bdnOKvlu2.jpg",
+        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
+        type: "application/pdf"
+    },
+        {
+        name: "welcome-page-bg-bdnOKvlu3.png",
+        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
+        type: "image/png"
+    },
+        {
+        name: "welcome-page-bg-bdnOKvlu4.ppt",
+        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
+        type: "application/vnd.ms-powerpoint"
+    },
+        {
+        name: "welcome-page-bg-bdnOKvlu5.jpg",
+        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
+        type: "image/png"
+    },
+        {
+        name: "welcome-page-bg-bdnOKvlu6.jpg",
+        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
+        type: "image/png"
+    },
+        {
+        name: "welcome-page-bg-bdnOKvlu7.jpg",
+        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
+        type: "image/png"
+    },
+        {
+        name: "welcome-page-bg-bdnOKvlu8.jpg",
+        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
+        type: "image/png"
+    },
+]
+
 export function ResourcesTab() {
     const [opened, { open, close }] = useDisclosure(false);
     const [search, setSearch] = useInputState('');
-    const [files, setFiles] = useState<Array<FileInfo>>([])
-    const [filteredFiles, setFilteredFiles] = useState<Array<FileInfo>>([])
+    const [files, setFiles] = useState<Array<FileInfo>>(dummyFiles)
+    const [filteredFiles, setFilteredFiles] = useState<Array<FileInfo>>(dummyFiles)
 
     useEffect(() => {
         console.log(filteredFiles)
@@ -21,61 +69,14 @@ export function ResourcesTab() {
         const init = async () => {
             // setFiles()
             // setFilteredFiles()
-            const dummyFiles: Array<FileInfo> = [
-                {
-                    name: "welcome-page-bg-bdnOKvlu.jpg",
-                    url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-                    type: "image/png"
-                },
-                    {
-                    name: "welcome-page-bg-bdnOKvlu1.jpg",
-                    url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-                    type: "image/png"
-                },
-                    {
-                    name: "welcome-page-bg-bdnOKvlu2.jpg",
-                    url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-                    type: "application/pdf"
-                },
-                    {
-                    name: "welcome-page-bg-bdnOKvlu3.png",
-                    url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-                    type: "image/png"
-                },
-                    {
-                    name: "welcome-page-bg-bdnOKvlu4.ppt",
-                    url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-                    type: "application/vnd.ms-powerpoint"
-                },
-                    {
-                    name: "welcome-page-bg-bdnOKvlu5.jpg",
-                    url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-                    type: "image/png"
-                },
-                    {
-                    name: "welcome-page-bg-bdnOKvlu6.jpg",
-                    url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-                    type: "image/png"
-                },
-                    {
-                    name: "welcome-page-bg-bdnOKvlu7.jpg",
-                    url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-                    type: "image/png"
-                },
-                    {
-                    name: "welcome-page-bg-bdnOKvlu8.jpg",
-                    url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-                    type: "image/png"
-                },
-            ]
-            setFiles([...files, ...dummyFiles])
-            setFilteredFiles([...filteredFiles, ...dummyFiles])
+            // setFiles([...files, ...dummyFiles])
+            // setFilteredFiles([...filteredFiles, ...dummyFiles])
         }
         init()
     }, [])
 
     useEffect(() => {
-        setFilteredFiles(filterFiles)
+        setFilteredFiles(filterFiles())
     }, [search])
 
     const filterFiles = () => {
