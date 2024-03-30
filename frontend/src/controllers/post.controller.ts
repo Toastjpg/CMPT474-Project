@@ -1,4 +1,4 @@
-const gatewayURL = ``;
+const gatewayURL = import.meta.env.VITE_GATEWAY_URL;
 
 export const getPosts = async (email: string) => {
     // try {
@@ -12,7 +12,8 @@ export const getPosts = async (email: string) => {
         method: "POST",
         mode: 'cors',
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${sessionStorage.getItem("token")}`
         },
         body: JSON.stringify({
             email: email
@@ -35,7 +36,8 @@ export const savePost = async (email: string, code: string) => {
         method: "POST",
         mode: 'cors',
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${sessionStorage.getItem("token")}`
         },
         body: JSON.stringify({ email: email, authCode: code })
     })

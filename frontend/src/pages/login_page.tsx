@@ -57,7 +57,6 @@ export function SigninPage() {
         <p className="designHeading">Sign in</p>
         <Title order={1} >SFU Collaborative Learning Platform</Title>
         {signinForm()}
-
         </>
     )
 }

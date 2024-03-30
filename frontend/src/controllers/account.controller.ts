@@ -1,12 +1,13 @@
-const gatewayURL = `https://api-gateway-container-zr4kfxliwa-uc.a.run.app`;
+const gatewayURL = import.meta.env.VITE_GATEWAY_URL;
 
-// TODO: encod password for security
+// NOTE: following controllers are deprecated via introduction of firebase auth
 export const createAccount = async (username: string, email: string, password: string) => {
     return await fetch(`${gatewayURL}/account`, {
         method: "POST",
         mode: 'cors',
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${sessionStorage.getItem("token")}`
         },
         body: JSON.stringify({
             email: email,
@@ -30,6 +31,10 @@ export const signinUser = async (username: string, password: string) => {
     const response = await fetch(`${gatewayURL}/account/signin`, {
         method: "GET",
         mode: 'cors',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+        }
     })
     const signinStatus = await response.json()
     return signinStatus

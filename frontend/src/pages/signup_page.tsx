@@ -55,8 +55,7 @@ export function SignupPage() {
         alert(data)
     }
 
-    // NOTE: SIGN UP flow here w/ firebase auth
-    // TODO: cleanup *LATER*
+    // TODO: cleanup
     async function signup() {
         setButtonIdle(true)
 
@@ -66,13 +65,13 @@ export function SignupPage() {
             }
 
             const userCredential: UserCredential = await firebaseSignUp(email, password)
-            console.log(userCredential)
 
-            // store successful userCredential token in session storage
+            // NOTE: make call to backend to create account (for unique email logging) (or use firebase)
+            // const response = await createAccount(username, email, password)
+
             const user = userCredential.user
             const jwt = await user.getIdToken()
             sessionStorage.setItem("token", jwt)
-
             navigate("/homepage")
         } catch (e: any) {
             setButtonIdle(false)
@@ -89,6 +88,7 @@ export function SignupPage() {
                 value={email}
                 onChange={(event) => setEmail(event.currentTarget.value)}
             />
+            {/* TODO: validate email is unique / exists before sending auth code */}
             <Button color="gray" disabled={buttonIdle} onClick={registerEmail} className={buttonIdle ? "spin" : ''}>
                 {buttonIdle && <span className="material-symbols-outlined">progress_activity</span>}
                 {!buttonIdle && "Send authentication code"}
@@ -96,6 +96,7 @@ export function SignupPage() {
             </>
         )
     }
+
     const authCodeForm = () => {
         return(
             <>
@@ -126,12 +127,12 @@ export function SignupPage() {
                 disabled
                 value={email}
             />
-            <TextInput
+            {/* <TextInput
                 label="Username"
                 placeholder="edampleusername"
                 value={username}
                 onChange={(event) => setUsername(event.currentTarget.value)}
-            />
+            /> */}
             <TextInput
                 label="Password"
                 placeholder="eXaMpLePaSsWoRd123!"
