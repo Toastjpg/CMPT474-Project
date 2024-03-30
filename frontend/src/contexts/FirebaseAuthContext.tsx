@@ -1,5 +1,12 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User as FirebaseUser, UserCredential, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+    User as FirebaseUser,
+    UserCredential,
+    createUserWithEmailAndPassword,
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    signOut
+} from 'firebase/auth';
 import { authRef } from '../firebase.config';
 
 const AuthContext = createContext({} as any);
@@ -11,7 +18,7 @@ export function useFirebaseAuth() {
 
 export function FirebaseAuthProvider(props: { children: any }) {
     const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
-    
+
     function signUp(email: string, password: string): Promise<UserCredential> {
         return createUserWithEmailAndPassword(authRef, email, password)
     }
@@ -20,12 +27,16 @@ export function FirebaseAuthProvider(props: { children: any }) {
         return signInWithEmailAndPassword(authRef, email, password)
     }
 
+    function logOut() {
+        return signOut(authRef)
+    }
+
     // TODO: handle auth state changing
     useEffect(() => {
         const unsub = onAuthStateChanged(authRef, (user) => {
             // https://firebase.google.com/docs/reference/js/auth.user
 
-            if (user){
+            if (user) {
                 setCurrentUser(user)
             } else {
                 setCurrentUser(null)
@@ -34,7 +45,7 @@ export function FirebaseAuthProvider(props: { children: any }) {
         return unsub
     }, [])
 
-    const value = { currentUser, firebaseSignUp: signUp, firebaseSignIn: signIn }
+    const value = { currentUser, firebaseSignUp: signUp, firebaseSignIn: signIn, firebaseSignOut: logOut}
     return (
         <AuthContext.Provider value={value}>
             {props.children}
