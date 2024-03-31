@@ -169,3 +169,52 @@ div.pagination {
     width: rem(20px);
     height: rem(20px);
 }
+
+/* Individual Quiz */
+.quiz-details .title {
+    color: var(--mantine-color-black);
+    font-family: "Greycliff" "CF", var(--mantine-font-family);
+    font-size: 44px;
+    line-height: 1.2;
+    font-weight: 900;
+}
+
+/* Resources */
+.file-list {
+    --grid-layout-gap: 12px;
+    --grid-column-count: 10;
+    --grid-item--min-width: 120px;
+  
+    /**
+     * Calculated values.
+     */
+    --gap-count: calc(var(--grid-column-count) - 1);
+    --total-gap-width: calc(var(--gap-count) * var(--grid-layout-gap));
+    --grid-item--max-width: calc((100% - var(--total-gap-width)) / var(--grid-column-count));
+  
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr));
+    grid-gap: var(--grid-layout-gap);
+}
+
+/* File Uploader */
+.uploads-list .row {
+    padding-top: var(--mantine-spacing-sm);
+    padding-bottom: var(--mantine-spacing-sm);
+    border-top: 1px solid var(--mantine-color-gray-2);
+}
+.uploads-list .filename {
+    text-wrap: wrap;
+    word-wrap: break-word;
+}
+.file-card {
+  background: var(--mantine-color-gray-2);
+}
+.file-card:hover {
+  cursor: pointer;
+  background: var(--mantine-color-gray-3);
+}
+.file-card .filename {
+    text-wrap: wrap;
+    word-wrap: break-word;
+}

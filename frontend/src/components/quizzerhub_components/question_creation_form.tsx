@@ -1,5 +1,5 @@
 import { useState, useRef, useMemo, FC, useEffect } from 'react';
-import JoditEditor from 'jodit-react';
+import JoditEditor, { Jodit } from 'jodit-react';
 import { placeholder } from 'jodit/esm/plugins/placeholder/placeholder';
 import { Button, ScrollArea, Select, Text, Title } from '@mantine/core';
 import { Form } from './quizzerhub_create';
@@ -22,6 +22,22 @@ interface Props {
 
 export const QuestionForm: FC<Props> = ({ quiz, setQuiz, placeholder, questionIdx, setForm }) => {
     const editor: any = useRef<placeholder | null>(null);
+    // const editor:any = useRef(Jodit.make('#editor', {
+    //     readonly: false,
+    //     placeholder: placeholder || 'Start typings...',
+    //     useSearch: false,
+    //     uploader: {
+    //         insertImageAsBase64URI: true
+    //     },
+    //     toolbarButtonSize: 'middle',
+    //     showCharsCounter: false,
+    //     showXPathInStatusbar: false,
+    //     askBeforePasteHTML: false,
+    //     defaultActionOnPaste: 'insert_only_text',
+    //     toolbarInlineForSelection: true,
+    //     showPlaceholder: false,
+    //     buttons: ['bold','italic','underline','strikethrough','ul','ol','fontsize','paragraph','lineHeight','superscript','subscript','image','hr','link','indent','outdent','left','brush','undo']
+    // }));
 
     const [currentIdx, setCurrentIdx] = useState(questionIdx)
 
@@ -69,6 +85,7 @@ export const QuestionForm: FC<Props> = ({ quiz, setQuiz, placeholder, questionId
         defaultActionOnPaste: 'insert_only_text',
         toolbarInlineForSelection: true,
         showPlaceholder: false,
+        buttons: ['bold','italic','underline','strikethrough','ul','ol','fontsize','paragraph','lineHeight','superscript','subscript','image','hr','link','indent','outdent','left','brush','undo']
     }), []);
 
     const answerOptionList = [...questionTypeOptions].map(([key, value]) => {

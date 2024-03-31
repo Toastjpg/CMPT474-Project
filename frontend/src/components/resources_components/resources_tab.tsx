@@ -1,77 +1,90 @@
-import { Group, Text, Center, Flex, ScrollArea, SegmentedControl, rem } from '@mantine/core';
+import { Flex, ScrollArea, rem, Title, Button, Modal, SimpleGrid, TextInput, Text } from '@mantine/core';
 import '@mantine/dropzone/styles.css';
-import { UnreleasedFeatureNotification } from '../unreleased_feature';
-import { IconLayoutGrid, IconListDetails } from '@tabler/icons-react';
-import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
-import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
+import { IconSearch, IconSquarePlus } from '@tabler/icons-react';
+import { useDisclosure, useInputState } from '@mantine/hooks';
+import { FileUploader } from './file_uploader/file_uploader';
+import { useEffect, useState } from 'react';
+import { FileCard, FileInfo } from './file_card';
+import { getAllFiles } from '../../controllers/media-controller';
 
-export function ResourcesTab(props: Partial<DropzoneProps>) {
+
+export function ResourcesTab() {
+    const [opened, { open, close }] = useDisclosure(false);
+    const [search, setSearch] = useInputState('');
+    const [files, setFiles] = useState<Array<FileInfo>>([])
+    const [filteredFiles, setFilteredFiles] = useState<Array<FileInfo>>([])
+
+    useEffect(() => {
+        fetchFiles()
+    }, [])
+
+    useEffect(() => {
+        setFilteredFiles(filterFiles())
+    }, [search, files])
+
+    const fetchFiles = async () => {
+        try {
+            const response = await getAllFiles()
+            if(response.ok) {
+                const data = await response.json()
+                setFiles([...data])
+                setFilteredFiles([...data])
+            }else {
+                alert("Something went wrong. Please refresh browser and try again.")
+            }
+        }catch(error) {
+            console.log(error)
+            alert("Fetching files failed.")
+        }
+    }
+
+    const filterFiles = () => {
+        const keywords: Array<string> = search.toLowerCase().trim().split(' ')
+        return files.filter(file => {
+            return keywords.every(keyword => {
+                return file.name.toLowerCase().includes(keyword)
+            })
+        })
+    }
+
+    const updateFilesList = async () => {
+        close()
+        await fetchFiles()
+    }
     return (
         <>
-            <Dropzone
-                onDrop={(files: any) => console.log('accepted files', files)}
-                onReject={(files: any) => console.log('rejected files', files)}
-                maxSize={5 * 1024 ** 2}
-                accept={IMAGE_MIME_TYPE}
-                {...props}
-            >
-                <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
-                    <Dropzone.Accept>
-                        <IconUpload
-                            style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-blue-6)' }}
-                            stroke={1.5}
-                        />
-                    </Dropzone.Accept>
-                    <Dropzone.Reject>
-                        <IconX
-                            style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-red-6)' }}
-                            stroke={1.5}
-                        />
-                    </Dropzone.Reject>
-                    <Dropzone.Idle>
-                        <IconPhoto
-                            style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-dimmed)' }}
-                            stroke={1.5}
-                        />
-                    </Dropzone.Idle>
-
-                    <div>
-                        <Text size="xl" inline>
-                            Drag images here or click to select files
-                        </Text>
-                        <Text size="sm" c="dimmed" inline mt={7}>
-                            Attach as many files as you like, each file should not exceed 5mb
-                        </Text>
-                    </div>
-                </Group>
-            </Dropzone>
-            <ScrollArea mt={20}>
-                <Flex justify="end">
-                    <SegmentedControl
-                        data={[
-                            {
-                                value: 'grid',
-                                label: (
-                                    <Center style={{ gap: 10 }}>
-                                        <IconLayoutGrid style={{ width: rem(16), height: rem(16) }} />
-                                        <span>Grid</span>
-                                    </Center>
-                                ),
-                            },
-                            {
-                                value: 'list',
-                                label: (
-                                    <Center style={{ gap: 10 }}>
-                                        <IconListDetails style={{ width: rem(16), height: rem(16) }} />
-                                        <span>List</span>
-                                    </Center>
-                                ),
-                            },
-                        ]}
-                    />
+            <Modal opened={opened} onClose={close} size="xl" w="100%" title="Upload Course Resources">
+                {<FileUploader updateFilesList={updateFilesList} props={{ multiple: true }} />}
+            </Modal>
+            <Flex direction={"column"} h={"100%"}>
+                <Flex justify={"space-between"} direction={"row"} mb={12} align={"center"}>
+                    <Title size="h4">Resources</Title>
+                    <Button
+                        variant="default"
+                        onClick={open}
+                        leftSection={<IconSquarePlus
+                            style={{
+                                width: rem(16),
+                                height: rem(16)
+                            }}
+                            stroke={1.5} />}>
+                        Upload Course Resources
+                    </Button>
                 </Flex>
-                <UnreleasedFeatureNotification />
-            </ScrollArea>
+                <TextInput
+                    placeholder="Search by keywords"
+                    mb="md"
+                    leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
+                    value={search}
+                    onChange={setSearch}
+                />
+                <ScrollArea scrollbarSize={8} w={"100%"} flex={1}>
+                    <SimpleGrid className='file-list' >
+                        {filteredFiles.map((file, index) => <FileCard file={file} key={index} />)}
+                    </SimpleGrid>
+                    {filteredFiles.length === 0 && <Text c="gray" size='sm'>No files found.</Text>}
+                </ScrollArea>
+            </Flex>
         </>
     )
 }
