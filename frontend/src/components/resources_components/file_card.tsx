@@ -37,7 +37,7 @@ export const FileCard: FC<Props> = ({ file }) => {
         <Card radius={12} className='file-card' miw={110} flex={1} onClick={() => openResource(file.url)}>
             <Flex direction={"column"} h={"100%"} align="center" gap={8}>
                 {getIconByType(file.type)}
-                <Text w="100%" className='filename' c="var(--mantine-color-gray-6)" size='xs'>{file.name}</Text>
+                <Text w="100%" className='filename' c="var(--mantine-color-gray-6)" size='xs' ta="center">{file.name}</Text>
             </Flex>
         </Card>
     );

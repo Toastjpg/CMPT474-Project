@@ -1,15 +1,19 @@
 import { ActionIcon, Button, Flex, Group, Text, rem } from "@mantine/core";
 import { Dropzone, DropzoneProps } from '@mantine/dropzone';
 import { IconFiles, IconTrash, IconUpload, IconX } from "@tabler/icons-react";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import '@mantine/dropzone/styles.css';
+import { uploadFiles } from "../../../controllers/media-controller";
 
-export const FileUploader: FC = (props: Partial<DropzoneProps>) => {
+
+interface Props {
+    props: Partial<DropzoneProps>
+    updateFilesList: () => void
+}
+export const FileUploader: FC<Props> = ({ props, updateFilesList }) => {
     const [files, setFiles] = useState<Array<File>>([])
+    const [loading, setLoading] = useState(false)
 
-    useEffect(() => {
-        console.log(files)
-    }, [files])
 
     const removeFile = (index: number) => {
         if(files.length > 0 && index >= 0 && index < files.length) {
@@ -19,12 +23,26 @@ export const FileUploader: FC = (props: Partial<DropzoneProps>) => {
         }
     }
 
-    const uploadFiles = async () => {
-        console.log("send files to backend")
+    const upload = async () => {
+        try {
+            setLoading(true)
+            const response = await uploadFiles(files)
+            setLoading(false)
+            const data = await response.json()
+            if(response.ok) {
+                updateFilesList()
+            }else {
+                console.log(data)
+                alert(data)
+            }
+        }catch(error) {
+            console.error(error)
+            alert("File upload failed. Please refresh the browser and try again.")
+        }
     }
 
     const rows = files.map((file, index) => (
-        <Flex direction="row" w="100%" justify="space-between" align="center" gap={16} className="row">
+        <Flex key={index} direction="row" w="100%" justify="space-between" align="center" gap={16} className="row">
             <Text c="dimmed" fz="sm" className="filename" flex={1} miw={0}>{file.name}</Text>
             <Text c="dimmed" fz="sm">{(file.size / (1024*1024)).toFixed(2)}MB</Text>
             <ActionIcon color="red" variant="light">
@@ -81,7 +99,7 @@ export const FileUploader: FC = (props: Partial<DropzoneProps>) => {
                 {rows}
             </Flex>
             {files.length === 0 && <Text c="gray" size='sm'>0 files selected.</Text>}
-            {files.length !== 0 && <Button variant="light" onClick={uploadFiles}>Upload {files.length} File{files.length > 1 ? 's' : ''}</Button>}
+            {files.length !== 0 && <Button loading={loading} variant="light" onClick={upload}>Upload {files.length} File{files.length > 1 ? 's' : ''}</Button>}
         </Flex>
     )
 }

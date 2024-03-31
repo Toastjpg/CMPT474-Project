@@ -1,83 +1,42 @@
-import { Center, Flex, ScrollArea, SegmentedControl, rem, Title, Button, Modal, SimpleGrid, TextInput, Text } from '@mantine/core';
+import { Flex, ScrollArea, rem, Title, Button, Modal, SimpleGrid, TextInput, Text } from '@mantine/core';
 import '@mantine/dropzone/styles.css';
-import { UnreleasedFeatureNotification } from '../unreleased_feature';
 import { IconSearch, IconSquarePlus } from '@tabler/icons-react';
 import { useDisclosure, useInputState } from '@mantine/hooks';
 import { FileUploader } from './file_uploader/file_uploader';
 import { useEffect, useState } from 'react';
 import { FileCard, FileInfo } from './file_card';
+import { getAllFiles } from '../../controllers/media-controller';
 
-const dummyFiles: Array<FileInfo> = [
-    {
-        name: "welcome-page-bg-bdnOKvlu.jpg",
-        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-        type: "image/png"
-    },
-        {
-        name: "welcome-page-bg-bdnOKvlu1.jpg",
-        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-        type: "image/png"
-    },
-        {
-        name: "welcome-page-bg-bdnOKvlu2.jpg",
-        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-        type: "application/pdf"
-    },
-        {
-        name: "welcome-page-bg-bdnOKvlu3.png",
-        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-        type: "image/png"
-    },
-        {
-        name: "welcome-page-bg-bdnOKvlu4.ppt",
-        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-        type: "application/vnd.ms-powerpoint"
-    },
-        {
-        name: "welcome-page-bg-bdnOKvlu5.jpg",
-        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-        type: "image/png"
-    },
-        {
-        name: "welcome-page-bg-bdnOKvlu6.jpg",
-        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-        type: "image/png"
-    },
-        {
-        name: "welcome-page-bg-bdnOKvlu7.jpg",
-        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-        type: "image/png"
-    },
-        {
-        name: "welcome-page-bg-bdnOKvlu8.jpg",
-        url: "https://cmpt474-414403.ue.r.appspot.com/assets/welcome-page-bg-bdnOKvlu.jpg",
-        type: "image/png"
-    },
-]
 
 export function ResourcesTab() {
     const [opened, { open, close }] = useDisclosure(false);
     const [search, setSearch] = useInputState('');
-    const [files, setFiles] = useState<Array<FileInfo>>(dummyFiles)
-    const [filteredFiles, setFilteredFiles] = useState<Array<FileInfo>>(dummyFiles)
+    const [files, setFiles] = useState<Array<FileInfo>>([])
+    const [filteredFiles, setFilteredFiles] = useState<Array<FileInfo>>([])
 
     useEffect(() => {
-        console.log(filteredFiles)
-    }, [filteredFiles])
-
-    useEffect(() => {
-        const init = async () => {
-            // setFiles()
-            // setFilteredFiles()
-            // setFiles([...files, ...dummyFiles])
-            // setFilteredFiles([...filteredFiles, ...dummyFiles])
-        }
-        init()
+        fetchFiles()
     }, [])
 
     useEffect(() => {
         setFilteredFiles(filterFiles())
-    }, [search])
+    }, [search, files])
+
+    const fetchFiles = async () => {
+        try {
+            const response = await getAllFiles()
+            if(response.ok) {
+                const data = await response.json()
+                setFiles([...data])
+                setFilteredFiles([...data])
+            }else {
+                alert("Something went wrong. Please refresh browser and try again.")
+            }
+        }catch(error) {
+            console.log(error)
+            alert("Fetching files failed.")
+        }
+    }
 
     const filterFiles = () => {
         const keywords: Array<string> = search.toLowerCase().trim().split(' ')
@@ -87,10 +46,15 @@ export function ResourcesTab() {
             })
         })
     }
+
+    const updateFilesList = async () => {
+        close()
+        await fetchFiles()
+    }
     return (
         <>
             <Modal opened={opened} onClose={close} size="xl" w="100%" title="Upload Course Resources">
-                {<FileUploader />}
+                {<FileUploader updateFilesList={updateFilesList} props={{ multiple: true }} />}
             </Modal>
             <Flex direction={"column"} h={"100%"}>
                 <Flex justify={"space-between"} direction={"row"} mb={12} align={"center"}>
