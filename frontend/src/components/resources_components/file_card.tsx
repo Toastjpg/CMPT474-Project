@@ -1,7 +1,25 @@
 import { Card, Text, Flex, rem } from '@mantine/core';
-import { IconFile, IconFileSpreadsheet, IconFileTypePpt, IconPdf, IconPhoto } from '@tabler/icons-react';
+import { 
+    IconFile, 
+    IconFileMusic, 
+    IconFileSettings, 
+    IconFileSpreadsheet, 
+    IconFileTypeCsv, 
+    IconFileTypeDocx, 
+    IconFileTypePpt, 
+    IconFileTypeTxt, 
+    IconFileZip, 
+    IconPdf, 
+    IconPhoto, 
+    IconVideo } from '@tabler/icons-react';
 import { FC } from 'react';
-import { IMAGE_MIME_TYPE, MS_EXCEL_MIME_TYPE, MS_POWERPOINT_MIME_TYPE, PDF_MIME_TYPE } from '@mantine/dropzone';
+import { 
+    MIME_TYPES, 
+    IMAGE_MIME_TYPE, 
+    MS_EXCEL_MIME_TYPE, 
+    MS_POWERPOINT_MIME_TYPE, 
+    PDF_MIME_TYPE, 
+    MS_WORD_MIME_TYPE } from '@mantine/dropzone';
 
 
 export interface FileInfo {
@@ -10,23 +28,34 @@ export interface FileInfo {
     type: string
 }
 
+
 interface Props {
     file: FileInfo
 }
+
 const styles = { width: rem(40), height: rem(40), color: "var(--mantine-color-gray-6)" }
+const MimeTypeIcons: Array<{ types: string[], icon: JSX.Element}> = new Array()
+MimeTypeIcons.push({ types: ["text/plain"], icon: <IconFileTypeTxt style={styles} stroke={1.4} /> })
+MimeTypeIcons.push({ types: ["audio/mpeg"], icon: <IconFileMusic style={styles} stroke={1.4} /> })
+MimeTypeIcons.push({ types: [MIME_TYPES.mp4], icon: <IconVideo style={styles} stroke={1.4} /> })
+MimeTypeIcons.push({ types: [MIME_TYPES.zip], icon: <IconFileZip style={styles} stroke={1.4} /> })
+MimeTypeIcons.push({ types: [MIME_TYPES.csv], icon: <IconFileTypeCsv style={styles} stroke={1.4} /> })
+MimeTypeIcons.push({ types: [MIME_TYPES.exe], icon: <IconFileSettings style={styles} stroke={1.4} /> })
+MimeTypeIcons.push({ types: IMAGE_MIME_TYPE, icon: <IconPhoto style={styles} stroke={1.4} /> })
+MimeTypeIcons.push({ types: PDF_MIME_TYPE, icon: <IconPdf style={styles} stroke={1.4} /> })
+MimeTypeIcons.push({ types: MS_WORD_MIME_TYPE, icon: <IconFileTypeDocx style={styles} stroke={1.4} /> })
+MimeTypeIcons.push({ types: MS_POWERPOINT_MIME_TYPE, icon: <IconFileTypePpt style={styles} stroke={1.4} /> })
+MimeTypeIcons.push({ types: MS_EXCEL_MIME_TYPE, icon: <IconFileSpreadsheet style={styles} stroke={1.4} /> })
+
+
 export const FileCard: FC<Props> = ({ file }) => {
     const getIconByType = (type: string) => {
-        if(IMAGE_MIME_TYPE.some(name => name === type)) {
-            return <IconPhoto style={styles} stroke={1.4} />
-        }else if(PDF_MIME_TYPE.some(name => name === type)) {
-            return <IconPdf style={styles} stroke={1.4} />
-        }else if(MS_POWERPOINT_MIME_TYPE.some(name => name === type)) {
-            return <IconFileTypePpt style={styles} stroke={1.4} />
-        }else if(MS_EXCEL_MIME_TYPE.some(name => name === type)) {
-            return <IconFileSpreadsheet style={styles} stroke={1.4} />
-        } {// add more as needed
-            return <IconFile style={styles} stroke={1.4} />
+        for(let item of MimeTypeIcons) {
+            if(item.types.some(option => option === type)) {
+                return item.icon
+            }
         }
+        return <IconFile style={styles} stroke={1.4} />
     }
 
     const openResource = (url: string) => {
