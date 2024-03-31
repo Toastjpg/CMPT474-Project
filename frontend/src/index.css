@@ -183,7 +183,7 @@ div.pagination {
 .file-list {
     --grid-layout-gap: 12px;
     --grid-column-count: 10;
-    --grid-item--min-width: 110px;
+    --grid-item--min-width: 120px;
   
     /**
      * Calculated values.
