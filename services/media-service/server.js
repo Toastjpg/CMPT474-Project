@@ -1,10 +1,10 @@
 /* ------------------------------ dependencies ------------------------------ */
 const express = require("express");
 const cors = require("cors");
+const Multer = require('multer')
 const dotenv = require("dotenv");
-const { getAllFiles, uploadFiles } = require("./controllers/media");
 dotenv.config();
-// const { getAllQuizzes, createQuiz, getQuiz, updateQuiz, deleteQuiz } = require("./routes/quiz");
+const { getAllFiles, uploadFiles } = require("./controllers/media");
 
 /* ------------------------------- server setup ------------------------------ */
 const app = express();
@@ -15,12 +15,17 @@ const PORT = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+const multer = Multer({
+    storage: Multer.memoryStorage(),
+    limits: {
+        fileSize: 25 * 1024 * 1024,
+    },
+})
 
 /* -------------------------------- endpoints ------------------------------- */
 
 app.get('/api/files', getAllFiles)
-app.post('/api/files', uploadFiles)
+app.post('/api/files', multer.any(), uploadFiles)
 // app.delete('/api/files/:fileId', deleteFile)
 
 /* ----------------------------- starting server ---------------------------- */
