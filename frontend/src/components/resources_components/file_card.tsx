@@ -6,10 +6,10 @@ import {
     IconFileSpreadsheet, 
     IconFileTypeCsv, 
     IconFileTypeDocx, 
+    IconFileTypePdf, 
     IconFileTypePpt, 
     IconFileTypeTxt, 
     IconFileZip, 
-    IconPdf, 
     IconPhoto, 
     IconVideo } from '@tabler/icons-react';
 import { FC } from 'react';
@@ -42,7 +42,7 @@ MimeTypeIcons.push({ types: [MIME_TYPES.zip], icon: <IconFileZip style={styles} 
 MimeTypeIcons.push({ types: [MIME_TYPES.csv], icon: <IconFileTypeCsv style={styles} stroke={1.4} /> })
 MimeTypeIcons.push({ types: [MIME_TYPES.exe], icon: <IconFileSettings style={styles} stroke={1.4} /> })
 MimeTypeIcons.push({ types: IMAGE_MIME_TYPE, icon: <IconPhoto style={styles} stroke={1.4} /> })
-MimeTypeIcons.push({ types: PDF_MIME_TYPE, icon: <IconPdf style={styles} stroke={1.4} /> })
+MimeTypeIcons.push({ types: PDF_MIME_TYPE, icon: <IconFileTypePdf style={styles} stroke={1.4} /> })
 MimeTypeIcons.push({ types: MS_WORD_MIME_TYPE, icon: <IconFileTypeDocx style={styles} stroke={1.4} /> })
 MimeTypeIcons.push({ types: MS_POWERPOINT_MIME_TYPE, icon: <IconFileTypePpt style={styles} stroke={1.4} /> })
 MimeTypeIcons.push({ types: MS_EXCEL_MIME_TYPE, icon: <IconFileSpreadsheet style={styles} stroke={1.4} /> })
