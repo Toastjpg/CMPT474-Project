@@ -15,7 +15,6 @@ export function SigninPage() {
 
     let navigate = useNavigate();
 
-    // NOTE: SIGN IN flow for firebase auth
     async function signin() {
 
         setButtonIdle(true)

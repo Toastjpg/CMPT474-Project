@@ -94,31 +94,31 @@ export function SignupPage() {
                 <Button color="gray" mt={12} onClick={registerEmail} loading={loading}>Send authentication code</Button>
             </>
         )
-}
+    }
 
-const authCodeForm = () => {
-    return (
-        <>
-            <div className="navigation">
-                <span className="material-symbols-outlined" onClick={() => setDisplay(Display.EMAIL_FORM)}>arrow_circle_left</span>
-            </div>
-            <TextInput
-                label="Authentication Code"
-                value={authCode}
-                onChange={(e) => setAuthCode(e.target.value)}
-                required
-            />
-            <Button color="gray" mt={12} onClick={verifyEmail} loading={loading}>Verify email</Button>
-        </>
-    )
-}
+    const authCodeForm = () => {
+        return (
+            <>
+                <div className="navigation">
+                    <span className="material-symbols-outlined" onClick={() => setDisplay(Display.EMAIL_FORM)}>arrow_circle_left</span>
+                </div>
+                <TextInput
+                    label="Authentication Code"
+                    value={authCode}
+                    onChange={(e) => setAuthCode(e.target.value)}
+                    required
+                />
+                <Button color="gray" mt={12} onClick={verifyEmail} loading={loading}>Verify email</Button>
+            </>
+        )
+    }
 
-const accountSetupForm = () => {
-    const iconUser = <IconUser style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
-    const iconLock = <IconLock style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
-    const iconMail = <IconMail style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
-    return (
-        <>
+    const accountSetupForm = () => {
+        const iconUser = <IconUser style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+        const iconLock = <IconLock style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+        const iconMail = <IconMail style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+        return (
+            <>
                 <div className="navigation">
                     <span className="material-symbols-outlined" onClick={() => setDisplay(Display.EMAIL_FORM)}>arrow_circle_left</span>
                 </div>
@@ -144,13 +144,13 @@ const accountSetupForm = () => {
         )
     }
 
-return (
-    <>
-        <p className="designHeading">Sign up</p>
-        <Title order={1} >SFU Collaborative Learning Platform</Title>
-        {display === Display.EMAIL_FORM && emailForm()}
-        {display === Display.AUTH_CODE_FORM && authCodeForm()}
-        {display === Display.ACCOUNT_SETUP_FORM && accountSetupForm()}
-    </>
-)
+    return (
+        <>
+            <p className="designHeading">Sign up</p>
+            <Title order={1} >SFU Collaborative Learning Platform</Title>
+            {display === Display.EMAIL_FORM && emailForm()}
+            {display === Display.AUTH_CODE_FORM && authCodeForm()}
+            {display === Display.ACCOUNT_SETUP_FORM && accountSetupForm()}
+        </>
+    )
 }

@@ -12,6 +12,7 @@ import { Progress } from './pages/progress_page';
 import { Profile } from './pages/profile_page';
 import { Course } from './pages/course_page';
 import { HomePage } from './pages/home_page';
+import { SignupPage } from './pages/signup_page';
 
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
         <MantineProvider>
             <FirebaseAuthProvider>
                 <Routes>
+                    {/* put private routes here */}
                     <Route path="/" element={<HomePage />} >
                         <Route index path="/dashboard" element={<Dashboard />} />
                         <Route path="/courses" element={<Courses />} />
@@ -27,6 +29,9 @@ export default function App() {
                         <Route path="/settings" element={<Settings />} />
                         <Route path="/profile" element={<Profile />} />
                     </Route>
+
+                    {/* put public routes here */}
+                    <Route path="/signup" element={<SignupPage />} />
                 </Routes>
             </FirebaseAuthProvider>
         </MantineProvider>
