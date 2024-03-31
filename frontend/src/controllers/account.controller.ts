@@ -1,6 +1,8 @@
 const gatewayURL = import.meta.env.VITE_GATEWAY_URL;
 
 // NOTE: following controllers are deprecated via introduction of firebase auth
+// NOTE: This controller interacts with User Service to provide signin features
+// Will be replaced with Firestore Auth when integrated
 export const createAccount = async (username: string, email: string, password: string) => {
     return await fetch(`${gatewayURL}/account`, {
         method: "POST",
@@ -28,6 +30,7 @@ export const signinUser = async (username: string, password: string) => {
     // attache session info with login credentials
     // expect server to return true if signin success else false
     // DO NOT add info in paramter or url! use SESSIONS
+    console.log(username, password)
     const response = await fetch(`${gatewayURL}/account/signin`, {
         method: "GET",
         mode: 'cors',

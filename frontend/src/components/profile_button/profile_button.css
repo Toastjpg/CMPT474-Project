@@ -1,0 +1,9 @@
+.profile_button {
+    display: block;
+    width: 100%;
+    padding: var(--mantine-spacing-md);
+    border-radius: 0;
+}
+.profile_button:hover {
+    background-color: var(--mantine-color-gray-0);
+}

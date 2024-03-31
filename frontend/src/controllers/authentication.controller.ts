@@ -12,6 +12,7 @@ export const registerEmailAuthenticatoin = async (email: string) => {
         })
     })
 }
+
 export const verifyEmailAuthenticatoin = async (email: string, code: string) => {
     return await fetch(`${gatewayURL}/authorize`, {
         method: "POST",

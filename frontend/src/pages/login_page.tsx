@@ -1,20 +1,23 @@
-import { Title, TextInput, Button } from "@mantine/core"
+import { Title, TextInput, Button, PasswordInput, rem } from "@mantine/core"
+import { IconLock, IconUser } from '@tabler/icons-react';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { useInputState } from "@mantine/hooks";
 import { signinUser } from "../controllers/account.controller";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
 
 export function SigninPage() {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [password, setPassword] = useInputState('');
     const [buttonIdle, setButtonIdle] = useState(false)
     const { firebaseSignIn } = useFirebaseAuth();
-    
+
     let navigate = useNavigate();
 
     // NOTE: SIGN IN flow for firebase auth
     async function signin() {
+
         setButtonIdle(true)
 
         try {
@@ -33,30 +36,31 @@ export function SigninPage() {
     }
 
     const signinForm = () => {
+        const iconUser = <IconUser style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+        const iconLock = <IconLock style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+
         return (
             <>
-            {/* NOTE: Changed Username to Email */}
-            <TextInput
-                label="Email"
-                value={email}
-                onChange={(event) => setEmail(event.currentTarget.value)}
-            />
-            <TextInput
-                label="Password"
-                value={password}
-                onChange={(event) => setPassword(event.currentTarget.value)}
-            />
-
-            <Button color="gray" disabled={buttonIdle} onClick={signin} className={buttonIdle ? "spin" : ''}>Sign in</Button>
+                {/* NOTE: Changed Username to Email */}
+                <TextInput
+                    label="Email"
+                    value={email}
+                    onChange={(event) => setEmail(event.currentTarget.value)}
+                    leftSection={iconUser}
+                    required
+                />
+                <PasswordInput label="Password" id="your-password" leftSection={iconLock} value={password} 
+                    onChange={(event) => setPassword(event.currentTarget.value)} required />
+                <Button color="gray" mt={12} disabled={buttonIdle} onClick={signin} loading={buttonIdle}>Sign in</Button>
             </>
         )
     }
 
     return (
         <>
-        <p className="designHeading">Sign in</p>
-        <Title order={1} >SFU Collaborative Learning Platform</Title>
-        {signinForm()}
+            <p className="designHeading">Sign in</p>
+            <Title order={1} >SFU Collaborative Learning Platform</Title>
+            {signinForm()}
         </>
     )
 }
