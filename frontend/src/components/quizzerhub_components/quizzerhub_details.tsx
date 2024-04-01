@@ -39,7 +39,7 @@ export const QuizzerHubDetails: FC<Props> = ({ setDisplay, quizId }) => {
                     setQuiz(tmp)
                 }else {
                     const data = await response.json()
-                    alert(data)
+                    alert(data.error)
                     setDisplay(Display.LIST)
                 }
             }catch(error) {
