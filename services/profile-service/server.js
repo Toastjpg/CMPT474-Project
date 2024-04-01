@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require('dotenv');
 dotenv.config();
+const firebaseController = require("./controllers/firestoreController")
 
 const app = express();
 const PORT = process.env.PORT || 8080
@@ -17,35 +18,30 @@ app.use(express.json());
  */
 
 // Get profile information
+// Get document fields given profile ID
 app.get("/api/profile/:id", async (req, res) => {
     const id = req.params.id
 
-    if (id === undefined || id === null) {
-        return res.status(400).json({ error: "ERROR: Invalid ID" })
-    }
-
     try {
-        // TODO Make db query here
-        // https://firebase.google.com/docs/firestore/query-data/get-data#get_a_document
-
-        return res.status(200).json({ message: `Getting profile data for user with id: ${id}` })
+        const data = await firebaseController.getById(id)
+        return res.status(200).json(data)
     }
     catch (e) {
         console.error(e)
-        return res.status(500).json({ error: "ERROR: DB query to get failed." })
+        return res.status(500).json({ error: "ERROR: DB query to get document failed." })
     }
 })
 
 // Add or edit profile data
+// Overwrites or creates document with fields from the body.content JSON object
 app.put("/api/profile/", async (req, res) => {
     const id = req.body.id
     const content = req.body.content
 
     try {
-        // TODO make DB query here
-        //https://firebase.google.com/docs/firestore/manage-data/add-data#set_a_document
+        const docId = await firebaseController.updateById(id, content)
 
-        res.status(200).json({ message: `Creating/Updating profile data for user with id: ${id}` })
+        res.status(200).json({ message: `Modified document: ${docId}` })
     }
     catch (e) {
         console.error(e)
@@ -54,5 +50,6 @@ app.put("/api/profile/", async (req, res) => {
 })
 
 app.listen(PORT, "0.0.0.0", () => {
-    console.log("PROFILE SERVICE: running on port 8080");
+    console.log("PROFILE SERVICE: running on port 8080")
+    firebaseController.initialize()
 })

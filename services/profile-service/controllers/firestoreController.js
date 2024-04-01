@@ -41,7 +41,26 @@ const firebaseController = {
             console.log("\x1b[31m", "ERROR: Unable to connect to Firestore Database\nIs the Firestore Database ID correct?");
             throw error;
         }
+    },
+
+    getById: async (id) => {
+        const docRef = firestoreDatabase.collection('profiles').doc(id)
+        const doc = await docRef.get();
+
+        if (!doc.exists) {
+            throw new Error("Document does not exist!")
+        } else {
+            return doc.data()
+        }
+    },
+
+    updateById: async (id, content) => {
+        // Will edit or create new document
+        const docRef = firestoreDatabase.collection('profiles').doc(id)
+        docRef.set(content)
+
+        return docRef.id
     }
 }
 
-// TODO Where to write the DB controller functions to wrap CRUD operations?
+module.exports = firebaseController
