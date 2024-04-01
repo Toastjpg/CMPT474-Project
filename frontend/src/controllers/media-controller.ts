@@ -1,4 +1,4 @@
-const gatewayURL = `http://localhost:8080/api`;
+const gatewayURL = import.meta.env.VITE_GATEWAY_URL;
 
 export const uploadFiles = async (files: Array<File>) => {
     const formData = new FormData();
