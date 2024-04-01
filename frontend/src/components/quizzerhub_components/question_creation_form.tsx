@@ -1,6 +1,6 @@
 import { useState, useRef, useMemo, FC, useEffect } from 'react';
-import JoditEditor, { Jodit } from 'jodit-react';
-import { placeholder } from 'jodit/esm/plugins/placeholder/placeholder';
+import JoditEditor from 'jodit-react';
+// import { placeholder } from 'jodit/esm/plugins/placeholder/placeholder';
 import { Button, ScrollArea, Select, Text, Title } from '@mantine/core';
 import { Form } from './quizzerhub_create';
 import { Option, Question, QuestionType, questionTypeOptions } from '../../models/question';
@@ -21,26 +21,9 @@ interface Props {
 }
 
 export const QuestionForm: FC<Props> = ({ quiz, setQuiz, placeholder, questionIdx, setForm }) => {
-    const editor: any = useRef<placeholder | null>(null);
-    // const editor:any = useRef(Jodit.make('#editor', {
-    //     readonly: false,
-    //     placeholder: placeholder || 'Start typings...',
-    //     useSearch: false,
-    //     uploader: {
-    //         insertImageAsBase64URI: true
-    //     },
-    //     toolbarButtonSize: 'middle',
-    //     showCharsCounter: false,
-    //     showXPathInStatusbar: false,
-    //     askBeforePasteHTML: false,
-    //     defaultActionOnPaste: 'insert_only_text',
-    //     toolbarInlineForSelection: true,
-    //     showPlaceholder: false,
-    //     buttons: ['bold','italic','underline','strikethrough','ul','ol','fontsize','paragraph','lineHeight','superscript','subscript','image','hr','link','indent','outdent','left','brush','undo']
-    // }));
+    const editor = useRef(null);
 
     const [currentIdx, setCurrentIdx] = useState(questionIdx)
-
     const [question, setQuestion] = useState<string>('');
     const [options, setOptions] = useState<Array<Option>>([])
     const [type, setType] = useInputState<number>(QuestionType.NO_ANSWER);
@@ -69,24 +52,21 @@ export const QuestionForm: FC<Props> = ({ quiz, setQuiz, placeholder, questionId
         setType(parseInt(typeValue))
     }
 
-
-
-    const config: any = useMemo(() => ({
-        readonly: false,
-        placeholder: placeholder || 'Start typings...',
-        useSearch: false,
-        uploader: {
-            insertImageAsBase64URI: true
-        },
-        toolbarButtonSize: 'middle',
-        showCharsCounter: false,
-        showXPathInStatusbar: false,
-        askBeforePasteHTML: false,
-        defaultActionOnPaste: 'insert_only_text',
-        toolbarInlineForSelection: true,
-        showPlaceholder: false,
-        buttons: ['bold','italic','underline','strikethrough','ul','ol','fontsize','paragraph','lineHeight','superscript','subscript','image','hr','link','indent','outdent','left','brush','undo']
-    }), []);
+    // all options from https://xdsoft.net/jodit/docs/,
+    const config = useMemo(() => {
+        return {
+            readonly: false, 
+            useSearch: false,
+            toolbarButtonSize: 'middle',
+            showCharsCounter: false,
+            showXPathInStatusbar: false,
+            defaultActionOnPaste: 'insert_as_html',
+            toolbarInlineForSelection: true,
+            hidePoweredByJodit: true,
+            "toolbarAdaptive": false,
+            removeButtons: ['lineHeight', 'classSpan', 'video', 'speechRecognize', 'spellcheck', 'cut', 'copy', 'paste', 'selectall', 'copyformat', 'table', 'symbols', 'find', 'source', 'about'],
+        }
+    }, [placeholder]);
 
     const answerOptionList = [...questionTypeOptions].map(([key, value]) => {
         return {
