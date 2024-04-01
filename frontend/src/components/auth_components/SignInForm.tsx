@@ -4,10 +4,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useInputState } from "@mantine/hooks";
-import { signinUser } from "../controllers/account.controller";
-import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
+// import { signinUser } from "../controllers/account.controller";
+import { useFirebaseAuth } from "../../contexts/FirebaseAuthContext";
 
-export function SigninPage() {
+export function SignInForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useInputState('');
     const [buttonIdle, setButtonIdle] = useState(false)
@@ -21,13 +21,13 @@ export function SigninPage() {
 
         try {
             const userCredential = await firebaseSignIn(email, password)
-            console.log(userCredential.user)
+            // console.log(userCredential.user)
 
             const user = userCredential.user
             const jwt = await user.getIdToken()
             sessionStorage.setItem("token", jwt)
 
-            navigate("/homepage")
+            navigate("/")
         } catch (e: any) {
             setButtonIdle(false)
             alert(e.message)

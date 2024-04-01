@@ -7,7 +7,7 @@ import {
     signInWithEmailAndPassword,
     signOut
 } from 'firebase/auth';
-import { authRef } from '../firebase.config';
+import { authRef } from '../components/auth_components/firebase.config';
 
 const AuthContext = createContext({} as any);
 
@@ -31,17 +31,9 @@ export function FirebaseAuthProvider(props: { children: any }) {
         return signOut(authRef)
     }
 
-    // TODO: handle auth state changing
     useEffect(() => {
-        const unsub = onAuthStateChanged(authRef, (user) => {
-            // https://firebase.google.com/docs/reference/js/auth.user
-
-            if (user) {
-                setCurrentUser(user)
-            } else {
-                setCurrentUser(null)
-            }
-        })
+    // https://firebase.google.com/docs/reference/js/auth.user
+        const unsub = onAuthStateChanged(authRef, setCurrentUser)
         return unsub
     }, [])
 

@@ -1,14 +1,14 @@
 import { TextInput, Button, Title, PasswordInput, rem } from "@mantine/core"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createAccount, isUniqueEmail } from "../controllers/account.controller";
-import { registerEmailAuthenticatoin, verifyEmailAuthenticatoin } from "../controllers/authentication.controller";
-import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
+import { createAccount, isUniqueEmail } from "../../controllers/account.controller";
+import { registerEmailAuthenticatoin, verifyEmailAuthenticatoin } from "../../controllers/authentication.controller";
+import { useFirebaseAuth } from "../../contexts/FirebaseAuthContext";
 import { UserCredential } from "firebase/auth";
-import { useInputState } from "@mantine/hooks";
+// import { useInputState } from "@mantine/hooks";
 import { IconLock, IconUser, IconMail } from '@tabler/icons-react';
 
-export function SignupPage() {
+export function SignUpForm() {
     enum Display {
         EMAIL_FORM, AUTH_CODE_FORM, ACCOUNT_SETUP_FORM
     }
@@ -56,7 +56,6 @@ export function SignupPage() {
         alert(data)
     }
 
-    // TODO: cleanup
     async function signup() {
         setloading(true)
 
@@ -74,7 +73,7 @@ export function SignupPage() {
             const jwt = await user.getIdToken()
             sessionStorage.setItem("token", jwt)
             setloading(false)
-            navigate("/homepage")
+            navigate("/")
         } catch (e: any) {
             setloading(false)
             alert(e.message)
