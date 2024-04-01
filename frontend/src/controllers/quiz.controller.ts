@@ -1,6 +1,6 @@
 import { Quiz } from "../models/quiz";
 
-const gatewayURL = `http://localhost:8080/api`;
+const gatewayURL = import.meta.env.VITE_GATEWAY_URL;
 
 export const createQuiz = async (quiz: Quiz) => {
     return await fetch(`${gatewayURL}/quizzes`, {
