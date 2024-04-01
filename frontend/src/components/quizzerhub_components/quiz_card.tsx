@@ -7,6 +7,20 @@ interface Props {
     quiz: Quiz
     selectQuiz: (id: string) => void
 }
+export const getColorByAvgScore = (score: number) => {
+    if (score > 85) {
+        return 'green'
+    } else if (score > 70) {
+        return 'blue'
+    } else if (score > 50) {
+        return 'yellow'
+    } else if (score > 30) {
+        return 'orange'
+    } else {
+        return 'red'
+    }
+}
+
 export const QuizCard: FC<Props> = ({ quiz, selectQuiz }) => {
     const [stats, setStats] = useState<Array<{ title: string, value: number }>>([])
     useEffect(() => {
@@ -28,19 +42,6 @@ export const QuizCard: FC<Props> = ({ quiz, selectQuiz }) => {
         </div>
     ));
 
-    const getColorByAvgScore = (score: number) => {
-        if (score > 85) {
-            return 'green'
-        } else if (score > 70) {
-            return 'blue'
-        } else if (score > 50) {
-            return 'yellow'
-        } else if (score > 30) {
-            return 'orange'
-        } else {
-            return 'red'
-        }
-    }
 
     return (
         <Card withBorder padding="lg" className="card" key={quiz.id}>

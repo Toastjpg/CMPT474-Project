@@ -147,6 +147,22 @@ div.pagination {
 }
 
 /* Quiz cards list */
+.quiz-list {
+    --grid-layout-gap: 12px;
+    --grid-column-count: 5;
+    --grid-item--min-width: 280px;
+  
+    /**
+     * Calculated values.
+     */
+    --gap-count: calc(var(--grid-column-count) - 1);
+    --total-gap-width: calc(var(--gap-count) * var(--grid-layout-gap));
+    --grid-item--max-width: calc((100% - var(--total-gap-width)) / var(--grid-column-count));
+  
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr));
+    grid-gap: var(--grid-layout-gap);
+}
 .quiz-list .card {
     background-color: var(--mantine-color-body);
 }
@@ -177,6 +193,75 @@ div.pagination {
     font-size: 44px;
     line-height: 1.2;
     font-weight: 900;
+}
+
+.quiz-controls {
+    background-color: var(--mantine-color-body);
+}
+  
+.quiz-controls .control {
+    & + & {
+        padding-top: var(--mantine-spacing-sm);
+        margin-top: var(--mantine-spacing-sm);
+        border-top: rem(1px) solid light-dark(var(--mantine-color-gray-2) var(--mantine-color-dark-4));
+    }
+}
+  
+.quiz-controls .switch {
+    & * {
+      cursor: pointer;
+    }
+}
+  
+.quiz-controls .title {
+    line-height: 1;
+}
+
+.quiz-stats-ring {
+    background-color: var(--mantine-color-body);
+    width: 100%;
+}
+  
+.quiz-stats-ring .label {
+    font-family: Greycliff CF, var(--mantine-font-family);
+    font-weight: 700;
+    line-height: 1;
+}
+  
+.quiz-stats-ring .lead {
+    font-family: Greycliff CF, var(--mantine-font-family);
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1;
+}
+  
+.quiz-stats-ring .inner {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+}
+@media (max-width: 400px) {
+    .quiz-stats-ring .inner {
+        flex-direction: column;
+    }
+}
+.quiz-stats-ring .mainStats {
+    display: flex;
+    direction: "row";
+    justify-content: center;
+    gap: 20px;
+}
+@media (max-width: 520px) {
+    .quiz-stats-ring .mainStats {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 400px) {
+    .quiz-stats-ring .ring {
+        margin-top: var(--mantine-spacing-md);
+    }
 }
 
 /* Resources */
