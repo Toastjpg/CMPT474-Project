@@ -62,6 +62,15 @@ export class Quiz {
     setStats(stats: { avgTime: number, avgScore: number }) {
         this.stats = stats
     }
+    shuffleQuestions() {
+        const tmp = [...this.questions]
+        let m = tmp.length;
+        while(m) {
+            const i = Math.floor(Math.random() * m--);
+            [tmp[m], tmp[i]] = [tmp[i], tmp[m]];
+        }
+        this.questions = [...tmp]
+    }
     
     addQuestion(question: Question) {
         this.questions.push(question)

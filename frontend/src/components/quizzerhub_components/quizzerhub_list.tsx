@@ -9,13 +9,15 @@ import { getAllQuizzes } from '../../controllers/quiz.controller';
 import { Quiz } from '../../models/quiz';
 import { useDisclosure, useInputState } from '@mantine/hooks';
 import { QuizCard } from './quiz_card';
+import { QuizPlayer } from './quizzerhub_play';
 
 
 interface Props {
     setDisplay: (display: Display) => void
     setQuizId: (id: string) => void
+    quizId: string
 }
-export const QuizzerHubList: FC<Props> = ({ setDisplay, setQuizId }) => {
+export const QuizzerHubList: FC<Props> = ({ setDisplay, quizId, setQuizId }) => {
     const [search, setSearch] = useInputState('')
     const [quizzes, setQuizzes] = useState<Array<Quiz>>([])
     const [filteredQuizzes, setFilteredQuizzes] = useState<Array<Quiz>>([])
@@ -71,12 +73,13 @@ export const QuizzerHubList: FC<Props> = ({ setDisplay, setQuizId }) => {
         <Modal
             opened={opened}
             onClose={close}
-            title="This is a fullscreen modal"
+            title="Quiz Player"
             fullScreen
             radius={0}
+            scrollAreaComponent={ScrollArea.Autosize}
             transitionProps={{ transition: 'fade', duration: 200 }}
         >
-            {/* Modal content */}
+            <QuizPlayer quizId={quizId} close={close} />
         </Modal>
         
         <Flex id="quizzerHubList" direction={"column"} h={"100%"}>
@@ -102,7 +105,7 @@ export const QuizzerHubList: FC<Props> = ({ setDisplay, setQuizId }) => {
                 onChange={setSearch}
             />
             <ScrollArea scrollbarSize={8} w={"100%"} flex={1}>
-                <SimpleGrid cols={3} className='quiz-list' >
+                <SimpleGrid className='quiz-list' >
                     {filteredQuizzes.map(quiz => <QuizCard quiz={quiz} selectQuiz={selectQuiz} key={quiz.id} />)}
                 </SimpleGrid>
                 {filteredQuizzes.length === 0 && <Text c="gray" size='sm'>No quizzes found.</Text>}

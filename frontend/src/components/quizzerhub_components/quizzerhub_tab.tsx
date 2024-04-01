@@ -19,7 +19,7 @@ export function QuizzerHubTab() {
     }, [quizId])
 
     const displays = new Map<Display, JSX.Element>();
-    displays.set(Display.LIST, <QuizzerHubList setDisplay={setDisplay} setQuizId={setQuizId} />)
+    displays.set(Display.LIST, <QuizzerHubList setDisplay={setDisplay} quizId={quizId} setQuizId={setQuizId} />)
     displays.set(Display.CREATE, <QuizzerHubCreate setDisplay={setDisplay} setQuizId={setQuizId} />)
     displays.set(Display.EDIT, <QuizzerHubEdit />)
     displays.set(Display.DETAILS, <QuizzerHubDetails setDisplay={setDisplay} quizId={quizId} />)
