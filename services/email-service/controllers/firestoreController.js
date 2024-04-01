@@ -65,10 +65,10 @@ const firebaseController = {
                 if (data.code === authCode) {
                     return true;
                 } else {
-                    return false;
+                    throw new Error("Authorization code does not match");
                 }
             } else {
-                return false;
+                throw new Error("Email not found in Firestore Database");
             }
         }
         catch (error) {
