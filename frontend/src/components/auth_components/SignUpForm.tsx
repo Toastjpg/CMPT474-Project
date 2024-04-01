@@ -1,22 +1,25 @@
 import { TextInput, Button, Title, PasswordInput, rem } from "@mantine/core"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createAccount, isUniqueEmail } from "../controllers/account.controller";
-import { registerEmailAuthenticatoin, verifyEmailAuthenticatoin } from "../controllers/authentication.controller";
-import { useInputState } from "@mantine/hooks";
+import { createAccount, isUniqueEmail } from "../../controllers/account.controller";
+import { registerEmailAuthenticatoin, verifyEmailAuthenticatoin } from "../../controllers/authentication.controller";
+import { useFirebaseAuth } from "../../contexts/FirebaseAuthContext";
+import { UserCredential } from "firebase/auth";
+// import { useInputState } from "@mantine/hooks";
 import { IconLock, IconUser, IconMail } from '@tabler/icons-react';
 
-export function SignupPage() {
+export function SignUpForm() {
     enum Display {
         EMAIL_FORM, AUTH_CODE_FORM, ACCOUNT_SETUP_FORM
     }
     const [display, setDisplay] = useState(Display.EMAIL_FORM)
-    const [email, setEmail] = useInputState('');
-    const [authCode, setAuthCode] = useInputState('')
-    const [username, setUsername] = useInputState('');
-    const [password, setPassword] = useInputState('');
-    const [confirmPassword, setConfirmPassword] = useInputState('');
+    const [email, setEmail] = useState('');
+    const [authCode, setAuthCode] = useState('')
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setloading] = useState(false)
+    const { firebaseSignUp } = useFirebaseAuth();
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -55,14 +58,26 @@ export function SignupPage() {
 
     async function signup() {
         setloading(true)
-        const response = await createAccount(username, email, password)
-        const data = await response.json()
-        if (response.ok) {
-            navigate("/homepage");
-            return
+
+        try {
+            if (password !== confirmPassword) {
+                throw new Error("Passwords do not match")
+            }
+
+            const userCredential: UserCredential = await firebaseSignUp(email, password)
+
+            // NOTE: make call to backend to create account (for unique email logging) (or use firebase)
+            // const response = await createAccount(username, email, password)
+
+            const user = userCredential.user
+            const jwt = await user.getIdToken()
+            sessionStorage.setItem("token", jwt)
+            setloading(false)
+            navigate("/")
+        } catch (e: any) {
+            setloading(false)
+            alert(e.message)
         }
-        setloading(false)
-        alert(data)
     }
 
     const emailForm = () => {
@@ -72,13 +87,14 @@ export function SignupPage() {
                     label="SFU Email"
                     placeholder="example@sfu.ca"
                     value={email}
-                    onChange={setEmail}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                 />
                 <Button color="gray" mt={12} onClick={registerEmail} loading={loading}>Send authentication code</Button>
             </>
         )
     }
+
     const authCodeForm = () => {
         return (
             <>
@@ -88,13 +104,14 @@ export function SignupPage() {
                 <TextInput
                     label="Authentication Code"
                     value={authCode}
-                    onChange={setAuthCode}
+                    onChange={(e) => setAuthCode(e.target.value)}
                     required
                 />
                 <Button color="gray" mt={12} onClick={verifyEmail} loading={loading}>Verify email</Button>
             </>
         )
     }
+
     const accountSetupForm = () => {
         const iconUser = <IconUser style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
         const iconLock = <IconLock style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
@@ -116,10 +133,10 @@ export function SignupPage() {
                     value={username}
                     required
                     leftSection={iconUser}
-                    onChange={setUsername}
+                    onChange={(e) => setUsername(e.target.value)}
                 />
-                <PasswordInput label="Password" leftSection={iconLock} value={password} onChange={setPassword} required />
-                <PasswordInput label="Confirm Password" leftSection={iconLock} value={confirmPassword} onChange={setConfirmPassword} required />
+                <PasswordInput label="Password" leftSection={iconLock} value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <PasswordInput label="Confirm Password" leftSection={iconLock} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
 
                 <Button color="gray" mt={12} onClick={signup} loading={loading}>Sign up</Button>
             </>

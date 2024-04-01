@@ -1,4 +1,4 @@
-const gatewayURL = `https://api-gateway-container-zr4kfxliwa-uc.a.run.app`;
+const gatewayURL = import.meta.env.VITE_GATEWAY_URL;
 
 export const registerEmailAuthenticatoin = async (email: string) => {
     return await fetch(`${gatewayURL}/register`, {

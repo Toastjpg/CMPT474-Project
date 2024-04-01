@@ -1,5 +1,6 @@
-const gatewayURL = `https://api-gateway-container-zr4kfxliwa-uc.a.run.app`;
+const gatewayURL = import.meta.env.VITE_GATEWAY_URL;
 
+// NOTE: following controllers are deprecated via introduction of firebase auth
 // NOTE: This controller interacts with User Service to provide signin features
 // Will be replaced with Firestore Auth when integrated
 export const createAccount = async (username: string, email: string, password: string) => {
@@ -7,7 +8,8 @@ export const createAccount = async (username: string, email: string, password: s
         method: "POST",
         mode: 'cors',
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${sessionStorage.getItem("token")}`
         },
         body: JSON.stringify({
             email: email,
@@ -32,6 +34,10 @@ export const signinUser = async (username: string, password: string) => {
     const response = await fetch(`${gatewayURL}/account/signin`, {
         method: "GET",
         mode: 'cors',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+        }
     })
     const signinStatus = await response.json()
     return signinStatus

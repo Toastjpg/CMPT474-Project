@@ -11,11 +11,9 @@ import {
 } from '@tabler/icons-react';
 import logo from '../images/logo-transparent-png.png';
 
-
 // Components
 import { ProfileButton } from '../components/profile_button/profile_button';
 import { Outlet, useNavigate } from 'react-router-dom';
-
 
 export function HomePage() {
     const [opened, { toggle }] = useDisclosure();

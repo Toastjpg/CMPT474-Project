@@ -1,5 +1,7 @@
 import { MantineProvider } from '@mantine/core';
 
+import { FirebaseAuthProvider } from './contexts/FirebaseAuthContext';
+
 import '@mantine/core/styles.css';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
@@ -11,20 +13,32 @@ import { Profile } from './pages/profile_page';
 import { Course } from './pages/course_page';
 import { HomePage } from './pages/home_page';
 
+import ProtectedRoute, { ProtectedRouteProps } from './components/auth_components/ProtectedRoute';
+import { AuthenticationPage } from './pages/authentication_page';
 
+const defaultProtectedRouteProps: Omit<ProtectedRouteProps, 'outlet'> = {
+    authenticationPath: '/authenticate',
+};
+  
 export default function App() {
     return (
         <MantineProvider>
-            <Routes>
-                <Route path="/" element={<HomePage />} >
-                    <Route index path="/dashboard" element={<Dashboard />} />
-                    <Route path="/courses" element={<Courses />} />
-                    <Route path="/courses/:courseId/:tabValue" element={<Course />} />
-                    <Route path="/progress" element={<Progress />} />
-                    <Route path="/settings" element={<Settings />} />
-                    <Route path="/profile" element={<Profile />} />
-                </Route>
-            </Routes>
+            <FirebaseAuthProvider>
+                <Routes>
+                    {/* put private routes here */}
+                    <Route path="/" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<HomePage/>}/>}>
+                        <Route index path="/dashboard" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Dashboard/>}/>} />
+                        <Route path="/courses" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Courses />}/>}/>
+                        <Route path="/courses/:courseId/:tabValue" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Course />}/>}/>
+                        <Route path="/progress" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Progress />}/>}/>
+                        <Route path="/settings" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Settings />}/>}/>
+                        <Route path="/profile" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Profile />}/>}/>
+                    </Route>
+
+                    {/* put public routes here */}
+                    <Route path="/authenticate" element={<AuthenticationPage />} />
+                </Routes>
+            </FirebaseAuthProvider>
         </MantineProvider>
     );
 }
