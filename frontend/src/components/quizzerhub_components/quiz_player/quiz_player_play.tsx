@@ -1,9 +1,8 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { Quiz } from "../../../models/quiz";
 import { QuizPlayerConfig } from "./quiz_player_config";
-import { Button, Card, Divider, Flex, Space, Text, Title, rem } from "@mantine/core";
+import { Button, Card, Divider, Flex, Space, Text, Title } from "@mantine/core";
 import { QuizPlayerScreens } from "../quizzerhub_play";
-import { IconLogout } from "@tabler/icons-react";
 
 interface Props {
     quizState: Quiz
@@ -11,7 +10,7 @@ interface Props {
     setQuizState: (Quiz: Quiz) => void
     setScreen: (screen: QuizPlayerScreens) => void
 }
-export const QuizPlayerPlayScreen:FC<Props> = ({ quizState, config, setQuizState, setScreen }) => {
+export const QuizPlayerPlayScreen:FC<Props> = ({ quizState, setScreen }) => {
     const [current, setCurrent] = useState<number>(0)
     // if questions are graded => display in review mode (display notes too)
 

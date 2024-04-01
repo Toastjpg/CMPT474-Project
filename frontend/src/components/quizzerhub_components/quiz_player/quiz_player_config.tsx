@@ -1,6 +1,6 @@
 import { FC, useState } from "react"
 import { Quiz } from "../../../models/quiz"
-import { Button, Card, Center, Flex, Group, Switch, Text, Title } from "@mantine/core"
+import { Button, Card, Center, Group, Switch, Text, Title } from "@mantine/core"
 import { StatsRing } from "../stats_ring"
 import { QuizPlayerScreens } from "../quizzerhub_play"
 

@@ -13,7 +13,7 @@ interface Props {
     setScreen: (screen: QuizPlayerScreens) => void
     close: () => void
 }
-export const QuizPlayerResultScreen:FC<Props> = ({ quizState, setQuizState, config, setScreen, close }) => {
+export const QuizPlayerResultScreen:FC<Props> = ({ quizState, setScreen, close }) => {
     return (
         <>
         <section>

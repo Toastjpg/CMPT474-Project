@@ -1,6 +1,5 @@
 import { useState, useRef, useMemo, FC, useEffect } from 'react';
-import JoditEditor from 'jodit-react';
-// import { placeholder } from 'jodit/esm/plugins/placeholder/placeholder';
+import JoditEditor, { IJoditEditorProps } from 'jodit-react';
 import { Button, ScrollArea, Select, Text, Title } from '@mantine/core';
 import { Form } from './quizzerhub_create';
 import { Option, Question, QuestionType, questionTypeOptions } from '../../models/question';
@@ -53,7 +52,7 @@ export const QuestionForm: FC<Props> = ({ quiz, setQuiz, placeholder, questionId
     }
 
     // all options from https://xdsoft.net/jodit/docs/,
-    const config = useMemo(() => {
+    const config:IJoditEditorProps['config' ]= useMemo(() => {
         return {
             readonly: false, 
             useSearch: false,
