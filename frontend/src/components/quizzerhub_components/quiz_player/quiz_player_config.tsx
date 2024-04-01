@@ -12,10 +12,11 @@ export interface QuizPlayerConfig {
 }
 interface Props {
     quiz: Quiz
+    setQuizState: (quiz: Quiz) => void
     setConfig: (config: QuizPlayerConfig) => void
     setScreen: (screen: QuizPlayerScreens) => void
 }
-export const QuizPlayerConfigScreen: FC<Props> = ({ quiz, setConfig, setScreen }) => {
+export const QuizPlayerConfigScreen: FC<Props> = ({ quiz, setQuizState, setConfig, setScreen }) => {
     const [shuffle, setShuffle] = useState(false)
     const [autoGrading, setAutoGrading] = useState(false)
     const [instantGrading, setInstantGrading] = useState(false)
@@ -61,14 +62,15 @@ export const QuizPlayerConfigScreen: FC<Props> = ({ quiz, setConfig, setScreen }
 
     const finishSetup = () => {
         setConfig({ shuffle: shuffle, autoGrading: autoGrading, instantGrading: instantGrading })
+        setQuizState(quiz)
         setScreen(QuizPlayerScreens.PLAY)
     }
 
 
     return(
-        <Flex maw={720} ml="auto" mr="auto" direction="column">
+        <>
             <section>
-            <Title size="lg" fw={500} mb={12}>{quiz.title} [{quiz.id}]</Title>
+            <Title size="lg" fw={500} mb={12}>{quiz.title}</Title>
             <Text c="dimmed">{quiz.summary}</Text>
             <Group gap={8} mb={-8}>
             <StatsRing questionCount={quiz.questions.length} likes={quiz.likes} avgScore={quiz.stats.avgScore} avgTime={quiz.stats.avgTime} />
@@ -86,6 +88,6 @@ export const QuizPlayerConfigScreen: FC<Props> = ({ quiz, setConfig, setScreen }
             <Center>
                 <Button onClick={finishSetup} variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }} radius="xl" size="md" mt={32} mb={20}>START</Button>
             </Center>
-        </Flex>
+        </>
     )
 }

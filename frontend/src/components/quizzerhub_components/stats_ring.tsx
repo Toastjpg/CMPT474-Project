@@ -1,11 +1,7 @@
-import { Text, Card, RingProgress, Group, useMantineTheme } from '@mantine/core';
+import { Text, Card, RingProgress, Group } from '@mantine/core';
 import { FC } from 'react';
 import { getColorByAvgScore } from './quiz_card';
 
-const stats = [
-  { value: 447, label: 'Likes' },
-  { value: '24 minutes', label: 'Avg Completion Time' },
-];
 interface Props {
     questionCount: number
     likes: number

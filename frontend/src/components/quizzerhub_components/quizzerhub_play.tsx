@@ -1,10 +1,10 @@
-import { Button } from "@mantine/core";
 import { FC, useEffect, useState } from "react";
 import { getQuiz } from "../../controllers/quiz.controller";
 import { Quiz } from "../../models/quiz";
 import { QuizPlayerConfig, QuizPlayerConfigScreen } from "./quiz_player/quiz_player_config";
 import { QuizPlayerPlayScreen } from "./quiz_player/quiz_player_play";
 import { QuizPlayerResultScreen } from "./quiz_player/quiz_player_result";
+import { Flex } from "@mantine/core";
 
 interface Props {
     quizId: string
@@ -15,22 +15,13 @@ export enum QuizPlayerScreens {
 }
 export const QuizPlayer : FC<Props> = ({ quizId, close }) => {
     const [quiz, setQuiz] = useState<Quiz>()
+    const [quizState, setQuizState] = useState<Quiz>()
     const [config, setConfig] = useState<QuizPlayerConfig>({ shuffle: false,  autoGrading: false,  instantGrading: false})
     const [screen, setScreen] = useState<QuizPlayerScreens>(QuizPlayerScreens.CONFIG)
 
     useEffect(() => {
-        if(screen === QuizPlayerScreens.PLAY) {
-            console.log("starting quiz with following configuration:")
-            console.log("shuffle: ", config.shuffle)
-            console.log("auto grading: ", config.autoGrading)
-            console.log("instant grading: ", config.instantGrading)
-        }
-        // if(quiz !== undefined) {
-        //     const updatedQuiz = Quiz.clone(quiz)
-        //     updatedQuiz.shuffleQuestions()
-        //     setQuiz(updatedQuiz)
-        // }
-    }, [screen])
+        setQuizState(quiz)
+    }, [quiz])
 
     useEffect(() => {
         const init = async () => {
@@ -71,13 +62,13 @@ export const QuizPlayer : FC<Props> = ({ quizId, close }) => {
 
 
     return(
-        <>
+        <Flex maw={720} ml="auto" mr="auto" direction="column">
         {quiz !== undefined && screen === QuizPlayerScreens.CONFIG 
-            && <QuizPlayerConfigScreen quiz={quiz} setScreen={setScreen} setConfig={setConfig} />}
-        {quiz !== undefined && screen === QuizPlayerScreens.PLAY 
-            && <QuizPlayerPlayScreen quiz={quiz} config={config} setScreen={setScreen} />}
-        {quiz !== undefined && screen === QuizPlayerScreens.RESULT 
-            && <QuizPlayerResultScreen quiz={quiz} config={config} setScreen={setScreen} />}
-        </>
+            && <QuizPlayerConfigScreen quiz={quiz} setQuizState={setQuizState} setScreen={setScreen} setConfig={setConfig} />}
+        {quizState !== undefined && screen === QuizPlayerScreens.PLAY 
+            && <QuizPlayerPlayScreen quizState={quizState} setQuizState={setQuizState} config={config} setScreen={setScreen} />}
+        {quizState !== undefined && screen === QuizPlayerScreens.RESULT 
+            && <QuizPlayerResultScreen quizState={quizState} setQuizState={setQuizState} config={config} setScreen={setScreen} close={close} />}
+        </Flex>
     )
 }

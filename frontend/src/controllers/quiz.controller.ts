@@ -1,6 +1,6 @@
 import { Quiz } from "../models/quiz";
 
-const gatewayURL = `http://localhost:8081/api`;
+const gatewayURL = `http://localhost:8080/api`;
 
 export const createQuiz = async (quiz: Quiz) => {
     return await fetch(`${gatewayURL}/quizzes`, {
