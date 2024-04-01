@@ -32,8 +32,8 @@ export const FileUploader: FC<Props> = ({ props, updateFilesList }) => {
             if(response.ok) {
                 updateFilesList()
             }else {
-                console.log(data)
-                alert(data)
+                console.log(data.error)
+                alert(data.error)
             }
         }catch(error) {
             console.error(error)

@@ -31,7 +31,7 @@ export const QuizzerHubCreate: FC<Props> = ({ setDisplay, setQuizId }) => {
             }
         } else {
             const data = await response.json()
-            alert(data)
+            alert(data.error)
         }
     }
 
