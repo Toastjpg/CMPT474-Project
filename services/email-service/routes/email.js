@@ -29,15 +29,15 @@ router.post("/register", async (req, res) => {
     }
 });
 
-router.get("/authorize", async (req, res) => {
+router.post("/authorize", async (req, res) => {
     const email = req.body.email;
     const authCode = req.body.authCode;
 
     try {
         const isAuthorized = await firebaseController.authorizeEmail(email, authCode);
         if (isAuthorized) {
-            return res.status(200).json("EMAIL SERVICE: Authorization successful");
             await firebaseController.deleteEmail(email);
+            return res.status(200).json("EMAIL SERVICE: Authorization successful");
         } else {
             return res.status(401).json("EMAIL SERVICE: Authorization failed");
         }
