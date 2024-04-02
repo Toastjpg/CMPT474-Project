@@ -24,6 +24,20 @@ const multer = Multer({
 
 /* -------------------------------- endpoints ------------------------------- */
 
+// Patch to fix CORS error from API gateway
+// Middleware to handle the preflight requests
+// See: https://stackoverflow.com/questions/64281334/cors-errors-when-trying-to-fetch-from-new-google-cloud-api-gateway
+app.options("/*", function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Authorization, Content-Length, X-Requested-With"
+    );
+    res.send(200);
+});
+
+
 app.get('/api/files', getAllFiles)
 app.post('/api/files', multer.any(), uploadFiles)
 // app.delete('/api/files/:fileId', deleteFile)

@@ -49,8 +49,8 @@ const firebaseController = {
 
     registerEmail: async (email, code) => {
         try {
-            const docRef = collection(firestoreDatabase, collectionName, email);
-            await setDoc(docRef, { code: code });
+            const docRef = firestoreDatabase.collection(collectionName).doc(email);
+            await docRef.set({ code: code });
         }
         catch (error) {
             console.log("\x1b[31m", "ERROR: Unable to register email in Firestore Database");
@@ -60,10 +60,10 @@ const firebaseController = {
 
     authorizeEmail: async (email, authCode) => {
         try {
-            const docRef = collection(firestoreDatabase, collectionName, email);
-            const doc = await getDoc(docRef);
+            const docRef = firestoreDatabase.collection(collectionName).doc(email);
+            const doc = await docRef.get();
 
-            if (doc.exists()) {
+            if (doc.exists) {
                 const data = doc.data();
                 if (data.code === authCode) {
                     return true;
@@ -82,8 +82,8 @@ const firebaseController = {
 
     deleteEmail: async (email) => {
         try {
-            const docRef = collection(firestoreDatabase, collectionName, email);
-            await deleteDoc(docRef);
+            const docRef = firestoreDatabase.collection(collectionName).doc(email);
+            await docRef.delete();
         }
         catch (error) {
             console.log("\x1b[31m", "ERROR: Unable to delete email in Firestore Database");
