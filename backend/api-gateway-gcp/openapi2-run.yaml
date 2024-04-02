@@ -22,6 +22,14 @@ securityDefinitions:
 paths:
   # EMAIL SERVICE ROUTES
   /register:
+    options:
+      summary: CORS pre-flight
+      operationId: corsRegister
+      x-google-backend:
+        address: <EMAIL_SERVICE_URL>/api/register
+      responses:
+        "200":
+          description: A successful response
     post:
       summary: Register email
       x-google-backend:
@@ -51,10 +59,18 @@ paths:
             type: string
 
   /authorize:
+    options:
+      summary: CORS pre-flight
+      operationId: corsAuthorize
+      x-google-backend:
+        address: <EMAIL_SERVICE_URL>/api/authorize
+      responses:
+        "200":
+          description: A successful response
     post:
       summary: Authorize email
       x-google-backend:
-        address: EMAIL_SERVICE_URL/api/authorize
+        address: <EMAIL_SERVICE_URL>/api/authorize
       operationId: authorizeEmail
       responses:
         "200":
@@ -72,6 +88,14 @@ paths:
 
   # MEDIA SERVICE ROUTES
   /files:
+    options:
+      summary: CORS pre-flight
+      operationId: corsFiles
+      x-google-backend:
+        address: <MEDIA_SERVICE_URL>/api/files
+      responses:
+        "200":
+          description: A successful response
     get:
       summary: Fetch All Files Uploads
       x-google-backend:
@@ -126,6 +150,19 @@ paths:
 
   # PROFILE SERVICE ROUTES
   /profile/{id}:
+    options:
+      summary: CORS pre-flight
+      operationId: corsProfileID
+      x-google-backend:
+        address: <PROFILE_SERVICE_URL>/api/profile/{id}
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        "200":
+          description: A successful response
     get:
       summary: Get profile information by id
       x-google-backend:
@@ -149,6 +186,14 @@ paths:
             type: string
 
   /profile:
+    options:
+      summary: CORS pre-flight
+      operationId: corsProfile
+      x-google-backend:
+        address: <PROFILE_SERVICE_URL>/api/profile/
+      responses:
+        "200":
+          description: A successful response
     put:
       summary: Add or edit profile data
       x-google-backend:
@@ -184,6 +229,14 @@ paths:
 
   # QUIZ SERVICE ROUTES
   /quizzes:
+    options:
+      summary: CORS pre-flight
+      operationId: corsQuizzes
+      x-google-backend:
+        address: <QUIZ_SERVICE_URL>/api/quizzes
+      responses:
+        "200":
+          description: A successful response
     get:
       summary: Get all quizzes
       x-google-backend:
@@ -224,6 +277,19 @@ paths:
             type: string
 
   /quizzes/{id}:
+    options:
+      summary: CORS pre-flight
+      operationId: corsQuizzesID
+      x-google-backend:
+        address: <QUIZ_SERVICE_URL>/api/quizzes/{id}
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        "200":
+          description: A successful response
     get:
       summary: Get quiz by id
       x-google-backend:
