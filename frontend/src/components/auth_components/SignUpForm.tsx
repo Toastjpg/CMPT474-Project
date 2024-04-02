@@ -1,7 +1,8 @@
 import { TextInput, Button, Title, PasswordInput, rem } from "@mantine/core"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createAccount, isUniqueEmail } from "../../controllers/account.controller";
+import { isUniqueEmail } from "../../controllers/account.controller";
+// import { createAccount } from "../../controllers/account.controller";
 import { registerEmailAuthenticatoin, verifyEmailAuthenticatoin } from "../../controllers/authentication.controller";
 import { useFirebaseAuth } from "../../contexts/FirebaseAuthContext";
 import { UserCredential } from "firebase/auth";

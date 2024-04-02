@@ -199,18 +199,13 @@ div.pagination {
     background-color: var(--mantine-color-body);
 }
   
-.quiz-controls .control {
-    & + & {
-        padding-top: var(--mantine-spacing-sm);
-        margin-top: var(--mantine-spacing-sm);
-        border-top: rem(1px) solid light-dark(var(--mantine-color-gray-2) var(--mantine-color-dark-4));
-    }
+.quiz-controls .control + .control {
+    padding-top: var(--mantine-spacing-sm);
+    margin-top: var(--mantine-spacing-sm);
 }
   
-.quiz-controls .switch {
-    & * {
-      cursor: pointer;
-    }
+.quiz-controls .switch * {
+    cursor: pointer;
 }
   
 .quiz-controls .title {

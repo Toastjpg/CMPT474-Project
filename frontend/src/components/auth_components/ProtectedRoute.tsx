@@ -1,4 +1,4 @@
-import { Navigate, Route, RouteProps } from 'react-router';
+import { Navigate } from 'react-router';
 import { useFirebaseAuth } from '../../contexts/FirebaseAuthContext';
 
 export type ProtectedRouteProps = {
