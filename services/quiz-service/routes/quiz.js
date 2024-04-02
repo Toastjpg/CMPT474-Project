@@ -4,25 +4,14 @@ const { getFirestore } = require('firebase-admin/firestore');
 const dotenv = require('dotenv');
 
 dotenv.config();
-const firebaseConfig = process.env.FIREBASE_CONFIG;
 const firestoreId = process.env.FIRESTORE_DB_ID;
 
 let firebaseApp;
 let db;
 
 try {
-    if (firebaseConfig != "CLOUD") {
-        const serviceAccount = require(`../${firebaseConfig}`);
-
-        firebaseApp = initializeApp({
-            credential: cert(serviceAccount)
-        });
-        console.log("Connected to Firebase Firestore locally with firebase configuration file");
-    }
-    else {
-        firebaseApp = initializeApp();
-        console.log("Connected to Firebase Firestore over cloud configuration");
-    }
+    firebaseApp = initializeApp();
+    console.log("Connected to Firebase Firestore over cloud configuration");
 }
 catch (error) {
     console.log("\x1b[31m", "ERROR: Unable to connect to Firestore Instance\nAre you running locally or over the cloud?");
