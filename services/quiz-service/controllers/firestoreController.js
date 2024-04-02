@@ -3,7 +3,7 @@ const { getFirestore } = require('firebase-admin/firestore');
 const dotenv = require('dotenv');
 
 dotenv.config();
-const firebaseConfig = process.env.FIREBASE_CONFIG;
+// const firebaseConfig = process.env.FIREBASE_CONFIG;
 const firestoreId = process.env.FIRESTORE_DB_ID;
 
 let firebaseApp;
@@ -22,11 +22,11 @@ const Collections = {
 const quizFactory = {
     createMultipleChoice: async (data) => {
         console.log("Creating a multiple choice question");
-    }, 
+    },
 
     createMultipleSelect: async (data) => {
         console.log("Creating a multiple select question");
-    }, 
+    },
 
     createTrueFalse: async (data) => {
         console.log("Creating a true/false question");
@@ -34,7 +34,7 @@ const quizFactory = {
 
     createFillInBlank: async (data) => {
         console.log("Creating a fill in the blank question");
-    }, 
+    },
 
     createInputNumber: async (data) => {
         console.log("Creating an input number question");
@@ -53,18 +53,21 @@ const firebaseController = {
     initialize: () => {
         // initialize the firebase app
         try {
-            if (firebaseConfig != "CLOUD") {
-                const serviceAccount = require(`../${firebaseConfig}`);
+            // if (firebaseConfig != "CLOUD") {
+            //     const serviceAccount = require(`../${firebaseConfig}`);
 
-                firebaseApp = initializeApp({
-                    credential: cert(serviceAccount)
-                });
-                console.log("Connected to Firebase Firestore locally with firebase configuration file");
-            }
-            else {
-                firebaseApp = initializeApp();
-                console.log("Connected to Firebase Firestore over cloud configuration");
-            }
+            //     firebaseApp = initializeApp({
+            //         credential: cert(serviceAccount)
+            //     });
+            //     console.log("Connected to Firebase Firestore locally with firebase configuration file");
+            // }
+            // else {
+            //     firebaseApp = initializeApp();
+            //     console.log("Connected to Firebase Firestore over cloud configuration");
+            // }
+
+            firebaseApp = initializeApp();
+            console.log("Connected to Firebase Firestore over cloud configuration");
         }
         catch (error) {
             console.log("\x1b[31m", "ERROR: Unable to connect to Firestore Instance\nAre you running locally or over the cloud?");
@@ -84,7 +87,7 @@ const firebaseController = {
     },
 
     createQuiz: async (data) => {
-        switch(data.type) {
+        switch (data.type) {
             case "MULTIPLE_CHOICE":
                 await quizFactory.createMultipleChoice(data);
                 break;
