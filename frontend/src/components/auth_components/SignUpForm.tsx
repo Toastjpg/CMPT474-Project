@@ -1,7 +1,6 @@
 import { TextInput, Button, Title, PasswordInput, rem } from "@mantine/core"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { isUniqueEmail } from "../../controllers/account.controller";
 // import { createAccount } from "../../controllers/account.controller";
 import { registerEmailAuthenticatoin, verifyEmailAuthenticatoin } from "../../controllers/authentication.controller";
 import { useFirebaseAuth } from "../../contexts/FirebaseAuthContext";
@@ -29,12 +28,16 @@ export function SignUpForm() {
 
     async function registerEmail() {
         setloading(true)
-        const isUnique = await isUniqueEmail(email)
-        if (!isUnique) {
-            setloading(false)
-            alert("This email is used by an existing account. Please enter another email.")
-            return
-        }
+
+        // TODO: No longer able to use deprecated accounts service to check for uniqueness of email
+        // Assume all signups of email will be unique? For now at least
+
+        // if (!isUnique) {
+        //     setloading(false)
+        //     alert("This email is used by an existing account. Please enter another email.")
+        //     return
+        // }
+        
         const response = await registerEmailAuthenticatoin(email)
         const data = await response.json()
         if (response.ok) {
