@@ -11,7 +11,7 @@ let firebaseApp;
 let db;
 
 try {
-    if (firebaseConfig != "CLOUD") {
+    if (firebaseConfig !== "CLOUD") {
         const serviceAccount = require(`../${firebaseConfig}`);
 
         firebaseApp = initializeApp({
