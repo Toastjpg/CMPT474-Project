@@ -1,156 +1,395 @@
 # openapi2-run.yaml
-swagger: '2.0'
+swagger: "2.0"
 info:
-  title: cmpt474-api-gateway-config The API portion of the Gateway for 474
-  description: API on API Gateway with a Cloud Run backend
+  title: <API_ID>
+  description: API Gateway routes to project Cloud Run backend
   version: 1.0.0
 schemes:
-- http
+  - http
 produces:
-- application/json
+  - application/json
 
 # FIREBASE AUTH
 securityDefinitions:
-    firebase:
-      authorizationUrl: ""
-      flow: "implicit"
-      type: "oauth2"
-      x-google-issuer: "https://securetoken.google.com/winter-berm-413619"
-      x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
-      x-google-audiences: "winter-berm-413619"
-
-security:
-  # API-level security applies to all API methods
-  - firebase: [] 
+  firebase:
+    authorizationUrl: ""
+    flow: "implicit"
+    type: "oauth2"
+    x-google-issuer: "https://securetoken.google.com/<PROJECT_ID>"
+    x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
+    x-google-audiences: "<PROJECT_ID>"
 
 paths:
-  # NOTE: until there is a better way to do this
-  #       we'll have to individually list each route
-  # USER SERVICE ROUTES
-  /accounts:
-    get:
-      summary: Get all accounts
-      operationId: getAccounts
+  # EMAIL SERVICE ROUTES
+  /register:
+    post:
+      summary: Register email
       x-google-backend:
-        address: https://cmpt474-user-service-xvpbl7esma-uc.a.run.app/api/accounts
+        address: <EMAIL_SERVICE_URL>/api/register
+      operationId: registerEmail
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
       responses:
-        '200':
+        "200":
+          description: Email registered successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid email address
+          schema:
+            type: string
+        "500":
+          description: Database query failed
+          schema:
+            type: string
+
+  /authorize:
+    post:
+      summary: Authorize email
+      x-google-backend:
+        address: EMAIL_SERVICE_URL/api/authorize
+      operationId: authorizeEmail
+      responses:
+        "200":
           description: A successful response
           schema:
             type: string
-        '500':
+        "401":
+          description: Authorization failed
+          schema:
+            type: string
+        "500":
           description: Something went wrong, please try again later.
           schema:
             type: string
 
-  # POST SERVICE ROUTES
-  /posts:
+  # MEDIA SERVICE ROUTES
+  /files:
     get:
-      summary: Get all posts
-      operationId: getPosts
+      summary: Fetch All Files Uploads
       x-google-backend:
-        address: https://cmpt474-post-service-xvpbl7esma-uc.a.run.app/api/posts
+        address: <MEDIA_SERVICE_URL>/api/files
+      operationId: fetchAllFiles
+      security:
+        - firebase: []
       responses:
-        '200':
+        "200":
+          description: Successfully fetched all file upload
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                url:
+                  type: string
+                type:
+                  type: string
+        "500":
+          description: Cloud storage access failed
+          schema:
+            type: string
+    post:
+      summary: Upload Files
+      x-google-backend:
+        address: <MEDIA_SERVICE_URL>/api/files
+      operationId: uploadFiles
+      security:
+        - firebase: []
+      # https://swagger.io/docs/specification/2-0/file-upload/
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: formData
+          type: array
+          items: # NOTE
+            type: string
+            format: binary
+      responses:
+        "200":
+          description: File upload success
+          schema:
+            type: string
+        "500":
+          description: Cloud storage access failed
+          schema:
+            type: string
+
+  # PROFILE SERVICE ROUTES
+  /profile/{id}:
+    get:
+      summary: Get profile information by id
+      x-google-backend:
+        address: <PROFILE_SERVICE_URL>/api/profile/{id}
+      operationId: getProfileById
+      security:
+        - firebase: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        "200":
           description: A successful response
           schema:
             type: string
-        '500':
+        "500":
+          description: DB query to get document failed
+          schema:
+            type: string
+
+  /profile:
+    put:
+      summary: Add or edit profile data
+      x-google-backend:
+        address: <PROFILE_SERVICE_URL>/api/profile/
+      operationId: updateProfile
+      security:
+        - firebase: []
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+              content:
+                type: object
+                properties:
+                  display_name:
+                    type: string
+                  about:
+                    type: string
+      responses:
+        "200":
+          description: Modified document successfully
+          schema:
+            type: string
+        "500":
+          description: DB query to create/update failed
+          schema:
+            type: string
+
+  # QUIZ SERVICE ROUTES
+  /quizzes:
+    get:
+      summary: Get all quizzes
+      x-google-backend:
+        address: <QUIZ_SERVICE_URL>/api/quizzes
+      operationId: getAllQuizzes
+      security:
+        - firebase: []
+      responses:
+        "200":
+          description: A successful response
+          schema:
+            type: string
+        "500":
           description: Something went wrong, please try again later.
           schema:
             type: string
     post:
-      summary: Create a new post
-      operationId: createPost
+      summary: Create quiz
       x-google-backend:
-        address: https://cmpt474-post-service-xvpbl7esma-uc.a.run.app/api/posts
+        address: <QUIZ_SERVICE_URL>/api/quizzes
+      operationId: createQuiz
+      security:
+        - firebase: []
       parameters:
         - in: body
           name: body
           required: true
           schema:
-            type: object
-            properties:
-              title:
-                type: string
-              content:
-                type: string
-      responses:  
-        '201':  
-          description: Post created successfully
-        '500': 
+            $ref: "#/definitions/Quiz"
+      responses:
+        "200":
+          description: A successful response
+          schema:
+            type: string
+        "500":
           description: Something went wrong, please try again later.
           schema:
             type: string
-  
-  /posts/{id}:
+
+  /quizzes/{id}:
     get:
-      summary: Get a post by id
-      operationId: getPostById
+      summary: Get quiz by id
       x-google-backend:
-        address: https://cmpt474-post-service-xvpbl7esma-uc.a.run.app/api/posts/{id}
+        address: <QUIZ_SERVICE_URL>/api/quizzes/{id}
+      operationId: getQuizById
+      security:
+        - firebase: []
       parameters:
         - in: path
           name: id
-          type: string
           required: true
-          description: The id of the post
+          type: string
       responses:
-        '200':
+        "200":
           description: A successful response
           schema:
-            type: string
-        '500':
-          description: Something went wrong, plase try again later.
+            $ref: "#/definitions/Quiz"
+        "500":
+          description: Something went wrong, please try again later.
           schema:
             type: string
     put:
-      summary: Update a post by id
-      operationId: updatePostById
+      summary: Update quiz by id
       x-google-backend:
-        address: https://cmpt474-post-service-xvpbl7esma-uc.a.run.app/api/posts/{id}
+        address: <QUIZ_SERVICE_URL>/api/quizzes/{id}
+      operationId: updateQuizById
+      security:
+        - firebase: []
       parameters:
         - in: path
           name: id
-          type: string
           required: true
-          description: The id of the post
+          type: string
         - in: body
           name: body
           required: true
           schema:
-            type: object
-            properties:
-              title:
-                type: string
-              content:
-                type: string
+            $ref: "#/definitions/Quiz"
       responses:
-        '200':
+        "200":
           description: A successful response
           schema:
             type: string
-        '500':
-          description: Something went wrong, plase try again later.
+        "500":
+          description: Something went wrong, please try again later.
           schema:
             type: string
     delete:
-      summary: Delete a post by id
-      operationId: deletePostById
+      summary: Delete quiz by id
       x-google-backend:
-        address: https://cmpt474-post-service-xvpbl7esma-uc.a.run.app/api/posts/{id}
+        address: <QUIZ_SERVICE_URL>/api/quizzes/{id}
+      operationId: deleteQuizById
+      security:
+        - firebase: []
       parameters:
         - in: path
           name: id
-          type: string
           required: true
-          description: The id of the post
+          type: string
       responses:
-        '200':
-          description: A successful response
+        "200":
+          description: Successfully deleted quiz with id
           schema:
             type: string
-        '500':
-          description: Something went wrong, plase try again later.
+        "404":
+          description: Could not delete quiz data due to invalid id
           schema:
             type: string
+        "500":
+          description: Database query failed.
+          schema:
+            type: string
+
+definitions:
+  Quiz:
+    type: object
+    properties:
+      id:
+        type: string
+        description: A unique identifier for the quiz
+        example: "random_id"
+      title:
+        type: string
+        description: The title of the quiz
+        example: "Sample Quiz"
+      summary:
+        type: string
+        description: A brief summary of the quiz
+        example: "This is an example of a quiz summary."
+      questions:
+        type: array
+        items:
+          $ref: "#/definitions/Question"
+        description: A list of questions in the quiz
+      likes:
+        type: integer
+        description: The number of likes for the quiz
+        example: 0
+      stats:
+        type: object
+        properties:
+          avgTime:
+            type: number
+            description: The average time taken to complete the quiz
+            example: 0
+          avgScore:
+            type: number
+            description: The average score of the quiz
+            example: 0
+    required:
+      - id
+      - title
+      - summary
+      - questions
+      - likes
+      - stats
+
+  Question:
+    type: object
+    properties:
+      id:
+        type: string
+        description: The question ID
+      question:
+        type: string
+        description: The text of the question
+        default: ""
+      type:
+        type: number
+        description: The question type
+      options:
+        type: array
+        items:
+          $ref: "#/definitions/Option"
+        description: A list of options for the question
+        default: []
+      notes:
+        type: string
+        description: The sidenotes for a question
+        default: ""
+    required:
+      - id
+      - question
+      - type
+      - options
+      - notes
+
+  Option:
+    type: object
+    properties:
+      label:
+        type: string
+        description: The text label of the option.
+      answer:
+        type: boolean
+        description: Indicates whether this option is the correct answer.
+      user_select:
+        type: boolean
+        description: Indicates whether the user has selected this option.
+        default: false
+      user_input:
+        type: string
+        description: Any input provided by the user for this option.
+        default: ""
+    required:
+      - label
+      - answer
+      - user_select
+      - user_input
