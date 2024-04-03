@@ -6,6 +6,9 @@ export const getProfileData = async (id: string) => {
     return await fetch(`${gatewayURL}/profile/${id}`, {
         method: "GET",
         mode: 'cors',
+        headers: {
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
     })
 }
 
@@ -14,7 +17,8 @@ export const updateProfileData = async (id: string, profile: Profile) => {
         method: "GET",
         mode: 'cors',
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
         },
         body: JSON.stringify({
             id: id,
