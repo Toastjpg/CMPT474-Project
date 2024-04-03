@@ -8,10 +8,6 @@ schemes:
   - http
 produces:
   - application/json
-# TBH not sure if this does anything
-x-google-endpoints:
-  - name: <GATEWAY_URL>
-    allowCors: True
 
 # FIREBASE AUTH
 securityDefinitions:
