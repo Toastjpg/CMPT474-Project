@@ -1,7 +1,7 @@
 # openapi2-run.yaml
 swagger: "2.0"
 info:
-  title: sfu-connect-api
+  title: <API_ID>
   description: API Gateway routes to project Cloud Run backend
   version: 1.0.0
 schemes:
