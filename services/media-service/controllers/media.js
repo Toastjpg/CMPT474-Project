@@ -9,6 +9,7 @@ const storage = new Storage({
     keyFilename: `keys/${process.env.GCS_KEY_FILENAME}`,
 })
 const bucket = storage.bucket(process.env.BUCKET_NAME)
+const MEDIA_BASE_URL = `http://${process.env.LOADBALANCER_IP}` || `https://storage.googleapis.com/${bucket.name}`
 
 
 /* -------------------------------- CRUD handlers ------------------------------- */
@@ -56,7 +57,7 @@ const getAllFiles = async (req, res) => {
         files.forEach(file => {
             fileInfo.push({
                 name: file.name,
-                url: `https://storage.googleapis.com/${bucket.name}/${file.name}`,
+                url: `${MEDIA_BASE_URL}/${file.name}`,
                 type: file.metadata.contentType
             })
         })
