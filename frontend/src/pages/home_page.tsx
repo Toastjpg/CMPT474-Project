@@ -56,6 +56,7 @@ export function HomePage() {
         label: string, 
         icon: JSX.Element,
         offset: number | undefined = 0 // if not provided, set to 0 (has no children)
+        
     ): JSX.Element {
         return (
             <>
@@ -122,18 +123,17 @@ export function HomePage() {
                             'Courses',
                             <IconBooks size="1rem" stroke={1.5} />)
                         }
-                        {createNestedNavLink(
+                        {createNavLink(
                             () => {},
                             '/favorites',
                             'Favorites',
                             <IconStar size="1rem" stroke={1.5} />,
                             28,
-                            menuFavorites()
                         )}
                         {createNavLink(
-                            () => handleNavLinkClick('analytics', '/analytics'),
-                            '/analytics',
-                            'Analytics',
+                            () => handleNavLinkClick('progress', '/progress'),
+                            '/progress',
+                            'Progress',
                             <IconReportAnalytics size="1rem" stroke={1.5} />)
                         }
                         {createNavLink(
