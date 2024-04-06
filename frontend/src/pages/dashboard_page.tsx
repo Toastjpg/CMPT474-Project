@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { Title, Divider, Space, SimpleGrid, Modal, ScrollArea } from '@mantine/core';
-import { useDisclosure, useInputState } from '@mantine/hooks';
+import { Title, Divider, Space, SimpleGrid, Modal, ScrollArea, Skeleton } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
+/* ---------------------------------- quiz ---------------------------------- */
 import { getAllQuizzes } from '../controllers/quiz.controller';
 
 import { Quiz } from '../models/quiz';
@@ -10,20 +11,32 @@ import { Quiz } from '../models/quiz';
 import { QuizCard } from '../components/quizzerhub_components/quiz_card';
 import { QuizPlayer } from '../components/quizzerhub_components/quizzerhub_play';
 
+/* -------------------------------- resources ------------------------------- */
+import { FileCard, FileInfo } from '../components/resources_components/file_card';
+import { getAllFiles } from '../controllers/media-controller';
+import { set } from 'jodit/esm/core/helpers';
+
 export function Dashboard() {
     /* ---------------------------------- state --------------------------------- */
+    // quiz state
+    const [quizzesLoading, setquizzesLoading] = useState<boolean>(true)
     const [quizzes, setQuizzes] = useState<Array<Quiz>>([]);
     const [quizId, setQuizId] = useState<string>('');
     const [opened, { open, close }] = useDisclosure(false);
+
+    // resources state
+    const [filesLoading, setfilesLoading] = useState<boolean>(true)
+    const [files, setFiles] = useState<Array<FileInfo>>([])
 
     /* ---------------------------- lifecycle methods --------------------------- */
     // grab all quizzes from the database at the start
     useEffect(() => {
         fetchQuizzes();
+        fetchResources();
     }, [])
 
     /* --------------------------------- methods -------------------------------- */
-    function fetchQuizzes(): void {
+    async function fetchQuizzes(): Promise<void> {
         const init = async () => {
             try {
                 const response = await getAllQuizzes()
@@ -40,6 +53,7 @@ export function Dashboard() {
 
                     // set only the first 4 quizzes
                     setQuizzes([...tmp.slice(0, 4)])
+                    setquizzesLoading(false)
                 }
             } catch (error) {
                 console.log(error)
@@ -48,12 +62,31 @@ export function Dashboard() {
         init()
     }
 
+    async function fetchResources(): Promise<void> {
+        const fetchFiles = async () => {
+            try {
+                const response = await getAllFiles()
+                if (response.ok) {
+                    const data = await response.json()
+                    setFiles([...data])
+                    setfilesLoading(false)
+                } else {
+                    alert("Something went wrong. Please refresh browser and try again.")
+                }
+            } catch (error) {
+                console.log(error)
+                alert("Fetching files failed.")
+            }
+        }
+        fetchFiles()
+    }
+
+
     /* ---------------------------- event handlers ---------------------------- */
     const selectQuiz = (id: string) => {
         open()
         console.log("selected quiz: " + id)
         setQuizId(id)
-        // setDisplay(Display.DETAILS)
     }
 
     /* ------------------------------- components ------------------------------- */
@@ -80,6 +113,8 @@ export function Dashboard() {
                     Recent Quizzes
                 </Title>
 
+                <Space h="lg" />
+
                 <SimpleGrid className='quiz-list' >
                     {quizzes.map(quiz => <QuizCard quiz={quiz} selectQuiz={selectQuiz} key={quiz.id} />)}
                 </SimpleGrid>
@@ -87,12 +122,18 @@ export function Dashboard() {
         );
     }
 
-    function recentFiles(): JSX.Element {
+    function recentResources(): JSX.Element {
         return (
             <>
                 <Title order={2}>
-                    Recent Files
+                    Recent Resources
                 </Title>
+
+                <Space h="lg" />
+
+                <SimpleGrid className='file-list' >
+                    {files.map((file, index) => <FileCard file={file} key={index} />)}
+                </SimpleGrid>
             </>
         );
     }
@@ -100,19 +141,24 @@ export function Dashboard() {
     /* --------------------------------- return --------------------------------- */
     return (
         <>
+
             {quizPlayer()}
 
             <Title order={1}>Here's what your fellow students have been up to...</Title>
 
             <Space h="lg" />
 
-            {recentQuizzes()}
+            <Skeleton visible={quizzesLoading}>
+                {recentQuizzes()}
+            </Skeleton>
 
             <Space h="lg" />
             <Divider />
             <Space h="lg" />
 
-            {recentFiles()}
+            <Skeleton visible={filesLoading}>
+                {recentResources()}
+            </Skeleton>
 
         </>
     )
