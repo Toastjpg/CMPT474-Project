@@ -6,8 +6,8 @@ import {
     IconAdjustments,
     IconBooks,
     IconStar,
-    IconReportAnalytics,
     IconNotebook,
+    IconReportAnalytics,
 } from '@tabler/icons-react';
 import logo from '../images/logo-transparent-png.png';
 
@@ -56,7 +56,6 @@ export function HomePage() {
         label: string, 
         icon: JSX.Element,
         offset: number | undefined = 0 // if not provided, set to 0 (has no children)
-        
     ): JSX.Element {
         return (
             <>
@@ -123,12 +122,13 @@ export function HomePage() {
                             'Courses',
                             <IconBooks size="1rem" stroke={1.5} />)
                         }
-                        {createNavLink(
+                        {createNestedNavLink(
                             () => {},
                             '/favorites',
                             'Favorites',
                             <IconStar size="1rem" stroke={1.5} />,
                             28,
+                            menuFavorites()
                         )}
                         {createNavLink(
                             () => handleNavLinkClick('progress', '/progress'),
