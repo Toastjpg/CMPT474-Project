@@ -1,9 +1,9 @@
-import { ActionIcon, Button, Flex, Group, Text, rem, FileButton } from "@mantine/core";
+import { ActionIcon, Button, Flex, Group, Text, rem, FileButton, Space } from "@mantine/core";
 import { Dropzone, DropzoneProps } from '@mantine/dropzone';
 import { IconFiles, IconTrash, IconUpload, IconX } from "@tabler/icons-react";
 import { FC, useState } from "react";
 import '@mantine/dropzone/styles.css';
-import { uploadFiles } from "../../../controllers/media-controller";
+import { uploadFiles, uploadFile } from "../../../controllers/media-controller";
 
 
 interface Props {
@@ -15,7 +15,6 @@ export const FileUploader: FC<Props> = ({ props, updateFilesList }) => {
     const [loading, setLoading] = useState(false)
 
     const [file, setFile] = useState<File | null>(null)
-    const [fileUploaded, setFileUploaded] = useState(false)
 
 
     const removeFile = (index: number) => {
@@ -38,6 +37,31 @@ export const FileUploader: FC<Props> = ({ props, updateFilesList }) => {
                 console.log(data.error)
                 alert(data.error)
             }
+        } catch (error) {
+            console.error(error)
+            alert("File upload failed. Please refresh the browser and try again.")
+        }
+    }
+
+    const uploadSingleFile = async () => {
+        try {
+            setLoading(true)
+
+            if (file !== null) {
+                const response = await uploadFile(file);
+                setLoading(false)
+                const data = await response.json()
+                if (response.ok) {
+                    updateFilesList()
+                } else {
+                    console.log(data.error)
+                    alert(data.error)
+                }
+            }
+            else {
+                alert("Please select a file to upload.");
+            }
+
         } catch (error) {
             console.error(error)
             alert("File upload failed. Please refresh the browser and try again.")
@@ -101,7 +125,7 @@ export const FileUploader: FC<Props> = ({ props, updateFilesList }) => {
         );
     }
 
-    function customFileButton(): JSX.Element {
+    function customChoostFileButton(): JSX.Element {
         return (
             <>
                 <FileButton onChange={setFile}>
@@ -111,20 +135,35 @@ export const FileUploader: FC<Props> = ({ props, updateFilesList }) => {
         );
     }
 
+    function customFileUploadButton(): JSX.Element {
+        return (
+            <Button bg={"green"} onClick={uploadSingleFile} disabled={file === null || loading} loading={loading}>
+                Upload File
+            </Button>
+        );
+    }
+
     return (
         <Flex direction="column" w="100%" id="fileuploader">
 
             {/* {customDropzone()} */}
             <Flex align={"center"} justify={"center"}>
-                {customFileButton()}
+                {customChoostFileButton()}
             </Flex>
+
 
             <Text fw={500} mt={20} mb={12}>File Name</Text>
             {file && (
                 <Text size="sm" ta="center" mt="sm">
                     {file.name}
                 </Text>
+
             )}
+
+            <Space h={20} />
+            <Flex align={"center"} justify={"flex-end"}>
+                {file === null ? <></> : customFileUploadButton()}
+            </Flex>
 
             {/* <Flex w="100%" direction="column" className="uploads-list">
                 {rows}
