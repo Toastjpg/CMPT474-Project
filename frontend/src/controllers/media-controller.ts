@@ -25,7 +25,6 @@ export const uploadFile = async (file: File) => {
     body: formData,
     headers: {
       Authorization: "Bearer " + sessionStorage.getItem("token"),
-      "Content-Type": "application/json",
     },
   });
 };

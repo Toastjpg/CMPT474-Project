@@ -11,6 +11,7 @@ const storage = new Storage({
 const bucket = storage.bucket(process.env.BUCKET_NAME)
 const MEDIA_BASE_URL = `http://${process.env.LOADBALANCER_IP}` || `https://storage.googleapis.com/${bucket.name}`
 
+/* ------------------------------- middleware ------------------------------- */
 
 /* -------------------------------- CRUD handlers ------------------------------- */
 
@@ -50,6 +51,37 @@ const uploadFiles = async (req, res) => {
     }
 };
 
+const uploadFile = async (req, res) => {
+    try {
+        if (!req.file) {
+            console.log("Received 0 files.")
+            return res.status(200).json("Uploaded 0 files.")
+        }
+
+        console.log("request headers: " + req.headers);
+        console.log("request params: " + req.params);
+        console.log("request body: " + req.body);
+
+        const blob = bucket.file(`${uuidv4()}_${req.file.originalname}`);
+        const blobStream = blob.createWriteStream();
+
+        blobStream.on("finish", () => {
+            console.log("Upload completed: " + req.file.originalname)
+            return res.status(200).json({ message: `Uploaded ${req.file.originalname}` })
+        });
+
+        blobStream.on("error", () => {
+            console.error("Upload failed: " + req.file.originalname)
+            return res.status(500).json({ error: "ERROR: Cloud Storage Access Failed" })
+        })
+
+        blobStream.end(req.file.buffer);
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: "ERROR: Cloud Storage Access Failed" })
+    }
+};
+
 const getAllFiles = async (req, res) => {
     try {
         const [files] = await bucket.getFiles()
@@ -72,4 +104,4 @@ const getAllFiles = async (req, res) => {
 // const deleteFile = async (req, res) => {
 // }
 
-module.exports = { uploadFiles, getAllFiles };
+module.exports = { uploadFiles, uploadFile, getAllFiles };
