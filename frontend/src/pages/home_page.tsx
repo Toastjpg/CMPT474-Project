@@ -6,8 +6,8 @@ import {
     IconAdjustments,
     IconBooks,
     IconStar,
-    IconReportAnalytics,
     IconNotebook,
+    IconReportAnalytics,
 } from '@tabler/icons-react';
 import logo from '../images/logo-transparent-png.png';
 
@@ -16,10 +16,12 @@ import { ProfileButton } from '../components/profile_button/profile_button';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 export function HomePage() {
+    /* ---------------------------------- state --------------------------------- */
     const [opened, { toggle }] = useDisclosure();
     const [active, setActive] = useState('dashboard');
     const navigate = useNavigate();
 
+    /* --------------------------------- methods -------------------------------- */
     const menuFavorites = () => {
         const data = [
             { id: 'CMPT213', label: 'CMPT213', description: 'Course description here' },
@@ -46,6 +48,53 @@ export function HomePage() {
         navigate(path)
     }
 
+    /* ------------------------------- components ------------------------------- */
+
+    function createNavLink(
+        onClickCallback: Function, 
+        path: string, 
+        label: string, 
+        icon: JSX.Element,
+        offset: number | undefined = 0 // if not provided, set to 0 (has no children)
+    ): JSX.Element {
+        return (
+            <>
+                <NavLink
+                    onClick={() => onClickCallback()}
+                    active={path === active}
+                    label={label}
+                    leftSection={icon}
+                    color="gray"
+                    childrenOffset={offset}
+                />
+            </>
+        );
+    }
+
+    function createNestedNavLink(
+        onClickCallback: Function, 
+        path: string, 
+        label: string, 
+        icon: JSX.Element,
+        offset: number,
+        children: JSX.Element[]
+    ): JSX.Element {
+        return (
+            <>
+                <NavLink
+                    onClick={() => onClickCallback()}
+                    active={path === active}
+                    label={label}
+                    leftSection={icon}
+                    color="gray"
+                    childrenOffset={offset}
+                >
+                    {children}
+                </NavLink>
+            </>
+        );
+    }
+
     return (
         <AppShell
             header={{ height: 60 }}
@@ -61,42 +110,38 @@ export function HomePage() {
             <AppShell.Navbar>
                 <Flex h="100%" justify="space-between" direction="column" mih={0}>
                     <ScrollArea className="links" p="md" scrollbarSize={8}>
-                        <NavLink
-                            onClick={() => handleNavLinkClick('dashboard', '/dashboard')}
-                            active={"dashboard" === active}
-                            label="Dashboard"
-                            leftSection={<IconLayoutDashboardFilled size="1rem" stroke={1.5} />}
-                            color="gray"
-                        />
-                        <NavLink
-                            onClick={() => handleNavLinkClick('courses', '/courses')}
-                            active={"courses" === active}
-                            label="Courses"
-                            leftSection={<IconBooks size="1rem" stroke={1.5} />}
-                            color="gray"
-                        />
-                        <NavLink
-                            label="Favorites"
-                            leftSection={<IconStar size="1rem" stroke={1.5} />}
-                            color="gray"
-                            childrenOffset={28}
-                        >
-                            {menuFavorites()}
-                        </NavLink>
-                        <NavLink
-                            label="Progress"
-                            onClick={() => handleNavLinkClick('progress', '/progress')}
-                            active={"progress" === active}
-                            leftSection={<IconReportAnalytics size="1rem" stroke={1.5} />}
-                            color="gray"
-                        />
-                        <NavLink
-                            label="Settings"
-                            onClick={() => handleNavLinkClick('settings', '/settings')}
-                            active={"settings" === active}
-                            leftSection={<IconAdjustments size="1rem" stroke={1.5} />}
-                            color="gray"
-                        />
+                        {createNavLink(
+                            () => handleNavLinkClick('dashboard', '/dashboard'), 
+                            '/dashboard', 
+                            'Dashboard',
+                            <IconLayoutDashboardFilled size="1rem" stroke={1.5} />)
+                        }
+                        {createNavLink(
+                            () => handleNavLinkClick('courses', '/courses'),
+                            '/courses',
+                            'Courses',
+                            <IconBooks size="1rem" stroke={1.5} />)
+                        }
+                        {createNestedNavLink(
+                            () => {},
+                            '/favorites',
+                            'Favorites',
+                            <IconStar size="1rem" stroke={1.5} />,
+                            28,
+                            menuFavorites()
+                        )}
+                        {createNavLink(
+                            () => handleNavLinkClick('progress', '/progress'),
+                            '/progress',
+                            'Progress',
+                            <IconReportAnalytics size="1rem" stroke={1.5} />)
+                        }
+                        {createNavLink(
+                            () => handleNavLinkClick('settings', '/settings'),
+                            '/settings',
+                            'Settings',
+                            <IconAdjustments size="1rem" stroke={1.5} />)
+                        }
                     </ScrollArea>
                     <AppShell.Section>
                         <Divider />
