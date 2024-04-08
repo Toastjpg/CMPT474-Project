@@ -13,29 +13,14 @@ const PORT = process.env.PORT || 8080;
 /* ------------------------------- middleware ------------------------------- */
 
 app.use(cors());
-
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
-
-// Middleware to log all requests
-// app.use((req, res, next) => {
-//     console.log(req.headers, req.params);
-//     next();
-// });
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const multer = Multer({
     storage: Multer.memoryStorage(),
     limits: {
-        fileSize: 32 * 1024 * 1024,
+        fileSize: 25 * 1024 * 1024,
     },
 })
-
-//app.use(multer.array());
-//app.use(express.static('public'));
-
-var bodyParser = require('body-parser');
-app.use(bodyParser.json({ limit: '32mb' }));
-app.use(bodyParser.urlencoded({ limit: '32mb', extended: true }));
 
 /* -------------------------------- endpoints ------------------------------- */
 
@@ -54,8 +39,7 @@ app.options("/*", function (req, res, next) {
 
 
 app.get('/api/files', getAllFiles)
-//app.post('/api/files', multer.any(), uploadFiles)
-app.post('/api/files', multer.any(), uploadFile);
+app.post('/api/files', multer.any(), uploadFile)
 // app.delete('/api/files/:fileId', deleteFile)
 
 /* ----------------------------- starting server ---------------------------- */

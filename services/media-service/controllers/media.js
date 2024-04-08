@@ -11,7 +11,6 @@ const storage = new Storage({
 const bucket = storage.bucket(process.env.BUCKET_NAME)
 const MEDIA_BASE_URL = `http://${process.env.LOADBALANCER_IP}` || `https://storage.googleapis.com/${bucket.name}`
 
-/* ------------------------------- middleware ------------------------------- */
 
 /* -------------------------------- CRUD handlers ------------------------------- */
 
@@ -42,6 +41,7 @@ const uploadFiles = async (req, res) => {
             blobStream.end(file.buffer);
         })
 
+        console.log(`reached here`);
         await Promise.all(uploadPromises)
         console.log(`Uploaded ${count} files.`)
         return res.status(200).json({ message: `Uploaded ${count} files.` })
@@ -53,34 +53,28 @@ const uploadFiles = async (req, res) => {
 
 const uploadFile = async (req, res) => {
     try {
-        if (!req.file) {
-            console.log("Received 0 files.")
-            return res.status(200).json("Uploaded 0 files.")
-        }
+        const file = req.files[0]
+        console.log(file)
 
-        console.log("request headers: " + req.headers);
-        console.log("request params: " + req.params);
-        console.log("request body: " + req.body);
-
-        const blob = bucket.file(`${uuidv4()}_${req.file.originalname}`);
+        const blob = bucket.file(`${uuidv4()}_${file.originalname}`);
         const blobStream = blob.createWriteStream();
 
         blobStream.on("finish", () => {
-            console.log("Upload completed: " + req.file.originalname)
-            return res.status(200).json({ message: `Uploaded ${req.file.originalname}` })
+            console.log("Upload completed: " + file.originalname)
+            return res.status(200).json({ message: `Uploaded ${file.originalname}` })
         });
-
-        blobStream.on("error", () => {
-            console.error("Upload failed: " + req.file.originalname)
+        blobStream.on("error", (err) => {
+            console.log("Upload failed: " + file.originalname)
+            console.error(err)
             return res.status(500).json({ error: "ERROR: Cloud Storage Access Failed" })
         })
 
-        blobStream.end(req.file.buffer);
+        blobStream.end(file.buffer);
     } catch (error) {
         console.error(error)
-        return res.status(500).json({ error: "ERROR: Cloud Storage Access Failed" })
+        return res.status(500).json({ error: "ERROR: Cloud Storage Access Failed KMS" })
     }
-};
+}
 
 const getAllFiles = async (req, res) => {
     try {
@@ -104,4 +98,4 @@ const getAllFiles = async (req, res) => {
 // const deleteFile = async (req, res) => {
 // }
 
-module.exports = { uploadFiles, uploadFile, getAllFiles };
+module.exports = { uploadFiles, getAllFiles, uploadFile };
