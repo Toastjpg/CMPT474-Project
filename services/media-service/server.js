@@ -30,8 +30,8 @@ const multer = Multer({
     },
 })
 
-app.use(multer.array());
-app.use(express.static('public'));
+//app.use(multer.array());
+//app.use(express.static('public'));
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json({ limit: '32mb' }));
