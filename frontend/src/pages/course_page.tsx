@@ -2,7 +2,7 @@ import { FC } from "react"
 import { useNavigate, useParams } from "react-router-dom";
 
 import { Flex, Tabs, rem } from "@mantine/core"
-import { IconBrain, IconDatabase, IconMessages, IconStar } from "@tabler/icons-react";
+import { IconBrain, IconDatabase, IconMessages } from "@tabler/icons-react";
 
 import { QuizzerHubTab } from "../components/quizzerhub_components/quizzerhub_tab";
 import { ChatroomTab } from "../components/chatroom_components/chatroom_tab";

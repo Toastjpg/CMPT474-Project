@@ -14,7 +14,6 @@ import { QuizPlayer } from '../components/quizzerhub_components/quizzerhub_play'
 /* -------------------------------- resources ------------------------------- */
 import { FileCard, FileInfo } from '../components/resources_components/file_card';
 import { getAllFiles } from '../controllers/media-controller';
-import { set } from 'jodit/esm/core/helpers';
 
 export function Dashboard() {
     /* ---------------------------------- state --------------------------------- */

@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Card, Group, Title, Text, Divider, ActionIcon, Button, Flex } from "@mantine/core";
 import { IconStar } from "@tabler/icons-react";
 
-import { UnreleasedFeatureNotification } from "../components/unreleased_feature";
-
 export function Courses(): JSX.Element {
     /* ---------------------------------- state --------------------------------- */
     const navigate = useNavigate();

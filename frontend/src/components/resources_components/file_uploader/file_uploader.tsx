@@ -1,31 +1,32 @@
-import { ActionIcon, Button, Flex, Group, Text, rem, FileButton, Space } from "@mantine/core";
-import { Dropzone, DropzoneProps } from '@mantine/dropzone';
-import { IconFiles, IconTrash, IconUpload, IconX } from "@tabler/icons-react";
+// @ts-ignore
+// @ts-nocheck
+import {  Button, Flex, Text, FileButton, Space } from "@mantine/core";
+import { DropzoneProps } from '@mantine/dropzone';
 import { FC, useState } from "react";
 import '@mantine/dropzone/styles.css';
-import { uploadFiles, uploadFile } from "../../../controllers/media-controller";
+import { uploadFile } from "../../../controllers/media-controller";
 
 
 interface Props {
     props: Partial<DropzoneProps>
     updateFilesList: () => void
 }
-export const FileUploader: FC<Props> = ({ props, updateFilesList }) => {
-    const [files, setFiles] = useState<Array<File>>([])
+export const FileUploader: FC<Props> = ({ updateFilesList }) => {
+    /* const [files, setFiles] = useState<Array<File>>([]) */
     const [loading, setLoading] = useState(false)
 
     const [file, setFile] = useState<File | null>(null)
 
 
-    const removeFile = (index: number) => {
+    /* const removeFile = (index: number) => {
         if (files.length > 0 && index >= 0 && index < files.length) {
             const tmp = [...files]
             tmp.splice(index, 1)
             setFiles(tmp)
         }
-    }
+    } */
 
-    const upload = async () => {
+    /* const upload = async () => {
         try {
             setLoading(true)
             const response = await uploadFiles(files)
@@ -41,7 +42,7 @@ export const FileUploader: FC<Props> = ({ props, updateFilesList }) => {
             console.error(error)
             alert("File upload failed. Please refresh the browser and try again.")
         }
-    }
+    } */
 
     const uploadSingleFile = async () => {
         try {
@@ -68,7 +69,7 @@ export const FileUploader: FC<Props> = ({ props, updateFilesList }) => {
         }
     }
 
-    const rows = files.map((file, index) => (
+    /* const rows = files.map((file, index) => (
         <Flex key={index} direction="row" w="100%" justify="space-between" align="center" gap={16} className="row">
             <Text c="dimmed" fz="sm" className="filename" flex={1} miw={0}>{file.name}</Text>
             <Text c="dimmed" fz="sm">{(file.size / (1024 * 1024)).toFixed(2)}MB</Text>
@@ -77,12 +78,12 @@ export const FileUploader: FC<Props> = ({ props, updateFilesList }) => {
             </ActionIcon>
         </Flex>
     ));
-
-    const listFilenames = (uploads: Array<{ file: File, errors: [] }>) => {
+ */
+    /* const listFilenames = (uploads: Array<{ file: File, errors: [] }>) => {
         return uploads.map(item => item.file.name).join('\n')
-    }
+    } */
 
-    function customDropzone(): JSX.Element {
+    /* function customDropzone(): JSX.Element {
         return (
             <>
                 <Dropzone
@@ -123,7 +124,7 @@ export const FileUploader: FC<Props> = ({ props, updateFilesList }) => {
                 </Dropzone>
             </>
         );
-    }
+    } */
 
     function customChoostFileButton(): JSX.Element {
         return (
