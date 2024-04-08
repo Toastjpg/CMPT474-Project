@@ -1,10 +1,11 @@
 /* ------------------------------ dependencies ------------------------------ */
 const express = require("express");
 const cors = require("cors");
-const Multer = require('multer')
+// const Multer = require('multer')
+const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 dotenv.config();
-const { getAllFiles, uploadFiles } = require("./controllers/media");
+const { getAllFiles, uploadFiles, uploadFilesBase64 } = require("./controllers/media");
 
 /* ------------------------------- server setup ------------------------------ */
 const app = express();
@@ -12,15 +13,16 @@ const PORT = process.env.PORT || 8080;
 
 /* ------------------------------- middleware ------------------------------- */
 
+app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const multer = Multer({
-    storage: Multer.memoryStorage(),
-    limits: {
-        fileSize: 25 * 1024 * 1024,
-    },
-})
+// const multer = Multer({
+//     storage: Multer.memoryStorage(),
+//     limits: {
+//         fileSize: 25 * 1024 * 1024,
+//     },
+// })
 
 /* -------------------------------- endpoints ------------------------------- */
 
@@ -39,7 +41,9 @@ app.options("/*", function (req, res, next) {
 
 
 app.get('/api/files', getAllFiles)
-app.post('/api/files', multer.any(), uploadFiles)
+// app.post('/api/files', multer.any(), uploadFiles)
+app.post('/api/files', uploadFilesBase64)
+
 // app.delete('/api/files/:fileId', deleteFile)
 
 /* ----------------------------- starting server ---------------------------- */
