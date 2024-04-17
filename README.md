@@ -24,7 +24,7 @@ SFU Connect is a full-stack web application that supports features such as:
 - Email Verified Signups
   <p float="left">
     <img src="./images/authenticate.png" align="top" width="50%" />
-    <img src="./images/signup.png"/> 
+    <img src="./images/signup.png" width="49%"/> 
   </p>
 
 ### 2. Resource Hosting
