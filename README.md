@@ -1,5 +1,5 @@
 # SFU Connect
-An Online Collaborative Learning Platform for students to connect and engage. 
+An Online Collaborative Learning Platform built for students to connect and engage. 
 
 ### Built With
 
