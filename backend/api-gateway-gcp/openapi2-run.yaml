@@ -134,10 +134,8 @@ paths:
       parameters:
         - in: formData
           name: formData
-          type: array
-          items: # NOTE
-            type: string
-            format: binary
+          type: file
+          description: The file to upload
       responses:
         "200":
           description: File upload success

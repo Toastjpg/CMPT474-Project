@@ -1,105 +1,176 @@
-import { ActionIcon, Button, Flex, Group, Text, rem } from "@mantine/core";
-import { Dropzone, DropzoneProps } from '@mantine/dropzone';
-import { IconFiles, IconTrash, IconUpload, IconX } from "@tabler/icons-react";
+// @ts-ignore
+// @ts-nocheck
+import {  Button, Flex, Text, FileButton, Space } from "@mantine/core";
+import { DropzoneProps } from '@mantine/dropzone';
 import { FC, useState } from "react";
 import '@mantine/dropzone/styles.css';
-import { uploadFiles } from "../../../controllers/media-controller";
+import { uploadFile } from "../../../controllers/media-controller";
 
 
 interface Props {
     props: Partial<DropzoneProps>
     updateFilesList: () => void
 }
-export const FileUploader: FC<Props> = ({ props, updateFilesList }) => {
-    const [files, setFiles] = useState<Array<File>>([])
+export const FileUploader: FC<Props> = ({ updateFilesList }) => {
+    /* const [files, setFiles] = useState<Array<File>>([]) */
     const [loading, setLoading] = useState(false)
 
+    const [file, setFile] = useState<File | null>(null)
 
-    const removeFile = (index: number) => {
-        if(files.length > 0 && index >= 0 && index < files.length) {
+
+    /* const removeFile = (index: number) => {
+        if (files.length > 0 && index >= 0 && index < files.length) {
             const tmp = [...files]
             tmp.splice(index, 1)
             setFiles(tmp)
         }
-    }
+    } */
 
-    const upload = async () => {
+    /* const upload = async () => {
         try {
             setLoading(true)
             const response = await uploadFiles(files)
             setLoading(false)
             const data = await response.json()
-            if(response.ok) {
+            if (response.ok) {
                 updateFilesList()
-            }else {
+            } else {
                 console.log(data.error)
                 alert(data.error)
             }
-        }catch(error) {
+        } catch (error) {
+            console.error(error)
+            alert("File upload failed. Please refresh the browser and try again.")
+        }
+    } */
+
+    const uploadSingleFile = async () => {
+        try {
+            setLoading(true)
+
+            if (file !== null) {
+                const response = await uploadFile(file);
+                setLoading(false)
+                const data = await response.json()
+                if (response.ok) {
+                    updateFilesList()
+                } else {
+                    console.log(data.error)
+                    alert(data.error)
+                }
+            }
+            else {
+                alert("Please select a file to upload.");
+            }
+
+        } catch (error) {
             console.error(error)
             alert("File upload failed. Please refresh the browser and try again.")
         }
     }
 
-    const rows = files.map((file, index) => (
+    /* const rows = files.map((file, index) => (
         <Flex key={index} direction="row" w="100%" justify="space-between" align="center" gap={16} className="row">
             <Text c="dimmed" fz="sm" className="filename" flex={1} miw={0}>{file.name}</Text>
-            <Text c="dimmed" fz="sm">{(file.size / (1024*1024)).toFixed(2)}MB</Text>
+            <Text c="dimmed" fz="sm">{(file.size / (1024 * 1024)).toFixed(2)}MB</Text>
             <ActionIcon color="red" variant="light">
                 <IconTrash style={{ width: rem(14), height: rem(14) }} onClick={() => removeFile(index)} />
             </ActionIcon>
         </Flex>
-      ));
-
-    const listFilenames = (uploads: Array<{file: File, errors: []}>) => {
+    ));
+ */
+    /* const listFilenames = (uploads: Array<{ file: File, errors: [] }>) => {
         return uploads.map(item => item.file.name).join('\n')
+    } */
+
+    /* function customDropzone(): JSX.Element {
+        return (
+            <>
+                <Dropzone
+                    onDrop={(uploads: any) => setFiles([...files, ...uploads])}
+                    onReject={(uploads: any) => alert('Error: rejected files:\n' + listFilenames([...uploads]))}
+                    maxSize={25 * 1024 ** 2}
+                    {...props}
+                >
+                    <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
+                        <Dropzone.Accept>
+                            <IconUpload
+                                style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-blue-6)' }}
+                                stroke={1.5}
+                            />
+                        </Dropzone.Accept>
+                        <Dropzone.Reject>
+                            <IconX
+                                style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-red-6)' }}
+                                stroke={1.5}
+                            />
+                        </Dropzone.Reject>
+                        <Dropzone.Idle>
+                            <IconFiles
+                                style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-dimmed)' }}
+                                stroke={1.5}
+                            />
+                        </Dropzone.Idle>
+
+                        <div>
+                            <Text size="xl" inline>
+                                Drag file here or click to browse
+                            </Text>
+                            <Text size="sm" c="dimmed" inline mt={7}>
+                                File should not exceed 25MB
+                            </Text>
+                        </div>
+                    </Group>
+                </Dropzone>
+            </>
+        );
+    } */
+
+    function customChoostFileButton(): JSX.Element {
+        return (
+            <>
+                <FileButton onChange={setFile}>
+                    {(props) => <Button {...props} miw={"12rem"}>Choose File</Button>}
+                </FileButton>
+            </>
+        );
     }
 
-    return(
-        <Flex direction="column" w="100%" id="fileuploader">
-            
-            <Dropzone
-                onDrop={(uploads: any) => setFiles([...files, ...uploads])}
-                onReject={(uploads: any) => alert('Error: rejected files:\n' + listFilenames([...uploads]))}
-                maxSize={25 * 1024 ** 2}
-                {...props}
-            >
-                <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
-                    <Dropzone.Accept>
-                        <IconUpload
-                            style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-blue-6)' }}
-                            stroke={1.5}
-                        />
-                    </Dropzone.Accept>
-                    <Dropzone.Reject>
-                        <IconX
-                            style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-red-6)' }}
-                            stroke={1.5}
-                        />
-                    </Dropzone.Reject>
-                    <Dropzone.Idle>
-                        <IconFiles
-                            style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-dimmed)' }}
-                            stroke={1.5}
-                        />
-                    </Dropzone.Idle>
+    function customFileUploadButton(): JSX.Element {
+        return (
+            <Button bg={"green"} onClick={uploadSingleFile} disabled={file === null || loading} loading={loading}>
+                Upload File
+            </Button>
+        );
+    }
 
-                    <div>
-                        <Text size="xl" inline>
-                            Drag images here or click to select files
-                        </Text>
-                        <Text size="sm" c="dimmed" inline mt={7}>
-                            Attach as many files as you like, each file should not exceed 25MB
-                        </Text>
-                    </div>
-                </Group>
-            </Dropzone>
-            <Text fw={500} mt={20} mb={12}>Files</Text>
-            <Flex w="100%" direction="column" className="uploads-list">
+    return (
+        <Flex direction="column" w="100%" id="fileuploader">
+
+            {/* {customDropzone()} */}
+            <Flex align={"center"} justify={"center"}>
+                {customChoostFileButton()}
+            </Flex>
+
+
+            <Text fw={500} mt={20} mb={12}>File Name</Text>
+            {file && (
+                <Text size="sm" ta="center" mt="sm">
+                    {file.name}
+                </Text>
+
+            )}
+
+            <Space h={20} />
+            <Flex align={"center"} justify={"flex-end"}>
+                {file === null ? <></> : customFileUploadButton()}
+            </Flex>
+
+            {/* <Flex w="100%" direction="column" className="uploads-list">
                 {rows}
             </Flex>
             {files.length === 0 && <Text c="gray" size='sm'>0 files selected.</Text>}
-            {files.length !== 0 && <Button loading={loading} variant="light" onClick={upload}>Upload {files.length} File{files.length > 1 ? 's' : ''}</Button>}
+            {files.length !== 0 && <Button loading={loading} variant="light" onClick={upload}>Upload {files.length} File{files.length > 1 ? 's' : ''}</Button>} */}
         </Flex>
     )
 }

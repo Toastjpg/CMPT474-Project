@@ -4,7 +4,7 @@ const cors = require("cors");
 const Multer = require('multer')
 const dotenv = require("dotenv");
 dotenv.config();
-const { getAllFiles, uploadFiles } = require("./controllers/media");
+const { getAllFiles, uploadFiles, uploadFile } = require("./controllers/media");
 
 /* ------------------------------- server setup ------------------------------ */
 const app = express();
@@ -39,7 +39,7 @@ app.options("/*", function (req, res, next) {
 
 
 app.get('/api/files', getAllFiles)
-app.post('/api/files', multer.any(), uploadFiles)
+app.post('/api/files', multer.any(), uploadFile)
 // app.delete('/api/files/:fileId', deleteFile)
 
 /* ----------------------------- starting server ---------------------------- */

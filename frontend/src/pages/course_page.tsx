@@ -1,10 +1,12 @@
+import { FC } from "react"
+import { useNavigate, useParams } from "react-router-dom";
+
 import { Flex, Tabs, rem } from "@mantine/core"
 import { IconBrain, IconDatabase, IconMessages } from "@tabler/icons-react";
-import { FC } from "react"
+
 import { QuizzerHubTab } from "../components/quizzerhub_components/quizzerhub_tab";
 import { ChatroomTab } from "../components/chatroom_components/chatroom_tab";
 import { ResourcesTab } from "../components/resources_components/resources_tab";
-import { useNavigate, useParams } from "react-router-dom";
 
 export const Course: FC = () => {
     const navigate = useNavigate();

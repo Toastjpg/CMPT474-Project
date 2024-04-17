@@ -27,7 +27,7 @@ export function SignInForm() {
             const jwt = await user.getIdToken()
             sessionStorage.setItem("token", jwt)
 
-            navigate("/")
+            navigate("/dashboard")
         } catch (e: any) {
             setButtonIdle(false)
             alert(e.message)
