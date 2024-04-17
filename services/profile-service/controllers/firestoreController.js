@@ -13,6 +13,8 @@ const firebaseController = {
     initialize: () => {
         // initialize the firebase app
         try {
+            // NOTE: For connections with local firebaseConfig credentials
+
             // if (firebaseConfig != "CLOUD") {
             //     const serviceAccount = require(`../${firebaseConfig}`);
 
